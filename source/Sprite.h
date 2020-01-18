@@ -32,6 +32,9 @@ private:
 	Sprite() = default;
 
 private:
+	void RefreshScaledSurface();
+
+private:
 	SDL_Surface* m_Surface = nullptr;
 	SDL_Surface* m_ScaledSurface = nullptr;
 	Eigen::Vector2i m_Position{ 0,0 };

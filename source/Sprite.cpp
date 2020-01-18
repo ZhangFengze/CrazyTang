@@ -44,6 +44,7 @@ Eigen::Vector2i Sprite::GetPosition() const
 void Sprite::SetScale(float f)
 {
 	m_Scale = f;
+	RefreshScaledSurface();
 }
 
 float Sprite::GetScale() const
@@ -83,6 +84,30 @@ Sprite & Sprite::operator=(Sprite &&other)
 	swap(m_Scale, other.m_Scale);
 
 	return *this;
+}
+
+void Sprite::RefreshScaledSurface()
+{
+	if (m_ScaledSurface)
+	{
+		SDL_FreeSurface(m_ScaledSurface);
+		m_ScaledSurface = nullptr;
+	}
+
+	if (m_Surface)
+	{
+		m_ScaledSurface = SDL_CreateRGBSurfaceWithFormat(0, m_Surface->w*m_Scale, m_Surface->h*m_Scale,
+			32, m_Surface->format->format);
+		if (m_ScaledSurface)
+		{
+			SDL_FillRect(m_ScaledSurface, nullptr, SDL_MapRGBA(m_ScaledSurface->format, 0, 0, 0, 0));
+			SDL_Rect rect;
+			rect.x = rect.y = 0;
+			rect.w = m_ScaledSurface->w;
+			rect.h = m_ScaledSurface->h;
+			SDL_BlitScaled(m_Surface, nullptr, m_ScaledSurface, &rect);
+		}
+	}
 }
 
 Sprite::~Sprite()

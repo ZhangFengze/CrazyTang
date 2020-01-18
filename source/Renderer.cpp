@@ -39,15 +39,14 @@ void Renderer::Clear()
 
 void Renderer::Render(const Sprite &sp)
 {
-	if (sp.m_Surface)
+	auto surface = sp.m_ScaledSurface ? sp.m_ScaledSurface : sp.m_Surface;
+	if (surface)
 	{
 		SDL_Rect dest;
 		auto pos = sp.GetPosition();
 		dest.x = pos.x();
 		dest.y = pos.y();
-		dest.w = sp.GetWidth()*sp.GetScale();
-		dest.h = sp.GetHeight()*sp.GetScale();
-		SDL_BlitScaled(sp.m_Surface, nullptr, m_Surface, &dest);
+		SDL_BlitSurface(surface, nullptr, m_Surface, &dest);
 	}
 }
 
