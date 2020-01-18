@@ -27,6 +27,8 @@ void AnimatedSprite::Update(float dt)
 {
 	if (m_Sprites.empty())
 		return;
+	if (m_Pause)
+		return;
 	m_AccumulatedTime += dt;
 
 	if (m_AccumulatedTime > m_FrameInterval)
@@ -59,6 +61,11 @@ void AnimatedSprite::SetPosition(const Eigen::Vector2i &pos)
 Eigen::Vector2i AnimatedSprite::GetPosition() const
 {
 	return m_Position;
+}
+
+void AnimatedSprite::SetPause(bool b)
+{
+	m_Pause = b;
 }
 
 AnimatedSprite & AnimatedSprite::operator=(AnimatedSprite && other)

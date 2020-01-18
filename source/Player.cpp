@@ -28,21 +28,29 @@ void Player::UpdateMove()
 	{
 		move = Eigen::Vector2i{0, -1};
 		m_NowAnim = &m_UpAnim;
+		m_NowAnim->SetPause(false);
 	}
 	else if (Input::IsKeyDown(Input::Key::Down))
 	{
 		move = Eigen::Vector2i{0, 1};
 		m_NowAnim = &m_DownAnim;
+		m_NowAnim->SetPause(false);
 	}
 	else if (Input::IsKeyDown(Input::Key::Left))
 	{
 		move = Eigen::Vector2i{-1, 0};
 		m_NowAnim = &m_LeftAnim;
+		m_NowAnim->SetPause(false);
 	}
-	if (Input::IsKeyDown(Input::Key::Right))
+	else if (Input::IsKeyDown(Input::Key::Right))
 	{
 		move = Eigen::Vector2i{1, 0};
 		m_NowAnim = &m_RightAnim;
+		m_NowAnim->SetPause(false);
+	}
+	else
+	{
+		m_NowAnim->SetPause(true);
 	}
 
 	m_Position += move;
