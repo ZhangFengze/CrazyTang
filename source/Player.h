@@ -12,6 +12,7 @@ public:
 
 public:
 	void UpdateMove();
+	void UpdateBomb();
 
 private:
 	AnimatedSprite m_DownAnim = AnimatedSprite::Create(
@@ -25,4 +26,7 @@ private:
 	AnimatedSprite* m_NowAnim = &m_DownAnim;
 
 	Eigen::Vector2i m_Position{ 0,0 };
+
+	bool m_LastTimeBombKeyDown = false;
+	std::vector<AnimatedSprite> m_Bombs;
 };

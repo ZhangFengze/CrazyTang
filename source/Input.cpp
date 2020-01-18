@@ -23,6 +23,8 @@ bool Input::IsKeyDown(Key key)
 		return ::IsKeyDown(SDL_SCANCODE_LEFT);
 	case Key::Right:
 		return ::IsKeyDown(SDL_SCANCODE_RIGHT);
+	case Key::Space:
+		return ::IsKeyDown(SDL_SCANCODE_SPACE);
 	default:
 		assert(false);
 		return false;

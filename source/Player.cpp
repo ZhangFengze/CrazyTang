@@ -18,12 +18,17 @@ Player::Player()
 
 void Player::Update(float dt)
 {
+	for (auto& bomb : m_Bombs)
+		bomb.Update(dt);
 	UpdateMove();
 	m_NowAnim->Update(dt);
+	UpdateBomb();
 }
 
 void Player::Render(Renderer &r)
 {
+	for (auto& bomb : m_Bombs)
+		bomb.Render(r);
 	m_NowAnim->Render(r);
 }
 
@@ -61,4 +66,21 @@ void Player::UpdateMove()
 
 	m_Position += move;
 	m_NowAnim->SetPosition(m_Position);
+}
+
+void Player::UpdateBomb()
+{
+	bool down = Input::IsKeyDown(Input::Key::Space);
+	if (m_LastTimeBombKeyDown != down)
+	{
+		m_LastTimeBombKeyDown = down;
+		if (down)
+		{
+			auto bomb = AnimatedSprite::Create({ "bomb/b1.png","bomb/b2.png","bomb/b3.png" });
+			bomb.SetFrameInterval(1.f / 5.f);
+			bomb.SetScale(0.2f);
+			bomb.SetPosition(m_Position);
+			m_Bombs.push_back(std::move(bomb));
+		}
+	}
 }
