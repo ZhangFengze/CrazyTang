@@ -9,5 +9,5 @@ public:
 	void Render(Renderer&);
 
 private:
-	AnimatedSprite m_Player = AnimatedSprite::Create({"player.bmp","player.bmp"});
+	AnimatedSprite m_Player = AnimatedSprite::Create({ "bomb/b1.bmp","bomb/b2.bmp","bomb/b3.bmp" });
 };
