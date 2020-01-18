@@ -31,7 +31,7 @@ private:
 
 private:
 	SDL_Surface* m_Surface = nullptr;
-	Eigen::Vector2i m_Position = Eigen::Vector2i::Zero();
+	Eigen::Vector2i m_Position{ 0,0 };
 	int m_Width = 0;
 	int m_Height = 0;
 

@@ -44,6 +44,23 @@ void AnimatedSprite::SetFrameInterval(float f)
 	m_FrameInterval = f;
 }
 
+void AnimatedSprite::SetPosition(int x, int y)
+{
+	SetPosition({ x,y });
+}
+
+void AnimatedSprite::SetPosition(const Eigen::Vector2i &pos)
+{
+	for (auto& sprite : m_Sprites)
+		sprite.SetPosition(pos);
+	m_Position = pos;
+}
+
+Eigen::Vector2i AnimatedSprite::GetPosition() const
+{
+	return m_Position;
+}
+
 AnimatedSprite & AnimatedSprite::operator=(AnimatedSprite && other)
 {
 	using std::swap;

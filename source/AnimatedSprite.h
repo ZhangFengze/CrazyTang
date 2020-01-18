@@ -15,6 +15,10 @@ public:
 	void Update(float dt);
 	void SetFrameInterval(float);
 
+	void SetPosition(int x, int y);
+	void SetPosition(const Eigen::Vector2i&);
+	Eigen::Vector2i GetPosition()const;
+
 public:
 	AnimatedSprite(AnimatedSprite&&);
 
@@ -23,6 +27,7 @@ private:
 	AnimatedSprite() = default;
 
 private:
+	Eigen::Vector2i m_Position{ 0,0 };
 	float m_AccumulatedTime = 0.f;
 	float m_FrameInterval = 1.f / 30.f;
 	size_t m_Index = 0;
