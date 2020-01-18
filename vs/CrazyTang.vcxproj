@@ -76,12 +76,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\AnimatedSprite.cpp" />
     <ClCompile Include="..\source\Game.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\Renderer.cpp" />
     <ClCompile Include="..\source\Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\AnimatedSprite.h" />
     <ClInclude Include="..\source\Game.h" />
     <ClInclude Include="..\source\Renderer.h" />
     <ClInclude Include="..\source\Sprite.h" />

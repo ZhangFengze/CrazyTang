@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Renderer.h"
 
 std::optional<Sprite> Sprite::Create(const std::string & file)
 {
@@ -70,6 +71,11 @@ Sprite & Sprite::operator=(Sprite &&other)
 Sprite::~Sprite()
 {
 	ReleaseSurface();
+}
+
+void Sprite::Render(Renderer &r)
+{
+	r.Render(*this);
 }
 
 void Sprite::ReleaseSurface()

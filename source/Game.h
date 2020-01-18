@@ -1,5 +1,5 @@
 #pragma once
-#include "Sprite.h"
+#include "AnimatedSprite.h"
 
 class Renderer;
 class Game
@@ -9,6 +9,5 @@ public:
 	void Render(Renderer&);
 
 private:
-	Sprite m_Player = Sprite::CreateSafe("player.bmp");
-	int m_AccumulatedFrames = 0;
+	AnimatedSprite m_Player = AnimatedSprite::Create({"player.bmp","player.bmp"});
 };

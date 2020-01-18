@@ -4,6 +4,7 @@
 #include <eigen>
 #include <SDL.h>
 
+class Renderer;
 class Sprite
 {
 public:
@@ -21,6 +22,7 @@ public:
 public:
 	Sprite(Sprite&&);
 	~Sprite();
+	void Render(Renderer&);
 	
 private:
 	Sprite& operator=(Sprite&&);
