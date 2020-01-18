@@ -15,13 +15,13 @@ public:
 
 private:
 	AnimatedSprite m_DownAnim = AnimatedSprite::Create(
-		{ "actor/1.jpg","actor/2.jpg","actor/3.jpg","actor/4.jpg" });
+		{ "actor/1.png","actor/2.png","actor/3.png","actor/4.png" });
 	AnimatedSprite m_LeftAnim = AnimatedSprite::Create(
-		{ "actor/5.jpg","actor/6.jpg","actor/7.jpg","actor/8.jpg" });
+		{ "actor/5.png","actor/6.png","actor/7.png","actor/8.png" });
 	AnimatedSprite m_RightAnim = AnimatedSprite::Create(
-		{ "actor/9.jpg","actor/10.jpg","actor/11.jpg","actor/12.jpg" });
+		{ "actor/9.png","actor/10.png","actor/11.png","actor/12.png" });
 	AnimatedSprite m_UpAnim = AnimatedSprite::Create(
-		{ "actor/13.jpg","actor/14.jpg","actor/15.jpg","actor/16.jpg" });
+		{ "actor/13.png","actor/14.png","actor/15.png","actor/16.png" });
 	AnimatedSprite* m_NowAnim = &m_DownAnim;
 
 	Eigen::Vector2i m_Position{ 0,0 };

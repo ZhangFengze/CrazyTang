@@ -12,5 +12,5 @@ public:
 
 private:
 	Player m_Player;
-	AnimatedSprite m_Bomb = AnimatedSprite::Create({ "bomb/b1.jpg","bomb/b2.jpg","bomb/b3.jpg" });
+	AnimatedSprite m_Bomb = AnimatedSprite::Create({ "bomb/b1.png","bomb/b2.png","bomb/b3.png" });
 };
