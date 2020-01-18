@@ -2,6 +2,7 @@
 #include <string>
 #include <initializer_list>
 #include <vector>
+#include <Eigen>
 #include "Sprite.h"
 
 class Renderer;
