@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	float interval = 0.2f;
+	float interval = 0.13f;
 	m_UpAnim.SetFrameInterval(interval);
 	m_DownAnim.SetFrameInterval(interval);
 	m_LeftAnim.SetFrameInterval(interval);
