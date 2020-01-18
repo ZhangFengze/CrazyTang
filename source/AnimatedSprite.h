@@ -6,17 +6,17 @@
 #include "Sprite.h"
 
 class Renderer;
+class Camera;
 class AnimatedSprite
 {
 public:
 	static AnimatedSprite Create(const std::initializer_list<std::string>& files);
 
 public:
-	void Render(Renderer&);
+	void Render(Renderer&,Camera&);
 	void Update(float dt);
 	void SetFrameInterval(float);
 
-	void SetPosition(int x, int y);
 	void SetPosition(const Vector2&);
 	Vector2 GetPosition()const;
 
@@ -26,18 +26,18 @@ public:
 	void SetPause(bool);
 
 public:
-	AnimatedSprite(AnimatedSprite&&);
-
-private:
-	AnimatedSprite& operator=(AnimatedSprite&&);
 	AnimatedSprite() = default;
+	AnimatedSprite(AnimatedSprite&&);
+	AnimatedSprite& operator=(AnimatedSprite&&);
 
 private:
-	bool m_Pause = false;
-	Vector2 m_Position{ 0,0 };
-	float m_Scale = 1.f;
-	float m_AccumulatedTime = 0.f;
 	float m_FrameInterval = 1.f / 30.f;
+	Vector2 m_Position = Vector2::Zero();
+	float m_Scale = 1.f;
+	bool m_Pause = false;
+
+	float m_AccumulatedTime = 0.f;
 	size_t m_Index = 0;
+
 	std::vector<Sprite> m_Sprites;
 };

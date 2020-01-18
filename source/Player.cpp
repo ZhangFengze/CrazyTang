@@ -25,11 +25,11 @@ void Player::Update(float dt)
 	UpdateBomb();
 }
 
-void Player::Render(Renderer &r)
+void Player::Render(Renderer &render, Camera& camera)
 {
 	for (auto& bomb : m_Bombs)
-		bomb.Render(r);
-	m_NowAnim->Render(r);
+		bomb.Render(render, camera);
+	m_NowAnim->Render(render, camera);
 }
 
 void Player::UpdateMove()

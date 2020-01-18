@@ -1,7 +1,7 @@
 #include "Renderer.h"
-#include "Sprite.h"
-
+#include "Texture.h"
 #include <SDL_image.h>
+#include <cassert>
 
 std::optional<Renderer> Renderer::Create(const std::string & title, int width, int height)
 {
@@ -37,16 +37,14 @@ void Renderer::Clear()
 	SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, 255, 255, 255));
 }
 
-void Renderer::Render(const Sprite &sp)
+void Renderer::Render(int x, int y, const Texture &texture)
 {
-	auto surface = sp.m_ScaledSurface ? sp.m_ScaledSurface : sp.m_Surface;
-	if (surface)
+	if (texture.m_Surface)
 	{
 		SDL_Rect dest;
-		auto pos = sp.GetPosition();
-		dest.x = pos.x();
-		dest.y = pos.y();
-		SDL_BlitSurface(surface, nullptr, m_Surface, &dest);
+		dest.x = x;
+		dest.y = y;
+		SDL_BlitSurface(texture.m_Surface, nullptr, m_Surface, &dest);
 	}
 }
 

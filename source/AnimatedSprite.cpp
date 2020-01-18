@@ -5,7 +5,7 @@ AnimatedSprite AnimatedSprite::Create(const std::initializer_list<std::string>& 
 {
 	AnimatedSprite s;
 	for (const auto& file : files)
-		s.m_Sprites.push_back(Sprite::CreateSafe(file));
+		s.m_Sprites.push_back(Sprite::Create(file));
 	return s;
 }
 
@@ -21,11 +21,11 @@ AnimatedSprite::AnimatedSprite(AnimatedSprite &&other)
 	swap(m_Sprites, other.m_Sprites);
 }
 
-void AnimatedSprite::Render(Renderer& r)
+void AnimatedSprite::Render(Renderer& render, Camera& camera)
 {
 	if (m_Sprites.empty())
 		return;
-	r.Render(m_Sprites[m_Index]);
+	m_Sprites[m_Index].Render(render, camera);
 }
 
 void AnimatedSprite::Update(float dt)
@@ -49,11 +49,6 @@ void AnimatedSprite::SetFrameInterval(float f)
 {
 	assert(f > FLT_EPSILON);
 	m_FrameInterval = f;
-}
-
-void AnimatedSprite::SetPosition(int x, int y)
-{
-	SetPosition({ x,y });
 }
 
 void AnimatedSprite::SetPosition(const Vector2 &pos)

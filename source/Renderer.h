@@ -3,7 +3,7 @@
 #include <string>
 #include <SDL.h>
 
-class Sprite;
+class Texture;
 class Renderer
 {
 public:
@@ -11,7 +11,7 @@ public:
 
 public:
 	void Clear();
-	void Render(const Sprite&);
+	void Render(int x, int y, const Texture&);
 	void Commit();
 
 public:

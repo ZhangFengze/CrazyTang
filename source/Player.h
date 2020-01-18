@@ -1,6 +1,7 @@
 #pragma once
 #include "AnimatedSprite.h"
 #include "Math.h"
+#include "Camera.h"
 
 class Renderer;
 class Player
@@ -8,7 +9,7 @@ class Player
 public:
 	Player();
 	void Update(float dt);
-	void Render(Renderer&);
+	void Render(Renderer&, Camera&);
 
 public:
 	void UpdateMove();
