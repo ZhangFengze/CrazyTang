@@ -9,6 +9,11 @@ Sprite Sprite::Create(const std::string & file)
 	return s;
 }
 
+void Sprite::SetAnchor(const Vector2 &anchor)
+{
+	m_Anchor = anchor;
+}
+
 void Sprite::SetPosition(const Vector2 &pos)
 {
 	m_Position = pos;
@@ -33,8 +38,16 @@ float Sprite::GetScale() const
 void Sprite::Render(Renderer & renderer, Camera & camera)
 {
 	auto pos = m_Position - camera.GetRect().center;
-	if(m_ScaledTexture.Valid())
-		renderer.Render(pos.x(), pos.y(), m_ScaledTexture);
-	else if(m_OriginTexture.Valid())
-		renderer.Render(pos.x(), pos.y(), m_OriginTexture);
+	if (m_ScaledTexture.Valid())
+	{
+		int x = pos.x() - m_ScaledTexture.GetWidth()*m_Anchor.x();
+		int y = pos.y() - m_ScaledTexture.GetHeight()*m_Anchor.y();
+		renderer.Render(x, y, m_ScaledTexture);
+	}
+	else if (m_OriginTexture.Valid())
+	{
+		int x = pos.x() - m_OriginTexture.GetWidth()*m_Anchor.x();
+		int y = pos.y() - m_OriginTexture.GetHeight()*m_Anchor.y();
+		renderer.Render(x, y, m_OriginTexture);
+	}
 }

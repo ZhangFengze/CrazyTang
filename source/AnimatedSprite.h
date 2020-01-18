@@ -13,9 +13,12 @@ public:
 	static AnimatedSprite Create(const std::initializer_list<std::string>& files);
 
 public:
-	void Render(Renderer&,Camera&);
-	void Update(float dt);
 	void SetFrameInterval(float);
+	void SetPause(bool);
+
+public:
+	// both [0,1]
+	void SetAnchor(const Vector2&);
 
 	void SetPosition(const Vector2&);
 	Vector2 GetPosition()const;
@@ -23,12 +26,13 @@ public:
 	void SetScale(float);
 	float GetScale() const;
 
-	void SetPause(bool);
-
 public:
 	AnimatedSprite() = default;
 	AnimatedSprite(AnimatedSprite&&);
 	AnimatedSprite& operator=(AnimatedSprite&&);
+
+	void Render(Renderer&,Camera&);
+	void Update(float dt);
 
 private:
 	float m_FrameInterval = 1.f / 30.f;

@@ -3,17 +3,16 @@
 
 Player::Player()
 {
+	std::vector<AnimatedSprite*> sprites = { &m_UpAnim,&m_DownAnim,&m_LeftAnim,&m_RightAnim };
 	float interval = 0.13f;
-	m_UpAnim.SetFrameInterval(interval);
-	m_DownAnim.SetFrameInterval(interval);
-	m_LeftAnim.SetFrameInterval(interval);
-	m_RightAnim.SetFrameInterval(interval);
-
 	float scale = 0.2f;
-	m_UpAnim.SetScale(scale);
-	m_DownAnim.SetScale(scale);
-	m_LeftAnim.SetScale(scale);
-	m_RightAnim.SetScale(scale);
+	Vector2 anchor{ 0.5f,1.f };
+	for (auto sprite : sprites)
+	{
+		sprite->SetAnchor(anchor);
+		sprite->SetFrameInterval(interval);
+		sprite->SetScale(scale);
+	}
 }
 
 void Player::Update(float dt)
@@ -77,6 +76,7 @@ void Player::UpdateBomb()
 		if (down)
 		{
 			auto bomb = AnimatedSprite::Create({ "bomb/b1.png","bomb/b2.png","bomb/b3.png" });
+			bomb.SetAnchor({ 0.5f,1.f });
 			bomb.SetFrameInterval(1.f / 5.f);
 			bomb.SetScale(0.1f);
 			bomb.SetPosition(m_Position);

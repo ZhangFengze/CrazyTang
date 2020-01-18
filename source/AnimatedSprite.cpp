@@ -51,6 +51,12 @@ void AnimatedSprite::SetFrameInterval(float f)
 	m_FrameInterval = f;
 }
 
+void AnimatedSprite::SetAnchor(const Vector2 &anchor)
+{
+	for (auto& sprite : m_Sprites)
+		sprite.SetAnchor(anchor);
+}
+
 void AnimatedSprite::SetPosition(const Vector2 &pos)
 {
 	for (auto& sprite : m_Sprites)
