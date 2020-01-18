@@ -78,7 +78,7 @@ void Player::UpdateBomb()
 		{
 			auto bomb = AnimatedSprite::Create({ "bomb/b1.png","bomb/b2.png","bomb/b3.png" });
 			bomb.SetFrameInterval(1.f / 5.f);
-			bomb.SetScale(0.2f);
+			bomb.SetScale(0.1f);
 			bomb.SetPosition(m_Position);
 			m_Bombs.push_back(std::move(bomb));
 		}
