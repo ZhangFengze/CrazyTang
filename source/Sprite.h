@@ -30,10 +30,10 @@ public:
 private:
 	Sprite& operator=(Sprite&&);
 	Sprite() = default;
-	void ReleaseSurface();
 
 private:
 	SDL_Surface* m_Surface = nullptr;
+	SDL_Surface* m_ScaledSurface = nullptr;
 	Eigen::Vector2i m_Position{ 0,0 };
 	int m_Width = 0;
 	int m_Height = 0;

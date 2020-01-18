@@ -63,45 +63,43 @@ int Sprite::GetHeight() const
 
 Sprite::Sprite(Sprite &&other)
 {
-	m_Surface = other.m_Surface;
-	other.m_Surface = nullptr;
-
-	m_Position = other.m_Position;
-	m_Width = other.m_Width;
-	m_Height = other.m_Height;
-	m_Scale = other.m_Scale;
+	using std::swap;
+	swap(m_Surface, other.m_Surface);
+	swap(m_ScaledSurface, other.m_ScaledSurface);
+	swap(m_Position, other.m_Position);
+	swap(m_Width, other.m_Width);
+	swap(m_Height, other.m_Height);
+	swap(m_Scale, other.m_Scale);
 }
 
 Sprite & Sprite::operator=(Sprite &&other)
 {
-	ReleaseSurface();
-
-	m_Surface = other.m_Surface;
-	other.m_Surface = nullptr;
-
-	m_Position = other.m_Position;
-	m_Width = other.m_Width;
-	m_Height = other.m_Height;
-	m_Scale = other.m_Scale;
+	using std::swap;
+	swap(m_Surface, other.m_Surface);
+	swap(m_ScaledSurface, other.m_ScaledSurface);
+	swap(m_Position, other.m_Position);
+	swap(m_Width, other.m_Width);
+	swap(m_Height, other.m_Height);
+	swap(m_Scale, other.m_Scale);
 
 	return *this;
 }
 
 Sprite::~Sprite()
 {
-	ReleaseSurface();
-}
-
-void Sprite::Render(Renderer &r)
-{
-	r.Render(*this);
-}
-
-void Sprite::ReleaseSurface()
-{
 	if (m_Surface)
 	{
 		SDL_FreeSurface(m_Surface);
 		m_Surface = nullptr;
 	}
+	if (m_ScaledSurface)
+	{
+		SDL_FreeSurface(m_ScaledSurface);
+		m_ScaledSurface = nullptr;
+	}
+}
+
+void Sprite::Render(Renderer &r)
+{
+	r.Render(*this);
 }
