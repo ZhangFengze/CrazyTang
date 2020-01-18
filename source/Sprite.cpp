@@ -1,6 +1,8 @@
 #include "Sprite.h"
 #include "Renderer.h"
 
+#include <SDL_image.h>
+
 namespace
 {
 	const std::string assetPathPrefix = "../../../asset/";
@@ -8,7 +10,7 @@ namespace
 
 std::optional<Sprite> Sprite::Create(const std::string & file)
 {
-	auto surface = SDL_LoadBMP((assetPathPrefix + file).c_str());
+	auto surface = IMG_Load((assetPathPrefix + file).c_str());
 	if (!surface)
 		return std::nullopt;
 
