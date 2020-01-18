@@ -26,8 +26,6 @@ int main(int argc, char* argv[])
 			rs.Clear();
 			game.Render(rs);
 			rs.Commit();
-
-			SDL_Delay(1);
 		}
 	}
 
