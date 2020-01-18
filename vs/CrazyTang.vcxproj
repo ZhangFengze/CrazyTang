@@ -81,6 +81,7 @@
     <ClCompile Include="..\source\Game.cpp" />
     <ClCompile Include="..\source\Input.cpp" />
     <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\Math.cpp" />
     <ClCompile Include="..\source\Player.cpp" />
     <ClCompile Include="..\source\Renderer.cpp" />
     <ClCompile Include="..\source\Sprite.cpp" />

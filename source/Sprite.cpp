@@ -37,7 +37,7 @@ float Sprite::GetScale() const
 
 void Sprite::Render(Renderer & renderer, Camera & camera)
 {
-	auto pos = m_Position - camera.GetRect().center;
+	auto pos = m_Position - camera.GetRect().GetTopLeft();
 	if (m_ScaledTexture.Valid())
 	{
 		int x = pos.x() - m_ScaledTexture.GetWidth()*m_Anchor.x();

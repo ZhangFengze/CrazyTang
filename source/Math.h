@@ -7,5 +7,7 @@ struct Rect
 {
 	Vector2 center;
 	Vector2 halfExtents;
+
+	Vector2 GetTopLeft() const;
 };
 bool Intersect(const Rect&, const Rect&);
