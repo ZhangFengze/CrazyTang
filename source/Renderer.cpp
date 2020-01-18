@@ -34,7 +34,7 @@ std::optional<Renderer> Renderer::Create(const std::string & title, int width, i
 
 void Renderer::Clear()
 {
-	SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, 0, 0, 0));
+	SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, 255, 255, 255));
 }
 
 void Renderer::Render(const Sprite &sp)
