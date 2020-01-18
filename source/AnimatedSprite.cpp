@@ -12,8 +12,13 @@ AnimatedSprite AnimatedSprite::Create(const std::initializer_list<std::string>& 
 AnimatedSprite::AnimatedSprite(AnimatedSprite &&other)
 {
 	using std::swap;
-	swap(m_Sprites, other.m_Sprites);
+	swap(m_Pause, other.m_Pause);
+	swap(m_Position, other.m_Position);
+	swap(m_Scale, other.m_Scale);
+	swap(m_AccumulatedTime, other.m_AccumulatedTime);
+	swap(m_FrameInterval, other.m_FrameInterval);
 	swap(m_Index, other.m_Index);
+	swap(m_Sprites, other.m_Sprites);
 }
 
 void AnimatedSprite::Render(Renderer& r)
@@ -63,6 +68,18 @@ Eigen::Vector2i AnimatedSprite::GetPosition() const
 	return m_Position;
 }
 
+void AnimatedSprite::SetScale(float f)
+{
+	for (auto& sprite : m_Sprites)
+		sprite.SetScale(f);
+	m_Scale = f;
+}
+
+float AnimatedSprite::GetScale() const
+{
+	return m_Scale;
+}
+
 void AnimatedSprite::SetPause(bool b)
 {
 	m_Pause = b;
@@ -71,7 +88,12 @@ void AnimatedSprite::SetPause(bool b)
 AnimatedSprite & AnimatedSprite::operator=(AnimatedSprite && other)
 {
 	using std::swap;
-	swap(m_Sprites, other.m_Sprites);
+	swap(m_Pause, other.m_Pause);
+	swap(m_Position, other.m_Position);
+	swap(m_Scale, other.m_Scale);
+	swap(m_AccumulatedTime, other.m_AccumulatedTime);
+	swap(m_FrameInterval, other.m_FrameInterval);
 	swap(m_Index, other.m_Index);
+	swap(m_Sprites, other.m_Sprites);
 	return *this;
 }

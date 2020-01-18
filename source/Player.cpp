@@ -8,6 +8,12 @@ Player::Player()
 	m_DownAnim.SetFrameInterval(interval);
 	m_LeftAnim.SetFrameInterval(interval);
 	m_RightAnim.SetFrameInterval(interval);
+
+	float scale = 0.2f;
+	m_UpAnim.SetScale(scale);
+	m_DownAnim.SetScale(scale);
+	m_LeftAnim.SetScale(scale);
+	m_RightAnim.SetScale(scale);
 }
 
 void Player::Update(float dt)

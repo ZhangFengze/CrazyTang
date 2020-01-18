@@ -45,9 +45,9 @@ void Renderer::Render(const Sprite &sp)
 		auto pos = sp.GetPosition();
 		dest.x = pos.x();
 		dest.y = pos.y();
-		dest.w = sp.GetWidth();
-		dest.h = sp.GetHeight();
-		SDL_BlitSurface(sp.m_Surface, nullptr, m_Surface, &dest);
+		dest.w = sp.GetWidth()*sp.GetScale();
+		dest.h = sp.GetHeight()*sp.GetScale();
+		SDL_BlitScaled(sp.m_Surface, nullptr, m_Surface, &dest);
 	}
 }
 

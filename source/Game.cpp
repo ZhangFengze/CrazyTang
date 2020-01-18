@@ -5,6 +5,7 @@
 Game::Game()
 {
 	m_Bomb.SetFrameInterval(1.f / 5.f);
+	m_Bomb.SetScale(0.2f);
 }
 
 void Game::Update(float dt)

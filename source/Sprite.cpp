@@ -41,6 +41,16 @@ Eigen::Vector2i Sprite::GetPosition() const
 	return m_Position;
 }
 
+void Sprite::SetScale(float f)
+{
+	m_Scale = f;
+}
+
+float Sprite::GetScale() const
+{
+	return m_Scale;
+}
+
 int Sprite::GetWidth() const
 {
 	return m_Width;
@@ -59,6 +69,7 @@ Sprite::Sprite(Sprite &&other)
 	m_Position = other.m_Position;
 	m_Width = other.m_Width;
 	m_Height = other.m_Height;
+	m_Scale = other.m_Scale;
 }
 
 Sprite & Sprite::operator=(Sprite &&other)
@@ -71,6 +82,7 @@ Sprite & Sprite::operator=(Sprite &&other)
 	m_Position = other.m_Position;
 	m_Width = other.m_Width;
 	m_Height = other.m_Height;
+	m_Scale = other.m_Scale;
 
 	return *this;
 }
