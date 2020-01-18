@@ -1,10 +1,12 @@
 #include "Renderer.h"
 #include "Game.h"
+#include "Timer.h"
 int main(int argc, char* argv[])
 {
 	{
 		auto rs = Renderer::Create("CrazyTang", 800, 600).value();
 		Game game;
+		Timer timer;
 
 		SDL_Event e;
 		bool quit = false;
@@ -15,7 +17,11 @@ int main(int argc, char* argv[])
 				if (e.type == SDL_QUIT)
 					quit = true;
 			}
-			game.Update();
+
+			float dt = timer.Elapsed();
+			timer.Reset();
+
+			game.Update(dt);
 
 			rs.Clear();
 			game.Render(rs);

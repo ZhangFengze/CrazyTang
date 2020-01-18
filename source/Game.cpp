@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Renderer.h"
 
-void Game::Update()
+void Game::Update(float dt)
 {
 }
 

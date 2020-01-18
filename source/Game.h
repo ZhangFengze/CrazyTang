@@ -5,7 +5,7 @@ class Renderer;
 class Game
 {
 public:
-	void Update();
+	void Update(float dt);
 	void Render(Renderer&);
 
 private:
