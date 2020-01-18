@@ -34,28 +34,28 @@ void Player::Render(Renderer &r)
 
 void Player::UpdateMove()
 {
-	Eigen::Vector2i move{ 0,0 };
+	Vector2 move{ 0,0 };
 	if (Input::IsKeyDown(Input::Key::Up))
 	{
-		move = Eigen::Vector2i{0, -1};
+		move = Vector2{0, -1};
 		m_NowAnim = &m_UpAnim;
 		m_NowAnim->SetPause(false);
 	}
 	else if (Input::IsKeyDown(Input::Key::Down))
 	{
-		move = Eigen::Vector2i{0, 1};
+		move = Vector2{0, 1};
 		m_NowAnim = &m_DownAnim;
 		m_NowAnim->SetPause(false);
 	}
 	else if (Input::IsKeyDown(Input::Key::Left))
 	{
-		move = Eigen::Vector2i{-1, 0};
+		move = Vector2{-1, 0};
 		m_NowAnim = &m_LeftAnim;
 		m_NowAnim->SetPause(false);
 	}
 	else if (Input::IsKeyDown(Input::Key::Right))
 	{
-		move = Eigen::Vector2i{1, 0};
+		move = Vector2{1, 0};
 		m_NowAnim = &m_RightAnim;
 		m_NowAnim->SetPause(false);
 	}

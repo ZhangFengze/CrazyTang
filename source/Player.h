@@ -1,6 +1,6 @@
 #pragma once
 #include "AnimatedSprite.h"
-#include <Eigen>
+#include "Math.h"
 
 class Renderer;
 class Player
@@ -25,7 +25,7 @@ private:
 		{ "actor/13.png","actor/14.png","actor/15.png","actor/16.png" });
 	AnimatedSprite* m_NowAnim = &m_DownAnim;
 
-	Eigen::Vector2i m_Position{ 0,0 };
+	Vector2 m_Position{ 0,0 };
 
 	bool m_LastTimeBombKeyDown = false;
 	std::vector<AnimatedSprite> m_Bombs;

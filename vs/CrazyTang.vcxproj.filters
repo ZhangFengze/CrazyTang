@@ -58,5 +58,8 @@
     <ClInclude Include="..\source\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

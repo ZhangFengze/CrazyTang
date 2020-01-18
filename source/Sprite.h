@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <optional>
-#include <eigen>
 #include <SDL.h>
+#include "Math.h"
 
 class Renderer;
 class Sprite
@@ -13,8 +13,8 @@ public:
 
 public:
 	void SetPosition(int x, int y);
-	void SetPosition(const Eigen::Vector2i&);
-	Eigen::Vector2i GetPosition() const;
+	void SetPosition(const Vector2&);
+	Vector2 GetPosition() const;
 
 	void SetScale(float);
 	float GetScale() const;
@@ -37,7 +37,7 @@ private:
 private:
 	SDL_Surface* m_Surface = nullptr;
 	SDL_Surface* m_ScaledSurface = nullptr;
-	Eigen::Vector2i m_Position{ 0,0 };
+	Vector2 m_Position{ 0,0 };
 	int m_Width = 0;
 	int m_Height = 0;
 	float m_Scale = 1.f;

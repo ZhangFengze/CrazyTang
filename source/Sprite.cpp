@@ -31,12 +31,12 @@ void Sprite::SetPosition(int x, int y)
 	m_Position = { x,y };
 }
 
-void Sprite::SetPosition(const Eigen::Vector2i &pos)
+void Sprite::SetPosition(const Vector2 &pos)
 {
 	m_Position = pos;
 }
 
-Eigen::Vector2i Sprite::GetPosition() const
+Vector2 Sprite::GetPosition() const
 {
 	return m_Position;
 }

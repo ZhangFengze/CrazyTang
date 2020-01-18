@@ -2,7 +2,7 @@
 #include <string>
 #include <initializer_list>
 #include <vector>
-#include <Eigen>
+#include "Math.h"
 #include "Sprite.h"
 
 class Renderer;
@@ -17,8 +17,8 @@ public:
 	void SetFrameInterval(float);
 
 	void SetPosition(int x, int y);
-	void SetPosition(const Eigen::Vector2i&);
-	Eigen::Vector2i GetPosition()const;
+	void SetPosition(const Vector2&);
+	Vector2 GetPosition()const;
 
 	void SetScale(float);
 	float GetScale() const;
@@ -34,7 +34,7 @@ private:
 
 private:
 	bool m_Pause = false;
-	Eigen::Vector2i m_Position{ 0,0 };
+	Vector2 m_Position{ 0,0 };
 	float m_Scale = 1.f;
 	float m_AccumulatedTime = 0.f;
 	float m_FrameInterval = 1.f / 30.f;

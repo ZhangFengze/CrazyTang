@@ -89,6 +89,7 @@
     <ClInclude Include="..\source\AnimatedSprite.h" />
     <ClInclude Include="..\source\Game.h" />
     <ClInclude Include="..\source\Input.h" />
+    <ClInclude Include="..\source\Math.h" />
     <ClInclude Include="..\source\Player.h" />
     <ClInclude Include="..\source\Renderer.h" />
     <ClInclude Include="..\source\Sprite.h" />

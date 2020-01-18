@@ -56,14 +56,14 @@ void AnimatedSprite::SetPosition(int x, int y)
 	SetPosition({ x,y });
 }
 
-void AnimatedSprite::SetPosition(const Eigen::Vector2i &pos)
+void AnimatedSprite::SetPosition(const Vector2 &pos)
 {
 	for (auto& sprite : m_Sprites)
 		sprite.SetPosition(pos);
 	m_Position = pos;
 }
 
-Eigen::Vector2i AnimatedSprite::GetPosition() const
+Vector2 AnimatedSprite::GetPosition() const
 {
 	return m_Position;
 }
