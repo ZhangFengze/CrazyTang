@@ -25,7 +25,8 @@ public:
 	Sprite& operator=(Sprite&&) = default;
 
 private:
-	Texture m_Texture;
+	Texture m_OriginTexture;
+	Texture m_ScaledTexture;
 
 	Vector2 m_Position{ 0,0 };
 	float m_Scale = 1.f;

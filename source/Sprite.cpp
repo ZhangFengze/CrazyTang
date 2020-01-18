@@ -5,7 +5,7 @@
 Sprite Sprite::Create(const std::string & file)
 {
 	Sprite s;
-	s.m_Texture = Texture::CreateSafe(file);
+	s.m_OriginTexture = Texture::CreateSafe(file);
 	return s;
 }
 
@@ -22,6 +22,7 @@ Vector2 Sprite::GetPosition() const
 void Sprite::SetScale(float f)
 {
 	m_Scale = f;
+	m_ScaledTexture = m_OriginTexture.GetScaled(m_Scale);
 }
 
 float Sprite::GetScale() const
@@ -32,5 +33,8 @@ float Sprite::GetScale() const
 void Sprite::Render(Renderer & renderer, Camera & camera)
 {
 	auto pos = m_Position - camera.GetRect().center;
-	renderer.Render(pos.x(), pos.y(), m_Texture);
+	if(m_ScaledTexture.Valid())
+		renderer.Render(pos.x(), pos.y(), m_ScaledTexture);
+	else if(m_OriginTexture.Valid())
+		renderer.Render(pos.x(), pos.y(), m_OriginTexture);
 }

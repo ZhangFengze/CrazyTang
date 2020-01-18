@@ -10,6 +10,12 @@ public:
 	static Texture CreateSafe(const std::string& file);
 
 public:
+	int GetWidth() const;
+	int GetHeight() const;
+	Texture GetScaled(float) const;
+	bool Valid() const;
+
+public:
 	Texture() = default;
 	~Texture();
 	Texture(Texture&&);

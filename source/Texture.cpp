@@ -22,6 +22,44 @@ Texture Texture::CreateSafe(const std::string & file)
 	return Create(file).value_or(Texture{});
 }
 
+int Texture::GetWidth() const
+{
+	return m_Surface ? m_Surface->w : 0;
+}
+
+int Texture::GetHeight() const
+{
+	return m_Surface ? m_Surface->h : 0;
+}
+
+bool Texture::Valid() const
+{
+	return m_Surface != nullptr;
+}
+
+Texture Texture::GetScaled(float scale) const
+{
+	if (!m_Surface)
+		return Texture{};
+
+	auto scaledSurface = SDL_CreateRGBSurfaceWithFormat(0, m_Surface->w*scale, m_Surface->h*scale,
+		32, m_Surface->format->format);
+	if (!scaledSurface)
+		return Texture{};
+
+	SDL_FillRect(scaledSurface, nullptr, SDL_MapRGBA(scaledSurface->format, 0, 0, 0, 0));
+
+	SDL_Rect rect;
+	rect.x = rect.y = 0;
+	rect.w = scaledSurface->w;
+	rect.h = scaledSurface->h;
+	SDL_BlitScaled(m_Surface, nullptr, scaledSurface, &rect);
+
+	Texture t;
+	t.m_Surface = scaledSurface;
+	return t;
+}
+
 Texture::~Texture()
 {
 	if (m_Surface)
