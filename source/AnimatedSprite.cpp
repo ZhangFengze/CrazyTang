@@ -21,7 +21,27 @@ void AnimatedSprite::Render(Renderer& r)
 	if (m_Sprites.empty())
 		return;
 	r.Render(m_Sprites[m_Index]);
-	m_Index = (m_Index + 1) % m_Sprites.size();
+}
+
+void AnimatedSprite::Update(float dt)
+{
+	if (m_Sprites.empty())
+		return;
+	m_AccumulatedTime += dt;
+
+	if (m_AccumulatedTime > m_FrameInterval)
+	{
+		m_Index += m_AccumulatedTime / m_FrameInterval;
+		m_Index %= m_Sprites.size();
+
+		m_AccumulatedTime = std::fmod(m_AccumulatedTime, m_FrameInterval);
+	}
+}
+
+void AnimatedSprite::SetFrameInterval(float f)
+{
+	assert(f > FLT_EPSILON);
+	m_FrameInterval = f;
 }
 
 AnimatedSprite & AnimatedSprite::operator=(AnimatedSprite && other)
