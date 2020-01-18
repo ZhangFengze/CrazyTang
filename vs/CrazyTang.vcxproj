@@ -58,7 +58,8 @@
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)../3rd/SDL/lib/x64/SDL2.dll" "$(TargetDir)SDL2.dll"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -70,7 +71,8 @@
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)../3rd/SDL/lib/x64/SDL2.dll" "$(TargetDir)SDL2.dll"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
