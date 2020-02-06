@@ -18,6 +18,9 @@ Game::Game()
 void Game::Update(float dt)
 {
 	m_Player.Update(dt);
+	auto rect = m_Camera.GetRect();
+	rect.center = m_Player.GetPosition();
+	m_Camera.SetRect(rect);
 }
 
 void Game::Render(Renderer &render)

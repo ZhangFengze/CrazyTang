@@ -15,6 +15,8 @@ public:
 	void UpdateMove();
 	void UpdateBomb();
 
+	Vector2 GetPosition()const;
+
 private:
 	AnimatedSprite m_DownAnim = AnimatedSprite::Create(
 		{ "actor/1.png","actor/2.png","actor/3.png","actor/4.png" });

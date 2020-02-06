@@ -84,3 +84,8 @@ void Player::UpdateBomb()
 		}
 	}
 }
+
+Vector2 Player::GetPosition() const
+{
+	return m_Position;
+}
