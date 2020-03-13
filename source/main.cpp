@@ -1,32 +1,27 @@
-#include "Renderer.h"
-#include "Game.h"
+#include <SFML/Graphics.hpp>
 #include "Timer.h"
+
 int main(int argc, char* argv[])
 {
+	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "CrazyTang",
+		sf::Style::Titlebar | sf::Style::Close);
+
+	Timer timer;
+
+	while (window.isOpen())
 	{
-		auto rs = Renderer::Create("CrazyTang", 800, 600).value();
-		Game game;
-		Timer timer;
-
-		SDL_Event e;
-		bool quit = false;
-		while (!quit)
+		sf::Event event;
+		while (window.pollEvent(event))
 		{
-			while (SDL_PollEvent(&e) != 0)
-			{
-				if (e.type == SDL_QUIT)
-					quit = true;
-			}
-
-			float dt = timer.Elapsed();
-			timer.Reset();
-
-			game.Update(dt);
-
-			rs.Clear();
-			game.Render(rs);
-			rs.Commit();
+			if (event.type == sf::Event::Closed)
+				window.close();
 		}
+
+		float dt = timer.Elapsed();
+		timer.Reset();
+
+		window.clear(sf::Color::Black);
+		window.display();
 	}
 
 	return 0;

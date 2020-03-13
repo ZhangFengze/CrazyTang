@@ -40,22 +40,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)../3rd/SDL/include;$(SolutionDir)../3rd/SDL2_image/include;$(SolutionDir)../3rd/eigen/Eigen;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)../3rd/SDL/lib/x64;$(SolutionDir)../3rd/SDL2_image/lib/x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)../3rd/SDL/include;$(SolutionDir)../3rd/SDL2_image/include;$(SolutionDir)../3rd/eigen/Eigen;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)../3rd/SDL/lib/x64;$(SolutionDir)../3rd/SDL2_image/lib/x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SDL_MAIN_HANDLED;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -64,7 +64,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -76,28 +76,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\AnimatedSprite.cpp" />
-    <ClCompile Include="..\source\Camera.cpp" />
-    <ClCompile Include="..\source\Game.cpp" />
-    <ClCompile Include="..\source\Input.cpp" />
     <ClCompile Include="..\source\main.cpp" />
-    <ClCompile Include="..\source\Math.cpp" />
-    <ClCompile Include="..\source\Player.cpp" />
-    <ClCompile Include="..\source\Renderer.cpp" />
-    <ClCompile Include="..\source\Sprite.cpp" />
-    <ClCompile Include="..\source\Texture.cpp" />
     <ClCompile Include="..\source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\AnimatedSprite.h" />
-    <ClInclude Include="..\source\Camera.h" />
-    <ClInclude Include="..\source\Game.h" />
-    <ClInclude Include="..\source\Input.h" />
-    <ClInclude Include="..\source\Math.h" />
-    <ClInclude Include="..\source\Player.h" />
-    <ClInclude Include="..\source\Renderer.h" />
-    <ClInclude Include="..\source\Sprite.h" />
-    <ClInclude Include="..\source\Texture.h" />
     <ClInclude Include="..\source\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
