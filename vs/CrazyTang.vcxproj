@@ -40,12 +40,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx-1.1.2/entityx;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx-1.1.2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx-1.1.2/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx-1.1.2/entityx;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx-1.1.2;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx-1.1.2/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
