@@ -1,13 +1,12 @@
+#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include "Timer.h"
 
 int main(int argc, char* argv[])
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "CrazyTang",
 		sf::Style::Titlebar | sf::Style::Close);
 
-	Timer timer;
-
+	sf::Clock clock;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -17,8 +16,7 @@ int main(int argc, char* argv[])
 				window.close();
 		}
 
-		float dt = timer.Elapsed();
-		timer.Reset();
+		auto dt = clock.restart();
 
 		window.clear(sf::Color::Black);
 		window.display();
