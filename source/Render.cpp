@@ -1,17 +1,28 @@
 #include "Render.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
+#include "Transformable.h"
+
+namespace
+{
+	using namespace ct;
+	void draw(sf::RenderTarget& target, Sprite& sprite, Transformable& trans)
+	{
+		sprite.sprite.setPosition(ToSfVector2f(trans.position));
+		target.draw(sprite.sprite);
+	}
+}
 
 namespace ct
 {
 	void RenderSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
 	{
-		es.each<Sprite>([this](entityx::Entity entity, Sprite& sprite)
+		es.each<Sprite, Transformable>([this](entityx::Entity entity, Sprite& sprite, Transformable& trans)
 		{
-			target_.draw(sprite.sprite);
+			draw(target_, sprite, trans);
 		});
 
-		es.each<AnimatedSprite>([this, dt](entityx::Entity entity, AnimatedSprite& anim)
+		es.each<AnimatedSprite, Transformable>([this, dt](entityx::Entity entity, AnimatedSprite& anim, Transformable& trans)
 		{
 			if (anim.sprites.empty())
 				return;
@@ -19,7 +30,8 @@ namespace ct
 
 			size_t index = std::floor(anim.accumulated / anim.interval);
 			index = index % anim.sprites.size();
-			target_.draw(anim.sprites[index].sprite);
+
+			draw(target_, anim.sprites[index], trans);
 		});
 	}
 }

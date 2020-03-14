@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Background.h"
 #include "Camera.h"
+#include "Transformable.h"
 #include "Move.h"
 
 namespace ct
@@ -12,16 +13,15 @@ namespace ct
 	Game::Game(sf::RenderTarget& target)
 	{
 		m_EntityX.systems.add<BackgroundSystem>();
-		m_EntityX.systems.add<RenderSystem>(target);
 		m_EntityX.systems.add<CameraSystem>(target);
+		m_EntityX.systems.add<RenderSystem>(target);
 		m_EntityX.systems.add<MoveSystem>();
 		m_EntityX.systems.configure();
 
-		{
-			auto e = m_EntityX.entities.create();
-			e.assign<Background>(Background{ Vector2f{ 0,0 }, Vector2f{ 0.01f,0 } });
-			e.assign<Sprite>("../../../asset/environment/back.png");
-		}
+		Vector2f cameraSize{ 640,400 };
+
+		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", 2.f, 0.05f, -200.f, cameraSize.x());
+		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", 1.f, 0.1f, 0.f, cameraSize.x());
 
 		{
 			auto e = m_EntityX.entities.create();
@@ -35,12 +35,11 @@ namespace ct
 					}
 				)
 			);
-		}
+			e.assign<Transformable>()->position = { 0,0 };
+			e.assign<Move>()->speed = 600.f;
 
-		auto camera = m_EntityX.entities.create();
-		auto data = camera.assign<Camera>();
-		data->position = { 160,100 };
-		data->size = { 320,200 };
+			e.assign<Camera>()->size = cameraSize;
+		}
 	}
 
 	void Game::Update(float dt)

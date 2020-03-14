@@ -1,20 +1,18 @@
 #include "Camera.h"
+#include "Transformable.h"
 #include <optional>
 
 namespace ct
 {
 	void CameraSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
 	{
-		std::optional<Camera> camera;
-		es.each<Camera>([&camera](entityx::Entity entity, Camera& c)
+		es.each<Camera, Transformable>(
+			[this](entityx::Entity entity, Camera& camera, Transformable& trans)
 		{
-			camera = c;
+			sf::View view = target_.getView();
+			view.setCenter(ToSfVector2f(trans.position));
+			view.setSize(ToSfVector2f(camera.size));
+			target_.setView(view);
 		});
-		if (!camera)
-			return;
-		sf::View view = target_.getView();
-		view.setCenter(ToSfVector2f(camera->position));
-		view.setSize(ToSfVector2f(camera->size));
-		target_.setView(view);
 	}
 }

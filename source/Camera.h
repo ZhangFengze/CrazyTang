@@ -7,7 +7,6 @@ namespace ct
 {
 	struct Camera
 	{
-		Vector2f position;
 		Vector2f size;
 	};
 

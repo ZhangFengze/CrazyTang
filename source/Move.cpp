@@ -1,6 +1,6 @@
 #include "Move.h"
 #include "Math.h"
-#include "Camera.h"
+#include "Transformable.h"
 #include <SFML/Window.hpp>
 
 namespace ct
@@ -24,11 +24,11 @@ namespace ct
 		{
 			delta += Vector2f{1,0};
 		}
-		delta = delta * 10.f * dt;
 
-		es.each<Camera>([delta](entityx::Entity entity, Camera& camera)
+		es.each<Move, Transformable>(
+			[delta, dt](entityx::Entity entity, Move& move, Transformable& transform)
 		{
-			camera.position += delta;
+			transform.position += delta * move.speed * dt;
 		});
 	}
 }

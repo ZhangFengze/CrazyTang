@@ -1,14 +1,20 @@
 #pragma once
 #include "Math.h"
 #include <entityx/entityx.h>
+#include <string>
 
 namespace ct
 {
 	struct Background
 	{
-		Vector2f originPosition;
-		Vector2f moveSpeed;
+		float moveSpeed;
+		float width;
+		float y;
+		std::vector<entityx::Entity> sprites;
 	};
+
+	entityx::Entity CreateBackground(entityx::EntityManager&,
+		const std::string& path, float scale, float moveSpeed, float y, float cameraWidth);
 
 	struct BackgroundSystem : public entityx::System<BackgroundSystem>
 	{
