@@ -40,18 +40,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx/entityx;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx/entityx;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;entityx-d.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -64,7 +64,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;entityx.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
