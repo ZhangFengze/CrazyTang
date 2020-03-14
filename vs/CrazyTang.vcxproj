@@ -76,7 +76,23 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\Background.cpp" />
+    <ClCompile Include="..\source\Camera.cpp" />
+    <ClCompile Include="..\source\Game.cpp" />
     <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\Math.cpp" />
+    <ClCompile Include="..\source\Move.cpp" />
+    <ClCompile Include="..\source\Render.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\AnimatedSprite.h" />
+    <ClInclude Include="..\source\Background.h" />
+    <ClInclude Include="..\source\Camera.h" />
+    <ClInclude Include="..\source\Game.h" />
+    <ClInclude Include="..\source\Math.h" />
+    <ClInclude Include="..\source\Move.h" />
+    <ClInclude Include="..\source\Render.h" />
+    <ClInclude Include="..\source\Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
