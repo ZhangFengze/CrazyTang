@@ -1,0 +1,81 @@
+﻿  Building Custom Rule F:/CrazyTang/3rd/entityx/CMakeLists.txt
+  CMake does not need to re-run because F:/CrazyTang/3rd/entityx/build/CMakeFiles/generate.stamp is up-to-date.
+  Entity_test.cc
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(451,25): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(446,1): warning C4267: “参数”: 从“size_t”转换到“entityx::uint32_t”，可能丢失数据
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(446): message : 在编译 类 模板 成员函数“const entityx::EntityManager::BaseView<false>::Iterator entityx::EntityManager::BaseView<false>::end(void) const”时
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(36): message : 查看对正在编译的函数 模板 实例化“const entityx::EntityManager::BaseView<false>::Iterator entityx::EntityManager::BaseView<false>::end(void) const”的引用
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(460): message : 查看对正在编译的 类 模板 实例化“entityx::EntityManager::BaseView<false>”的引用
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(183): message : 查看对正在编译的 类 模板 实例化“entityx::EntityManager::TypedView<false,Position>”的引用
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(648,54): warning C4244: “参数”: 从“_Ty”转换到“float”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(949): message : 查看对正在编译的函数 模板 实例化“entityx::ComponentHandle<Position,entityx::EntityManager> entityx::EntityManager::assign<C,_Ty,_Ty>(entityx::Entity::Id,_Ty &&,_Ty &&)”的引用
+          with
+          [
+              C=Position,
+              _Ty=int
+          ]
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(145): message : 查看对正在编译的函数 模板 实例化“entityx::ComponentHandle<Position,entityx::EntityManager> entityx::Entity::assign<Position,int,int>(int &&,int &&)”的引用
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(648,54): warning C4244: “参数”: 从“_Ty”转换到“float”，可能丢失数据
+          with
+          [
+              _Ty=double
+          ]
+F:\CrazyTang\3rd\entityx\entityx/Entity.h(949): message : 查看对正在编译的函数 模板 实例化“entityx::ComponentHandle<Position,entityx::EntityManager> entityx::EntityManager::assign<C,_Ty,_Ty>(entityx::Entity::Id,_Ty &&,_Ty &&)”的引用
+          with
+          [
+              C=Position,
+              _Ty=double
+          ]
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(260): message : 查看对正在编译的函数 模板 实例化“entityx::ComponentHandle<Position,entityx::EntityManager> entityx::Entity::assign<Position,double,double>(double &&,double &&)”的引用
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1036,1): warning C4805: “==”: 在操作中将类型“T”与类型“T”混合不安全
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1035): message : 在编译 类 模板 成员函数“bool Catch::Internal::Evaluator<T1,T2,Catch::Internal::IsEqualTo>::evaluate(const T1 &,const T2 &)”时
+          with
+          [
+              T1=int,
+              T2=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1081): message : 查看对正在编译的函数 模板 实例化“bool Catch::Internal::Evaluator<T1,T2,Catch::Internal::IsEqualTo>::evaluate(const T1 &,const T2 &)”的引用
+          with
+          [
+              T1=int,
+              T2=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1081): message : 查看对正在编译的 类 模板 实例化“Catch::Internal::Evaluator<T1,T2,Catch::Internal::IsEqualTo>”的引用
+          with
+          [
+              T1=int,
+              T2=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1277): message : 查看对正在编译的函数 模板 实例化“bool Catch::Internal::compare<Catch::Internal::IsEqualTo,int,RhsT>(const T1 &,const T2 &)”的引用
+          with
+          [
+              RhsT=bool,
+              T1=int,
+              T2=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1249): message : 查看对正在编译的函数 模板 实例化“Catch::ExpressionResultBuilder &Catch::ExpressionLhs<const int &>::captureExpression<Catch::Internal::IsEqualTo,bool>(const RhsT &)”的引用
+          with
+          [
+              RhsT=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1249): message : 查看对正在编译的函数 模板 实例化“Catch::ExpressionResultBuilder &Catch::ExpressionLhs<const int &>::captureExpression<Catch::Internal::IsEqualTo,bool>(const RhsT &)”的引用
+          with
+          [
+              RhsT=bool
+          ]
+F:\CrazyTang\3rd\entityx\entityx/3rdparty/catch.hpp(1248): message : 在编译 类 模板 成员函数“Catch::ExpressionResultBuilder &Catch::ExpressionLhs<const int &>::operator ==(bool)”时
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(513): message : 查看对正在编译的函数 模板 实例化“Catch::ExpressionResultBuilder &Catch::ExpressionLhs<const int &>::operator ==(bool)”的引用
+F:\CrazyTang\3rd\entityx\entityx\Entity_test.cc(183): message : 查看对正在编译的 类 模板 实例化“Catch::ExpressionLhs<const int &>”的引用
+  entity_test.vcxproj -> F:\CrazyTang\3rd\entityx\build\Debug\entity_test.exe
