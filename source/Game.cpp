@@ -21,20 +21,31 @@ namespace ct
 		Vector2f cameraSize{ 640,400 };
 
 		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", 2.f, 0.05f, -200.f, cameraSize.x());
-		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", 1.f, 0.1f, 0.f, cameraSize.x());
+		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", 1.f, 0.1f, -0.f, cameraSize.x());
 
 		{
 			auto e = m_EntityX.entities.create();
-			auto anim = e.assign<AnimatedSprite>(
-				AnimatedSprite(0.2f,
-					{
-						"../../../asset/sprites/player/idle/player-idle-1.png",
-						"../../../asset/sprites/player/idle/player-idle-2.png",
-						"../../../asset/sprites/player/idle/player-idle-3.png",
-						"../../../asset/sprites/player/idle/player-idle-4.png"
-					}
-				)
+
+			auto idle = AnimatedSprite(0.2f,
+				{
+					"../../../asset/sprites/player/idle/player-idle-1.png",
+					"../../../asset/sprites/player/idle/player-idle-2.png",
+					"../../../asset/sprites/player/idle/player-idle-3.png",
+					"../../../asset/sprites/player/idle/player-idle-4.png"
+				}
 			);
+			auto run = AnimatedSprite(0.2f,
+				{
+					"../../../asset/sprites/player/run/player-run-1.png",
+					"../../../asset/sprites/player/run/player-run-2.png",
+					"../../../asset/sprites/player/run/player-run-3.png",
+					"../../../asset/sprites/player/run/player-run-4.png",
+					"../../../asset/sprites/player/run/player-run-5.png",
+					"../../../asset/sprites/player/run/player-run-6.png",
+				}
+			);
+
+			e.assign<AnimatedSprite>(run);
 			e.assign<Transformable>()->position = { 0,0 };
 			e.assign<Move>()->speed = 600.f;
 
