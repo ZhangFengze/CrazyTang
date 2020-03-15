@@ -17,7 +17,7 @@ namespace
 	{
 		auto e = entities.create();
 
-		auto idle = AnimatedSprite(0.2f,
+		auto idle = AnimatedSprite(12,
 			{
 				"../../../asset/sprites/player/idle/player-idle-1.png",
 				"../../../asset/sprites/player/idle/player-idle-2.png",
@@ -25,7 +25,7 @@ namespace
 				"../../../asset/sprites/player/idle/player-idle-4.png"
 			}
 		);
-		auto run = AnimatedSprite(0.2f,
+		auto run = AnimatedSprite(12,
 			{
 				"../../../asset/sprites/player/run/player-run-1.png",
 				"../../../asset/sprites/player/run/player-run-2.png",
@@ -40,7 +40,7 @@ namespace
 		e.assign<Transformable>()->position = { 0,0 };
 
 		auto move = e.assign<Move>();
-		move->speed = 200.f;
+		move->speed = 2.f;
 		move->size = { 16,16 };
 
 		return e;
@@ -84,6 +84,8 @@ namespace ct
 		}
 		
 		sf::Clock clock;
+		sf::Time accumulated = sf::seconds(0);
+		sf::Time frame = sf::seconds(1.f / 60.f);
 		while (window.isOpen())
 		{
 			sf::Event event;
@@ -95,11 +97,15 @@ namespace ct
 					window.close();
 			}
 
-			auto dt = clock.restart();
 
-			window.clear();
-			m_EntityX.systems.update_all(dt.asSeconds());
-			window.display();
+			accumulated += clock.restart();
+			while (accumulated > frame)
+			{
+				window.clear();
+				m_EntityX.systems.update_all(frame.asSeconds());
+				accumulated -= frame;
+				window.display();
+			}
 		}
 	}
 }

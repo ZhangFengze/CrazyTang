@@ -56,8 +56,8 @@ namespace ct
 		es.each<Move, Transformable>(
 			[&](entityx::Entity entity, Move& move, Transformable& transform)
 		{
-			DoMove(es, delta * move.speed * dt, move, transform);
-			DoMove(es, Vector2f{ 0,300.f }*dt, move, transform);
+			DoMove(es, delta * move.speed, move, transform);
+			DoMove(es, Vector2f{ 0,3.f }, move, transform);
 		});
 	}
 }

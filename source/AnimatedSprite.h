@@ -8,14 +8,14 @@ namespace ct
 	struct AnimatedSprite
 	{
 		std::vector<Sprite> sprites;
-		float interval;
-		float accumulated = 0;
+		int period;
+		int accumulated = 0;
 		Vector2f anchor{ 0,0 };
 
 		AnimatedSprite() = default;
 
-		AnimatedSprite(float _interval, const std::initializer_list<std::string>& paths)
-			:interval(_interval)
+		AnimatedSprite(int _period, const std::initializer_list<std::string>& paths)
+			:period(std::max(1, _period))
 		{
 			for (const auto& path : paths)
 				sprites.push_back(Sprite{ path });

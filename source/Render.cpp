@@ -24,13 +24,13 @@ namespace ct
 			draw(target_, sprite, trans, sprite.anchor);
 		});
 
-		es.each<AnimatedSprite, Transformable>([this, dt](entityx::Entity entity, AnimatedSprite& anim, Transformable& trans)
+		es.each<AnimatedSprite, Transformable>([this](entityx::Entity entity, AnimatedSprite& anim, Transformable& trans)
 		{
 			if (anim.sprites.empty())
 				return;
-			anim.accumulated += dt;
+			anim.accumulated++;
 
-			size_t index = std::floor(anim.accumulated / anim.interval);
+			auto index = anim.accumulated / anim.period;
 			index = index % anim.sprites.size();
 
 			draw(target_, anim.sprites[index], trans, anim.anchor);
