@@ -8,6 +8,7 @@ namespace ct
 	struct Camera
 	{
 		Vector2f size;
+		entityx::Entity target;
 	};
 
 	struct CameraSystem : public entityx::System<CameraSystem>
