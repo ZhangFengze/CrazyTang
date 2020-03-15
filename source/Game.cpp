@@ -47,7 +47,7 @@ namespace ct
 				}
 			);
 
-			e.assign<AnimatedSprite>(run);
+			e.assign<AnimatedSprite>(run)->anchor = { 0.5f,1.f };
 			e.assign<Transformable>()->position = { 0,0 };
 			e.assign<Move>()->speed = 600.f;
 

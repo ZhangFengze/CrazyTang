@@ -1,4 +1,5 @@
 #pragma once
+#include "Math.h"
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 
@@ -8,6 +9,7 @@ namespace ct
 	{
 		sf::Texture texture;
 		sf::Sprite sprite;
+		Vector2f anchor = { 0,0 };
 
 		Sprite()
 		{
@@ -28,7 +30,8 @@ namespace ct
 
 		Sprite(const Sprite& other)
 			:texture(other.texture),
-			sprite(other.sprite)
+			sprite(other.sprite),
+			anchor(other.anchor)
 		{
 			sprite.setTexture(texture);
 		}
@@ -38,6 +41,7 @@ namespace ct
 			texture = other.texture;
 			sprite = other.sprite;
 			sprite.setTexture(texture);
+			anchor = other.anchor;
 			return *this;
 		}
 	};

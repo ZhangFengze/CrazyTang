@@ -9,15 +9,13 @@ namespace ct
 	{
 		std::vector<Sprite> sprites;
 		float interval;
-		float accumulated;
+		float accumulated = 0;
+		Vector2f anchor{ 0,0 };
 
-		AnimatedSprite()
-			:interval(0), accumulated(0)
-		{
-		}
+		AnimatedSprite() = default;
 
 		AnimatedSprite(float _interval, const std::initializer_list<std::string>& paths)
-			:interval(_interval), accumulated(0)
+			:interval(_interval)
 		{
 			for (const auto& path : paths)
 				sprites.push_back(Sprite{ path });
