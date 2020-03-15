@@ -15,7 +15,7 @@ namespace ct
 		entityx::EntityManager& entities;
 
 	private:
-		entityx::EntityX m_EntityX;
+		entityx::EntityX _;
 	};
 	inline Game* game = nullptr;
 }

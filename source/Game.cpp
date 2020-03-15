@@ -61,14 +61,24 @@ namespace
 
 		return e;
 	}
+
+	entityx::Entity CreateFollowCamera(entityx::EntityManager& entities, entityx::Entity player, Vector2f cameraSize)
+	{
+		auto e = entities.create();
+		e.assign<Transformable>();
+		auto camera = e.assign<Camera>();
+		camera->size = cameraSize;
+		camera->target = player;
+		return e;
+	}
 }
 
 namespace ct
 {
 	Game::Game()
-		:events(m_EntityX.events),
-		systems(m_EntityX.systems),
-		entities(m_EntityX.entities)
+		:events(_.events),
+		systems(_.systems),
+		entities(_.entities)
 	{
 	}
 
@@ -76,28 +86,21 @@ namespace ct
 	{
 		sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "CrazyTang", sf::Style::Default);
 
-		m_EntityX.systems.add<TextureLoader>();
-		m_EntityX.systems.add<BackgroundSystem>();
-		m_EntityX.systems.add<RenderSystem>(window);
-		m_EntityX.systems.add<MoveSystem>();
-		m_EntityX.systems.add<CameraSystem>(window);
-		m_EntityX.systems.configure();
+		systems.add<TextureLoader>();
+		systems.add<BackgroundSystem>();
+		systems.add<RenderSystem>(window);
+		systems.add<MoveSystem>();
+		systems.add<CameraSystem>(window);
+		systems.configure();
 
 		Vector2f cameraSize{ 640,400 };
 
-		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
-		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
+		CreateBackground(entities, "../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
+		CreateBackground(entities, "../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
 
-		LoadMap(m_EntityX.entities, "../../../asset/level/map.json");
-		auto player = CreatePlayer(m_EntityX.entities);
-
-		{
-			auto e = m_EntityX.entities.create();
-			e.assign<Transformable>();
-			auto camera = e.assign<Camera>();
-			camera->size = cameraSize;
-			camera->target = player;
-		}
+		LoadMap(entities, "../../../asset/level/map.json");
+		auto player = CreatePlayer(entities);
+		CreateFollowCamera(entities, player, cameraSize);
 		
 		sf::Clock clock;
 		sf::Time accumulated = sf::seconds(0);
@@ -118,7 +121,7 @@ namespace ct
 			while (accumulated > frame)
 			{
 				window.clear();
-				m_EntityX.systems.update_all(frame.asSeconds());
+				systems.update_all(frame.asSeconds());
 				accumulated -= frame;
 				window.display();
 			}
