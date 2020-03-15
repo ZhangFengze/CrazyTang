@@ -62,9 +62,9 @@ namespace ct
 
 		m_EntityX.systems.add<TextureLoader>();
 		m_EntityX.systems.add<BackgroundSystem>();
-		m_EntityX.systems.add<CameraSystem>(window);
 		m_EntityX.systems.add<RenderSystem>(window);
 		m_EntityX.systems.add<MoveSystem>();
+		m_EntityX.systems.add<CameraSystem>(window);
 		m_EntityX.systems.configure();
 
 		Vector2f cameraSize{ 640,400 };
