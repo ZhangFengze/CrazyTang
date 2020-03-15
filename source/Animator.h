@@ -9,6 +9,8 @@ namespace ct
 	{
 		std::unordered_map<std::string, AnimatedSprite> states;
 		std::string now;
+
 		Vector2f anchor = { 0,0 };
+		Vector2f scale = { 1,1 };
 	};
 }

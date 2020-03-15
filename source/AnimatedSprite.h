@@ -10,7 +10,9 @@ namespace ct
 		std::vector<Sprite> sprites;
 		int period;
 		int accumulated = 0;
-		Vector2f anchor{ 0,0 };
+
+		Vector2f anchor = { 0,0 };
+		Vector2f scale = { 1,1 };
 
 		AnimatedSprite() = default;
 

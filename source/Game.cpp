@@ -18,7 +18,7 @@ namespace
 	{
 		auto e = entities.create();
 
-		auto idle = AnimatedSprite(12,
+		auto idleRight = AnimatedSprite(12,
 			{
 				"../../../asset/sprites/player/idle/player-idle-1.png",
 				"../../../asset/sprites/player/idle/player-idle-2.png",
@@ -26,7 +26,10 @@ namespace
 				"../../../asset/sprites/player/idle/player-idle-4.png"
 			}
 		);
-		auto run = AnimatedSprite(12,
+		auto idleLeft = idleRight;
+		idleLeft.scale = { -1,1 };
+
+		auto runRight = AnimatedSprite(12,
 			{
 				"../../../asset/sprites/player/run/player-run-1.png",
 				"../../../asset/sprites/player/run/player-run-2.png",
@@ -36,13 +39,18 @@ namespace
 				"../../../asset/sprites/player/run/player-run-6.png",
 			}
 		);
+		auto runLeft = runRight;
+		runLeft.scale = { -1,1 };
+
 		auto animator = e.assign<Animator>();
 		animator->states =
 		{
-			{"idle",idle},
-			{"run",run}
+			{"idle-right",idleRight},
+			{"idle-left",idleLeft},
+			{"run-right",runRight},
+			{"run-left",runLeft},
 		};
-		animator->now = "idle";
+		animator->now = "idle-right";
 		animator->anchor = { 0.5f,1.f };
 
 		e.assign<Transformable>()->position = { 0,0 };
@@ -77,8 +85,8 @@ namespace ct
 
 		Vector2f cameraSize{ 640,400 };
 
-		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", 2.f, 0.05f, -200.f, cameraSize.x());
-		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", 1.f, 0.1f, -0.f, cameraSize.x());
+		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
+		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
 
 		LoadMap(m_EntityX.entities, "../../../asset/level/map.json");
 		auto player = CreatePlayer(m_EntityX.entities);

@@ -57,12 +57,15 @@ namespace ct
 		es.each<Move, Transformable>(
 			[&](entityx::Entity entity, Move& move, Transformable& transform)
 		{
+			if (delta.x() != 0)
+				move.left = delta.x() < 0;
+
 			if (entity.has_component<Animator>())
 			{
 				if (delta.isZero())
-					entity.component<Animator>()->now = "idle";
+					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
 				else
-					entity.component<Animator>()->now = "run";
+					entity.component<Animator>()->now = move.left ? "run-left" : "run-right";
 			}
 
 			DoMove(es, delta * move.speed, move, transform);

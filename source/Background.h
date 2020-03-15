@@ -14,7 +14,7 @@ namespace ct
 	};
 
 	entityx::Entity CreateBackground(entityx::EntityManager&,
-		const std::string& path, float scale, float moveSpeed, float y, float cameraWidth);
+		const std::string& path, Vector2f scale, float moveSpeed, float y, float cameraWidth);
 
 	struct BackgroundSystem : public entityx::System<BackgroundSystem>
 	{

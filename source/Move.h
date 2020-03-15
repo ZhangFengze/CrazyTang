@@ -8,6 +8,7 @@ namespace ct
 	{
 		float speed;
 		Vector2f size;
+		bool left = false;
 	};
 
 	struct MoveSystem : public entityx::System<MoveSystem>

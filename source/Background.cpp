@@ -34,7 +34,7 @@ namespace ct
 	}
 
 	entityx::Entity CreateBackground(entityx::EntityManager& entities,
-		const std::string& path, float scale, float moveSpeed, float y, float cameraWidth)
+		const std::string& path, Vector2f scale, float moveSpeed, float y, float cameraWidth)
 	{
 		auto entity = entities.create();
 		auto bg = entity.assign<Background>();
@@ -44,8 +44,8 @@ namespace ct
 		auto spriteEntity = entities.create();
 		spriteEntity.assign<Transformable>();
 		auto sprite = spriteEntity.assign<Sprite>(path);
-		sprite->sprite.setScale(scale, scale);
-		bg->width = sprite->sprite.getGlobalBounds().width;
+		sprite->scale = scale;
+		bg->width = sprite->sprite.getGlobalBounds().width * scale.x();
 
 		bg->sprites.push_back(spriteEntity);
 		while (bg->sprites.size() < (cameraWidth / bg->width) + 1)
