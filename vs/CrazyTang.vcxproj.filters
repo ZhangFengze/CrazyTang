@@ -82,6 +82,9 @@
     <ClInclude Include="..\source\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\3rd\eigen\debug\msvc\eigen.natvis" />

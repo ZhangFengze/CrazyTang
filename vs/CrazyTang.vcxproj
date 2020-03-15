@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AnimatedSprite.h" />
+    <ClInclude Include="..\source\Animator.h" />
     <ClInclude Include="..\source\Background.h" />
     <ClInclude Include="..\source\Camera.h" />
     <ClInclude Include="..\source\Collider.h" />

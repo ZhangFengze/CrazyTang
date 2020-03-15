@@ -1,6 +1,7 @@
 #include "Move.h"
 #include "Math.h"
 #include "Transformable.h"
+#include "Animator.h"
 #include <SFML/Window.hpp>
 
 namespace
@@ -56,6 +57,14 @@ namespace ct
 		es.each<Move, Transformable>(
 			[&](entityx::Entity entity, Move& move, Transformable& transform)
 		{
+			if (entity.has_component<Animator>())
+			{
+				if (delta.isZero())
+					entity.component<Animator>()->now = "idle";
+				else
+					entity.component<Animator>()->now = "run";
+			}
+
 			DoMove(es, delta * move.speed, move, transform);
 			DoMove(es, Vector2f{ 0,3.f }, move, transform);
 		});

@@ -2,6 +2,7 @@
 #include "Math.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
+#include "Animator.h"
 #include "Render.h"
 #include "Background.h"
 #include "Camera.h"
@@ -35,8 +36,15 @@ namespace
 				"../../../asset/sprites/player/run/player-run-6.png",
 			}
 		);
+		auto animator = e.assign<Animator>();
+		animator->states =
+		{
+			{"idle",idle},
+			{"run",run}
+		};
+		animator->now = "idle";
+		animator->anchor = { 0.5f,1.f };
 
-		e.assign<AnimatedSprite>(run)->anchor = { 0.5f,1.f };
 		e.assign<Transformable>()->position = { 0,0 };
 
 		auto move = e.assign<Move>();

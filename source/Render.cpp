@@ -1,39 +1,64 @@
 #include "Render.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
+#include "Animator.h"
 #include "Transformable.h"
 
 namespace
 {
 	using namespace ct;
-	void draw(sf::RenderTarget& target, Sprite& sprite, Transformable& trans, Vector2f anchor)
+
+	void UpdateSprite(sf::RenderTarget& target, Sprite& sprite, Transformable& trans)
 	{
 		auto bounds = sprite.sprite.getGlobalBounds();
-		sprite.sprite.setOrigin(bounds.width * anchor.x(), bounds.height * anchor.y());
+		sprite.sprite.setOrigin(bounds.width * sprite.anchor.x(), bounds.height * sprite.anchor.y());
 		sprite.sprite.setPosition(ToSfVector2f(trans.position));
 		target.draw(sprite.sprite);
+	}
+
+	void UpdateAnimatedSprite(sf::RenderTarget& target, AnimatedSprite& anim, Transformable& trans)
+	{
+		if (anim.sprites.empty())
+			return;
+		anim.accumulated++;
+
+		auto index = anim.accumulated / anim.period;
+		index = index % anim.sprites.size();
+
+		auto& sprite = anim.sprites[index];
+		sprite.anchor = anim.anchor;
+		UpdateSprite(target, sprite, trans);
+	}
+
+	void UpdateAnimator(sf::RenderTarget& target, Animator& anim, Transformable& trans)
+	{
+		auto iter = anim.states.find(anim.now);
+		if (iter == anim.states.end())
+			return;
+		auto& animatedSprite = iter->second;
+		animatedSprite.anchor = anim.anchor;
+		UpdateAnimatedSprite(target, animatedSprite, trans);
 	}
 }
 
 namespace ct
 {
-	void RenderSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
+	void RenderSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
 	{
-		es.each<Sprite, Transformable>([this](entityx::Entity entity, Sprite& sprite, Transformable& trans)
+		entities.each<Sprite, Transformable>(
+			[&](entityx::Entity entity, Sprite& sprite, Transformable& trans)
 		{
-			draw(target_, sprite, trans, sprite.anchor);
+			UpdateSprite(target_, sprite, trans);
 		});
 
-		es.each<AnimatedSprite, Transformable>([this](entityx::Entity entity, AnimatedSprite& anim, Transformable& trans)
+		entities.each<AnimatedSprite, Transformable>([&](entityx::Entity entity, AnimatedSprite& anim, Transformable& trans)
 		{
-			if (anim.sprites.empty())
-				return;
-			anim.accumulated++;
+			UpdateAnimatedSprite(target_, anim, trans);
+		});
 
-			auto index = anim.accumulated / anim.period;
-			index = index % anim.sprites.size();
-
-			draw(target_, anim.sprites[index], trans, anim.anchor);
+		entities.each<Animator, Transformable>([&](entityx::Entity entity, Animator& anim, Transformable& trans)
+		{
+			UpdateAnimator(target_, anim, trans);
 		});
 	}
 }
