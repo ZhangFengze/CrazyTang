@@ -49,7 +49,10 @@ namespace ct
 
 			e.assign<AnimatedSprite>(run)->anchor = { 0.5f,1.f };
 			e.assign<Transformable>()->position = { 0,0 };
-			e.assign<Move>()->speed = 600.f;
+
+			auto move = e.assign<Move>();
+			move->speed = 200.f;
+			move->size = { 16,16 };
 
 			e.assign<Camera>()->size = cameraSize;
 		}

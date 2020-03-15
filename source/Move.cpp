@@ -3,6 +3,34 @@
 #include "Transformable.h"
 #include <SFML/Window.hpp>
 
+namespace
+{
+	using namespace ct;
+		
+	bool DoMove(entityx::EntityManager& entities, Vector2f delta, Move& move, Transformable& transform)
+	{
+		auto target = transform.position + delta;
+
+		Box self;
+		self.size = move.size;
+		self.topLeft = target - Vector2f{ move.size.x() / 2.f, move.size.y() };
+
+		bool intersect = false;
+		entities.each<Box>([&](entityx::Entity entity, Box& box)
+		{
+			if (!intersect && Intersect(self, box))
+				intersect = true;
+		});
+
+		if (!intersect)
+		{
+			transform.position = target;
+			return true;
+		}
+		return false;
+	}
+}
+
 namespace ct
 {
 	void MoveSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
@@ -26,9 +54,10 @@ namespace ct
 		}
 
 		es.each<Move, Transformable>(
-			[delta, dt](entityx::Entity entity, Move& move, Transformable& transform)
+			[&](entityx::Entity entity, Move& move, Transformable& transform)
 		{
-			transform.position += delta * move.speed * dt;
+			DoMove(es, delta * move.speed * dt, move, transform);
+			DoMove(es, Vector2f{ 0,300.f }*dt, move, transform);
 		});
 	}
 }

@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\Background.cpp" />
     <ClCompile Include="..\source\Camera.cpp" />
+    <ClCompile Include="..\source\Collider.cpp" />
     <ClCompile Include="..\source\Game.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\MapLoader.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="..\source\AnimatedSprite.h" />
     <ClInclude Include="..\source\Background.h" />
     <ClInclude Include="..\source\Camera.h" />
+    <ClInclude Include="..\source\Collider.h" />
     <ClInclude Include="..\source\Game.h" />
     <ClInclude Include="..\source\Math.h" />
     <ClInclude Include="..\source\Move.h" />

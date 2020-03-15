@@ -1,6 +1,7 @@
 #include "MapLoader.h"
 #include "Sprite.h"
 #include "Transformable.h"
+#include "Collider.h"
 #include <Tileson.h>
 #include <filesystem>
 
@@ -8,11 +9,6 @@ namespace fs = std::filesystem;
 
 namespace
 {
-	ct::Vector2f ToVector2f(tson::Vector2f vec)
-	{
-		return { vec.x,vec.y };
-	}
-
 	std::pair<fs::path, sf::IntRect> ExtractTile(tson::Map& map, int tileID)
 	{
 		for (const auto& tileSet : map.getTilesets())
@@ -67,7 +63,21 @@ namespace ct
 						auto e = entities.create();
 						auto sprite = e.assign<Sprite>(path/".."/tileSet);
 						sprite->sprite.setTextureRect(rect);
-						e.assign<Transformable>()->position = { x * tileSize.x, y * tileSize.y };
+						Vector2f pos = { x * tileSize.x, y * tileSize.y };
+						e.assign<Transformable>()->position = pos;
+
+						auto tile = map.getTileMap().at(tileID);
+						auto objectGroup = tile->getObjectgroup();
+						for (auto& obj : objectGroup.getObjects())
+						{
+							if (obj.getObjectType() != tson::Object::Type::Rectangle)
+								continue;
+							if (obj.getType() != "box collider")
+								continue;
+							auto box = e.assign<Box>();
+							box->size = { obj.getSize().x,obj.getSize().y };
+							box->topLeft = pos + Vector2f{ obj.getPosition().x, obj.getPosition().y };
+						}
 					}
 				}
 			}
