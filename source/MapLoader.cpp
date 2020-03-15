@@ -54,7 +54,9 @@ namespace ct
 				{
 					for (int x = chunk.getPosition().x; x < chunk.getPosition().x + chunk.getSize().x; ++x)
 					{
-						int index = y * chunk.getSize().x + x;
+						int relativeX = x - chunk.getPosition().x;
+						int relativeY = y - chunk.getPosition().y;
+						int index = relativeY * chunk.getSize().x + relativeX;
 						int tileID = chunk.getData()[index];
 						if (tileID == 0)
 							continue;
