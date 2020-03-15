@@ -97,6 +97,9 @@
     <ClInclude Include="..\source\MapLoader.h" />
     <ClInclude Include="..\source\Transformable.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\3rd\eigen\debug\msvc\eigen.natvis" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

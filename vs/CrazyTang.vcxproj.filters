@@ -68,4 +68,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\3rd\eigen\debug\msvc\eigen.natvis" />
+  </ItemGroup>
 </Project>
