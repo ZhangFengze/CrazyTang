@@ -13,5 +13,6 @@ namespace ct
 
 		Sprite() = default;
 		Sprite(const std::string& texturePath);
+		Sprite(const std::string& texturePath, const sf::IntRect&);
 	};
 }

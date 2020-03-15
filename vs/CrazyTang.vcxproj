@@ -87,6 +87,7 @@
     <ClCompile Include="..\source\Render.cpp" />
     <ClCompile Include="..\source\Sprite.cpp" />
     <ClCompile Include="..\source\Texture.cpp" />
+    <ClCompile Include="..\source\Transformable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AnimatedSprite.h" />
