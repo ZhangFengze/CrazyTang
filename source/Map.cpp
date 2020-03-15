@@ -92,7 +92,7 @@ namespace
 
 				auto tile = map.getTileMap().at(tileID);
 				auto objectGroup = tile->getObjectgroup();
-				for (auto& object : objectGroup.getObjects())
+				for (const auto& object : objectGroup.getObjects())
 					LoadObject(object, e, pos);
 			}
 		}

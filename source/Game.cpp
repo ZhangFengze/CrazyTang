@@ -53,7 +53,7 @@ namespace
 		animator->now = "idle-right";
 		animator->anchor = { 0.5f,1.f };
 
-		e.assign<Transformable>()->position = { 0,0 };
+		e.assign<Transformable>();
 
 		auto move = e.assign<Move>();
 		move->speed = 2.f;

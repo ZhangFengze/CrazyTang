@@ -5,7 +5,7 @@ namespace ct
 {
 	struct Transformable
 	{
-		Vector2f position;
+		Vector2f position = { 0,0 };
 
 		Transformable() = default;
 		Transformable(Vector2f position);
