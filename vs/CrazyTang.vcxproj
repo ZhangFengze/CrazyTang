@@ -81,7 +81,7 @@
     <ClCompile Include="..\source\Collider.cpp" />
     <ClCompile Include="..\source\Game.cpp" />
     <ClCompile Include="..\source\main.cpp" />
-    <ClCompile Include="..\source\MapLoader.cpp" />
+    <ClCompile Include="..\source\Map.cpp" />
     <ClCompile Include="..\source\Math.cpp" />
     <ClCompile Include="..\source\Move.cpp" />
     <ClCompile Include="..\source\Render.cpp" />
@@ -99,7 +99,7 @@
     <ClInclude Include="..\source\Move.h" />
     <ClInclude Include="..\source\Render.h" />
     <ClInclude Include="..\source\Sprite.h" />
-    <ClInclude Include="..\source\MapLoader.h" />
+    <ClInclude Include="..\source\Map.h" />
     <ClInclude Include="..\source\Texture.h" />
     <ClInclude Include="..\source\Transformable.h" />
   </ItemGroup>

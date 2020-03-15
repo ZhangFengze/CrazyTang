@@ -1,4 +1,4 @@
-#include "MapLoader.h"
+#include "Map.h"
 #include "Sprite.h"
 #include "Transformable.h"
 #include "Collider.h"

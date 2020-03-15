@@ -8,7 +8,7 @@
 #include "Camera.h"
 #include "Transformable.h"
 #include "Move.h"
-#include "MapLoader.h"
+#include "Map.h"
 #include "Texture.h"
 
 namespace
