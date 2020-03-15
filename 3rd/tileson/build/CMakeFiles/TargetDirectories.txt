@@ -1,0 +1,5 @@
+F:/CrazyTang/3rd/tileson/build/CMakeFiles/tileson.dir
+F:/CrazyTang/3rd/tileson/build/CMakeFiles/ALL_BUILD.dir
+F:/CrazyTang/3rd/tileson/build/CMakeFiles/ZERO_CHECK.dir
+F:/CrazyTang/3rd/tileson/build/tests/CMakeFiles/tileson_tests.dir
+F:/CrazyTang/3rd/tileson/build/tests/CMakeFiles/ALL_BUILD.dir
