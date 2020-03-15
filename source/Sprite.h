@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <filesystem>
 
 namespace ct
 {
@@ -16,6 +17,12 @@ namespace ct
 		Sprite(const std::string& texturePath)
 		{
 			texture.loadFromFile(texturePath);
+			sprite.setTexture(texture);
+		}
+
+		Sprite(const std::filesystem::path& texturePath)
+		{
+			texture.loadFromFile(texturePath.string());
 			sprite.setTexture(texture);
 		}
 

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Transformable.h"
 #include "Move.h"
+#include "MapLoader.h"
 
 namespace ct
 {
@@ -23,6 +24,7 @@ namespace ct
 		CreateBackground(m_EntityX.entities, "../../../asset/environment/back.png", 2.f, 0.05f, -200.f, cameraSize.x());
 		CreateBackground(m_EntityX.entities, "../../../asset/environment/middle.png", 1.f, 0.1f, -0.f, cameraSize.x());
 
+		LoadMap(m_EntityX.entities, "../../../asset/level/map.json");
 		{
 			auto e = m_EntityX.entities.create();
 
