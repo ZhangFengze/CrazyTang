@@ -1,7 +1,6 @@
 #pragma once
 #include "Math.h"
 #include <SFML/Graphics.hpp>
-#include <filesystem>
 
 namespace ct
 {
@@ -12,6 +11,5 @@ namespace ct
 
 		Sprite() = default;
 		Sprite(const std::string& texturePath);
-		Sprite(const std::filesystem::path& texturePath);
 	};
 }

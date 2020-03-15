@@ -3,13 +3,10 @@
 #include "Transformable.h"
 #include "Collider.h"
 #include <Tileson.h>
-#include <filesystem>
-
-namespace fs = std::filesystem;
 
 namespace
 {
-	std::pair<fs::path, sf::IntRect> ExtractTile(tson::Map& map, int tileID)
+	std::pair<std::string, sf::IntRect> ExtractTile(tson::Map& map, int tileID)
 	{
 		for (const auto& tileSet : map.getTilesets())
 		{
@@ -28,7 +25,7 @@ namespace
 				rect.width = tileSet.getTileSize().x;
 				rect.height = tileSet.getTileSize().y;
 
-				return { tileSet.getImage(),rect };
+				return { tileSet.getImage().string(),rect };
 			}
 		}
 		return { "",{} };
@@ -37,7 +34,7 @@ namespace
 
 namespace ct
 {
-	bool LoadMap(entityx::EntityManager& entities, const fs::path& path)
+	bool LoadMap(entityx::EntityManager& entities, const std::string& path)
 	{
 		tson::Tileson t;
 		auto map = t.parse(path);
@@ -63,7 +60,7 @@ namespace ct
 						auto [tileSet, rect] = ExtractTile(map, tileID);
 
 						auto e = entities.create();
-						auto sprite = e.assign<Sprite>(path/".."/tileSet);
+						auto sprite = e.assign<Sprite>(path + "/../" + tileSet);
 						sprite->sprite.setTextureRect(rect);
 						Vector2f pos = { x * tileSize.x, y * tileSize.y };
 						e.assign<Transformable>()->position = pos;
