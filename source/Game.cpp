@@ -8,6 +8,8 @@
 #include "Transformable.h"
 #include "Move.h"
 #include "MapLoader.h"
+#include "Texture.h"
+
 namespace
 {
 	using namespace ct;
@@ -47,11 +49,21 @@ namespace
 
 namespace ct
 {
-	Game::Game(sf::RenderTarget& target)
+	Game::Game()
+		:events(m_EntityX.events),
+		systems(m_EntityX.systems),
+		entities(m_EntityX.entities)
 	{
+	}
+
+	void Game::Run()
+	{
+		sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "CrazyTang", sf::Style::Default);
+
+		m_EntityX.systems.add<TextureLoader>();
 		m_EntityX.systems.add<BackgroundSystem>();
-		m_EntityX.systems.add<CameraSystem>(target);
-		m_EntityX.systems.add<RenderSystem>(target);
+		m_EntityX.systems.add<CameraSystem>(window);
+		m_EntityX.systems.add<RenderSystem>(window);
 		m_EntityX.systems.add<MoveSystem>();
 		m_EntityX.systems.configure();
 
@@ -70,10 +82,24 @@ namespace ct
 			camera->size = cameraSize;
 			camera->target = player;
 		}
-	}
+		
+		sf::Clock clock;
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+				if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+					window.close();
+			}
 
-	void Game::Update(float dt)
-	{
-		m_EntityX.systems.update_all(dt);
+			auto dt = clock.restart();
+
+			window.clear();
+			m_EntityX.systems.update_all(dt.asSeconds());
+			window.display();
+		}
 	}
 }

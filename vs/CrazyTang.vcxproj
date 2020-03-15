@@ -85,6 +85,8 @@
     <ClCompile Include="..\source\Math.cpp" />
     <ClCompile Include="..\source\Move.cpp" />
     <ClCompile Include="..\source\Render.cpp" />
+    <ClCompile Include="..\source\Sprite.cpp" />
+    <ClCompile Include="..\source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AnimatedSprite.h" />
@@ -97,6 +99,7 @@
     <ClInclude Include="..\source\Render.h" />
     <ClInclude Include="..\source\Sprite.h" />
     <ClInclude Include="..\source\MapLoader.h" />
+    <ClInclude Include="..\source\Texture.h" />
     <ClInclude Include="..\source\Transformable.h" />
   </ItemGroup>
   <ItemGroup>

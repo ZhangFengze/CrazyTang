@@ -7,11 +7,15 @@ namespace ct
 	class Game
 	{
 	public:
-		Game(sf::RenderTarget& target);
+		Game();
+		void Run();
 
-		void Update(float dt);
+		entityx::EventManager& events;
+		entityx::SystemManager& systems;
+		entityx::EntityManager& entities;
 
 	private:
 		entityx::EntityX m_EntityX;
 	};
+	inline Game* game = nullptr;
 }
