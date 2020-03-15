@@ -64,6 +64,8 @@ namespace ct
 			{
 				if (delta.isZero())
 					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
+				else if (delta.y() > 0)
+					entity.component<Animator>()->now = move.left ? "crouch-left" : "crouch-right";
 				else
 					entity.component<Animator>()->now = move.left ? "run-left" : "run-right";
 			}

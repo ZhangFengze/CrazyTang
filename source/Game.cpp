@@ -42,6 +42,15 @@ namespace
 		auto runLeft = runRight;
 		runLeft.scale = { -1,1 };
 
+		auto crouchRight = AnimatedSprite(12,
+			{
+				"../../../asset/sprites/player/crouch/player-crouch-1.png",
+				"../../../asset/sprites/player/crouch/player-crouch-2.png",
+			}
+		);
+		auto crouchLeft = crouchRight;
+		crouchLeft.scale = { -1,1 };
+
 		auto animator = e.assign<Animator>();
 		animator->states =
 		{
@@ -49,6 +58,8 @@ namespace
 			{"idle-left",idleLeft},
 			{"run-right",runRight},
 			{"run-left",runLeft},
+			{"crouch-right",crouchRight},
+			{"crouch-left",crouchLeft},
 		};
 		animator->now = "idle-right";
 		animator->anchor = { 0.5f,1.f };
