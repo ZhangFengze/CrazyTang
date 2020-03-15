@@ -37,10 +37,10 @@ namespace ct
 	void MoveSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
 	{
 		Vector2f delta{ 0,0 };
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			delta += Vector2f{0,-1};
-		}
+		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		//{
+		//	delta += Vector2f{0,-1};
+		//}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			delta += Vector2f{0,1};
