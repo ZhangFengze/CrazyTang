@@ -9,7 +9,7 @@ The output was:
 ÓÃÓÚ .NET Framework µÄ Microsoft (R) Éú³ÉÒýÇæ°æ±¾ 16.4.0+e901037fe
 °æÈ¨ËùÓÐ(C) Microsoft Corporation¡£±£ÁôËùÓÐÈ¨Àû¡£
 
-Éú³ÉÆô¶¯Ê±¼äÎª 2020/3/15 14:58:37¡£
+Éú³ÉÆô¶¯Ê±¼äÎª 2020/3/15 15:03:52¡£
 ½Úµã 1 ÉÏµÄÏîÄ¿¡°F:\CrazyTang\3rd\tileson\build\CMakeFiles\3.14.5\CompilerIdC\CompilerIdC.vcxproj¡±(Ä¬ÈÏÄ¿±ê)¡£
 PrepareForBuild:
   ÕýÔÚ´´½¨Ä¿Â¼¡°Debug\¡±¡£
@@ -35,7 +35,7 @@ FinalizeBuildStatus:
     0 ¸ö¾¯¸æ
     0 ¸ö´íÎó
 
-ÒÑÓÃÊ±¼ä 00:00:01.11
+ÒÑÓÃÊ±¼ä 00:00:00.96
 
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -54,7 +54,7 @@ The output was:
 ÓÃÓÚ .NET Framework µÄ Microsoft (R) Éú³ÉÒýÇæ°æ±¾ 16.4.0+e901037fe
 °æÈ¨ËùÓÐ(C) Microsoft Corporation¡£±£ÁôËùÓÐÈ¨Àû¡£
 
-Éú³ÉÆô¶¯Ê±¼äÎª 2020/3/15 14:58:38¡£
+Éú³ÉÆô¶¯Ê±¼äÎª 2020/3/15 15:03:53¡£
 ½Úµã 1 ÉÏµÄÏîÄ¿¡°F:\CrazyTang\3rd\tileson\build\CMakeFiles\3.14.5\CompilerIdCXX\CompilerIdCXX.vcxproj¡±(Ä¬ÈÏÄ¿±ê)¡£
 PrepareForBuild:
   ÕýÔÚ´´½¨Ä¿Â¼¡°Debug\¡±¡£
@@ -80,7 +80,7 @@ FinalizeBuildStatus:
     0 ¸ö¾¯¸æ
     0 ¸ö´íÎó
 
-ÒÑÓÃÊ±¼ä 00:00:00.87
+ÒÑÓÃÊ±¼ä 00:00:00.73
 
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -92,29 +92,29 @@ The CXX compiler identification is MSVC, found in "F:/CrazyTang/3rd/tileson/buil
 Determining if the C compiler works passed with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_b4013.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_9dd71.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
-  ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
   testCCompiler.c
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b4013.dir\Debug\\" /Fd"cmTC_b4013.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\testCCompiler.c
-  cmTC_b4013.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_b4013.exe
+  ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_9dd71.dir\Debug\\" /Fd"cmTC_9dd71.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\testCCompiler.c
+  cmTC_9dd71.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_9dd71.exe
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_8eac7.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_459be.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
-  ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
   CMakeCCompilerABI.c
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_8eac7.dir\Debug\\" /Fd"cmTC_8eac7.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue "C:\Program Files\CMake\share\cmake-3.14\Modules\CMakeCCompilerABI.c"
-  cmTC_8eac7.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_8eac7.exe
+  ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_459be.dir\Debug\\" /Fd"cmTC_459be.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue "C:\Program Files\CMake\share\cmake-3.14\Modules\CMakeCCompilerABI.c"
+  cmTC_459be.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_459be.exe
 
 
 
@@ -122,15 +122,15 @@ Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Communi
 Detecting C [] compiler features compiled with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_76945.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_541ce.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
   feature_tests.c
   ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_76945.dir\Debug\\" /Fd"cmTC_76945.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\feature_tests.c
-  cmTC_76945.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_76945.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_541ce.dir\Debug\\" /Fd"cmTC_541ce.dir\Debug\vc142.pdb" /Gd /TC /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\feature_tests.c
+  cmTC_541ce.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_541ce.exe
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -138,29 +138,29 @@ Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Communi
 Determining if the CXX compiler works passed with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_3fe65.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_2a9e7.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
-  testCXXCompiler.cxx
   ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_3fe65.dir\Debug\\" /Fd"cmTC_3fe65.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
-  cmTC_3fe65.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_3fe65.exe
+  testCXXCompiler.cxx
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_2a9e7.dir\Debug\\" /Fd"cmTC_2a9e7.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
+  cmTC_2a9e7.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_2a9e7.exe
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_d9fb5.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_70b7c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
-  CMakeCXXCompilerABI.cpp
   ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_d9fb5.dir\Debug\\" /Fd"cmTC_d9fb5.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue "C:\Program Files\CMake\share\cmake-3.14\Modules\CMakeCXXCompilerABI.cpp"
-  cmTC_d9fb5.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_d9fb5.exe
+  CMakeCXXCompilerABI.cpp
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_70b7c.dir\Debug\\" /Fd"cmTC_70b7c.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue "C:\Program Files\CMake\share\cmake-3.14\Modules\CMakeCXXCompilerABI.cpp"
+  cmTC_70b7c.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_70b7c.exe
 
 
 
@@ -168,15 +168,15 @@ Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Communi
 Detecting CXX [] compiler features compiled with the following output:
 Change Dir: F:/CrazyTang/3rd/tileson/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_9b084.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
+Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe cmTC_73b48.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:m 
 ç”¨äºŽ .NET Framework çš„ Microsoft (R) ç”Ÿæˆå¼•æ“Žç‰ˆæœ¬ 16.4.0+e901037fe
 ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
   ç”¨äºŽ x64 çš„ Microsoft (R) C/C++ ä¼˜åŒ–ç¼–è¯‘å™¨ 19.24.28316 ç‰ˆ
   feature_tests.cxx
   ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
-  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_9b084.dir\Debug\\" /Fd"cmTC_9b084.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\feature_tests.cxx
-  cmTC_9b084.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_9b084.exe
+  cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_73b48.dir\Debug\\" /Fd"cmTC_73b48.dir\Debug\vc142.pdb" /Gd /TP /errorReport:queue F:\CrazyTang\3rd\tileson\build\CMakeFiles\feature_tests.cxx
+  cmTC_73b48.vcxproj -> F:\CrazyTang\3rd\tileson\build\CMakeFiles\CMakeTmp\Debug\cmTC_73b48.exe
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers

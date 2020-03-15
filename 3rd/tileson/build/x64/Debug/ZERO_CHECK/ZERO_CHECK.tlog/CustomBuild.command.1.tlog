@@ -1,0 +1,10 @@
+^F:\CRAZYTANG\3RD\TILESON\BUILD\CMAKEFILES\DED2F70AA75915D04318C6008823409E\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/CrazyTang/3rd/tileson -BF:/CrazyTang/3rd/tileson/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file F:/CrazyTang/3rd/tileson/build/tileson.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
