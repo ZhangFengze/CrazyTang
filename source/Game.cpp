@@ -67,6 +67,8 @@ namespace
 		e.assign<Transformable>();
 
 		auto move = e.assign<Move>();
+		move->acceleration = 0.1f;
+		move->brakeAcceleration = 0.2f;
 		move->speed = 2.f;
 		move->size = { 16,16 };
 

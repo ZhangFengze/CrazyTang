@@ -36,41 +36,45 @@ namespace ct
 {
 	void MoveSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
 	{
-		Vector2f delta{ 0,0 };
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		//{
-		//	delta += Vector2f{0,-1};
-		//}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			delta += Vector2f{0,1};
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			delta += Vector2f{-1,0};
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			delta += Vector2f{1,0};
-		}
-
 		es.each<Move, Transformable>(
 			[&](entityx::Entity entity, Move& move, Transformable& transform)
 		{
-			if (delta.x() != 0)
-				move.left = delta.x() < 0;
+			float delta = 0;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+				delta -= 1;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				delta += 1;
+
+			float velocity = move.velocity.x();
+			if (delta != 0)
+			{
+				velocity += delta * move.acceleration;
+				if (std::abs(velocity) > move.speed)
+					velocity = velocity / std::abs(velocity) * move.speed;
+			}
+			else
+			{
+				if (std::abs(velocity) <= move.brakeAcceleration)
+					velocity = 0;
+				else
+					velocity -= velocity / std::abs(velocity) * move.brakeAcceleration;
+			}
+			move.velocity = { velocity,0 };
+
+			if (delta != 0)
+				move.left = delta < 0;
 
 			if (entity.has_component<Animator>())
 			{
-				if (delta.isZero())
-					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
-				else if (delta.y() > 0)
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 					entity.component<Animator>()->now = move.left ? "crouch-left" : "crouch-right";
+				else if (delta == 0)
+					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
 				else
 					entity.component<Animator>()->now = move.left ? "run-left" : "run-right";
 			}
 
-			DoMove(es, delta * move.speed, move, transform);
+			DoMove(es, move.velocity, move, transform);
 			DoMove(es, Vector2f{ 0,3.f }, move, transform);
 		});
 	}

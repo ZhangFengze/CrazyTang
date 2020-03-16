@@ -6,8 +6,12 @@ namespace ct
 {
 	struct Move
 	{
+		float acceleration;
+		float brakeAcceleration;
 		float speed;
 		Vector2f size;
+
+		Vector2f velocity;
 		bool left = false;
 	};
 
