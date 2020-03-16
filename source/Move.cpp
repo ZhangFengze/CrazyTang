@@ -145,7 +145,8 @@ namespace
 		{
 			float input = GetInput();
 			UpdateVelocity(move, input);
-			if (!DoMove(entities, move.velocity, move, trans))
+			DoMove(entities, { move.velocity.x(),0 }, move, trans);
+			if (!DoMove(entities, { 0,move.velocity.y() }, move, trans))
 				move.velocity.y() = 0;
 			UpdateAnimation(entity, move, input);
 		}
