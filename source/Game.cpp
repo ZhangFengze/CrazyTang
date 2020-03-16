@@ -51,6 +51,22 @@ namespace
 		auto crouchLeft = crouchRight;
 		crouchLeft.scale = { -1,1 };
 
+		auto jumpRiseRight = AnimatedSprite(12,
+			{
+				"../../../asset/sprites/player/jump/player-jump-1.png",
+			}
+		);
+		auto jumpRiseLeft = jumpRiseRight;
+		jumpRiseLeft.scale = { -1,1 };
+
+		auto jumpFallRight = AnimatedSprite(12,
+			{
+				"../../../asset/sprites/player/jump/player-jump-2.png",
+			}
+		);
+		auto jumpFallLeft = jumpFallRight;
+		jumpFallLeft.scale = { -1,1 };
+
 		auto animator = e.assign<Animator>();
 		animator->states =
 		{
@@ -60,6 +76,10 @@ namespace
 			{"run-left",runLeft},
 			{"crouch-right",crouchRight},
 			{"crouch-left",crouchLeft},
+			{"jump-rise-right",jumpRiseRight},
+			{"jump-rise-left",jumpRiseLeft},
+			{"jump-fall-right",jumpFallRight},
+			{"jump-fall-left",jumpFallLeft},
 		};
 		animator->now = "idle-right";
 		animator->anchor = { 0.5f,1.f };
@@ -70,6 +90,10 @@ namespace
 		move->acceleration = 0.1f;
 		move->brakeAcceleration = 0.2f;
 		move->speed = 2.f;
+
+		move->jumpInitialYSpeed = 4.f;
+		move->jumpGravity = 0.2f;
+
 		move->size = { 16,16 };
 
 		return e;
