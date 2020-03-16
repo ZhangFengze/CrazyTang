@@ -83,7 +83,8 @@ namespace
 
 		void HandleJump(Move& move)
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
+				|| sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 				move.velocity.y() = -move.jumpInitialYSpeed;
 		}
 
