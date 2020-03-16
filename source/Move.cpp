@@ -30,25 +30,31 @@ namespace
 		}
 		return false;
 	}
-}
 
-namespace ct
-{
-	void MoveSystem::update(entityx::EntityManager& es, entityx::EventManager& events, entityx::TimeDelta dt)
+	namespace ground
 	{
-		es.each<Move, Transformable>(
-			[&](entityx::Entity entity, Move& move, Transformable& transform)
+		void UpdateAnimation(entityx::Entity entity, Move& move, float input)
 		{
-			float delta = 0;
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-				delta -= 1;
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-				delta += 1;
+			if (input != 0)
+				move.left = input < 0;
 
-			float velocity = move.velocity.x();
-			if (delta != 0)
+			if (entity.has_component<Animator>())
 			{
-				velocity += delta * move.acceleration;
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+					entity.component<Animator>()->now = move.left ? "crouch-left" : "crouch-right";
+				else if (input == 0)
+					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
+				else
+					entity.component<Animator>()->now = move.left ? "run-left" : "run-right";
+			}
+		}
+
+		void UpdateVelocity(Move& move, float input)
+		{
+			float velocity = move.velocity.x();
+			if (input != 0)
+			{
+				velocity += input * move.acceleration;
 				if (std::abs(velocity) > move.speed)
 					velocity = velocity / std::abs(velocity) * move.speed;
 			}
@@ -60,22 +66,38 @@ namespace ct
 					velocity -= velocity / std::abs(velocity) * move.brakeAcceleration;
 			}
 			move.velocity = { velocity,0 };
+		}
 
-			if (delta != 0)
-				move.left = delta < 0;
+		float GetInput()
+		{
+			float input = 0;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+				input -= 1;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				input += 1;
+			return input;
+		}
 
-			if (entity.has_component<Animator>())
-			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-					entity.component<Animator>()->now = move.left ? "crouch-left" : "crouch-right";
-				else if (delta == 0)
-					entity.component<Animator>()->now = move.left ? "idle-left" : "idle-right";
-				else
-					entity.component<Animator>()->now = move.left ? "run-left" : "run-right";
-			}
+		void Update(entityx::EntityManager& entities, entityx::Entity entity, Move& move, Transformable& trans)
+		{
+			float input = GetInput();
+			UpdateVelocity(move, input);
+			DoMove(entities, move.velocity, move, trans);
+			DoMove(entities, Vector2f{ 0,3.f }, move, trans);
+			UpdateAnimation(entity, move, input);
+		}
 
-			DoMove(es, move.velocity, move, transform);
-			DoMove(es, Vector2f{ 0,3.f }, move, transform);
+	}
+}
+
+namespace ct
+{
+	void MoveSystem::update(entityx::EntityManager& entities, entityx::EventManager& events, entityx::TimeDelta dt)
+	{
+		entities.each<Move, Transformable>(
+			[&](entityx::Entity entity, Move& move, Transformable& trans)
+		{
+			ground::Update(entities, entity, move, trans);
 		});
 	}
 }
