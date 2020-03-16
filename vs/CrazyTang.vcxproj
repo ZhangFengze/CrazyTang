@@ -64,7 +64,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;libvcruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
