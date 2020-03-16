@@ -5,7 +5,7 @@ namespace
 	bool Intersect(float left1, float right1,
 		float left2, float right2)
 	{
-		return !(left1 > right2 || right1 < left2);
+		return !(left1 >= right2 || right1 <= left2);
 	}
 }
 
