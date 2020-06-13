@@ -40,12 +40,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx;$(SolutionDir)../3rd/tileson/src;$(SolutionDir)../3rd/tileson/external_libs;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx;$(SolutionDir)../3rd/tileson/src;$(SolutionDir)../3rd/tileson/external_libs;$(SolutionDir)../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx/build/$(Configuration);$(SolutionDir)../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx;$(SolutionDir)../3rd/tileson/src;$(SolutionDir)../3rd/tileson/external_libs;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)../3rd/eigen/Eigen;$(SolutionDir)../3rd/SFML-2.5.1/include;$(SolutionDir)../3rd/entityx;$(SolutionDir)../3rd/tileson/src;$(SolutionDir)../3rd/tileson/external_libs;$(SolutionDir)../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)../3rd/SFML-2.5.1/lib;$(SolutionDir)../3rd/entityx/build/$(Configuration);$(SolutionDir)../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)../build/$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -84,6 +84,7 @@
     <ClCompile Include="..\source\Map.cpp" />
     <ClCompile Include="..\source\Math.cpp" />
     <ClCompile Include="..\source\Move.cpp" />
+    <ClCompile Include="..\source\Net.cpp" />
     <ClCompile Include="..\source\Render.cpp" />
     <ClCompile Include="..\source\Sprite.cpp" />
     <ClCompile Include="..\source\Texture.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="..\source\Game.h" />
     <ClInclude Include="..\source\Math.h" />
     <ClInclude Include="..\source\Move.h" />
+    <ClInclude Include="..\source\Net.h" />
     <ClInclude Include="..\source\Render.h" />
     <ClInclude Include="..\source\Sprite.h" />
     <ClInclude Include="..\source\Map.h" />

@@ -10,6 +10,7 @@
 #include "Move.h"
 #include "Map.h"
 #include "Texture.h"
+#include "Net.h"
 
 namespace
 {
@@ -138,12 +139,16 @@ namespace ct
 		LoadMap(entities, "../../../asset/level/map.json");
 		auto player = CreatePlayer(entities);
 		CreateFollowCamera(entities, player, cameraSize);
+
+		Net net{ io };
 		
 		sf::Clock clock;
 		sf::Time accumulated = sf::seconds(0);
 		sf::Time frame = sf::seconds(1.f / 60.f);
 		while (window.isOpen())
 		{
+			io.poll();
+
 			sf::Event event;
 			while (window.pollEvent(event))
 			{
@@ -152,7 +157,6 @@ namespace ct
 				if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 					window.close();
 			}
-
 
 			accumulated += clock.restart();
 			while (accumulated > frame)
