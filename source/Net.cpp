@@ -4,10 +4,36 @@ using asio::ip::tcp;
 
 namespace ct
 {
-	Net::Net(asio::io_context& io)
-		:acceptor_(io, tcp::endpoint(tcp::v4(), 8888))
+	Net::Net(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
+		:io_(io),
+		acceptor_(io, endpoint, false)
 	{
 		StartAccept();
+	}
+
+	void Net::Connect(const asio::ip::tcp::endpoint& endpoint)
+	{
+		auto socket = std::make_shared<tcp::socket>(io_);
+		socket->async_connect(endpoint,
+			[this,socket](const asio::error_code& error)
+		{
+			if (!error)
+				AddConnection(std::move(*socket));
+		});
+	}
+
+	void Net::Broadcast(std::vector<uint8_t>&& data)
+	{
+		auto buffer = std::make_shared<std::vector<uint8_t>>(std::move(data));
+		for (auto& connection : connections_)
+		{
+			asio::async_write(connection->socket, asio::buffer(*buffer),
+				[this,connection,buffer](const asio::error_code& error, size_t size)
+			{
+				if (error)
+					RemoveConnection(*connection);
+			});
+		}
 	}
 
 	void Net::StartAccept()
@@ -16,12 +42,12 @@ namespace ct
 			[this](const asio::error_code& error, tcp::socket&& socket)
 		{
 			if (!error)
-				HandleAccept(std::move(socket));
+				AddConnection(std::move(socket));
 			StartAccept();
 		});
 	}
 
-	void Net::HandleAccept(tcp::socket&& socket)
+	void Net::AddConnection(tcp::socket&& socket)
 	{
 		auto connection = std::make_shared<Connection>(Connection{ std::move(socket) });
 		connections_.push_back(connection);
@@ -39,14 +65,13 @@ namespace ct
 				return;
 			}
 
-			HandleMessage(connection);
+			HandleMessage(connection, size);
 			StartRead(connection);
 		});
 	}
 
-	void Net::HandleMessage(Connection& connection)
+	void Net::HandleMessage(Connection& connection, size_t size)
 	{
-		asio::write(connection.socket, asio::buffer(connection.buffer));
 	}
 
 	void Net::RemoveConnection(Connection& connection)

@@ -18,10 +18,17 @@
 namespace
 {
 	using namespace ct;
+	using asio::ip::tcp;
 
 	toml::table GetConfig()
 	{
-		std::string default = "[net]port=8912";
+		std::string default = R"(
+			[net]
+			self = "127.0.0.1:8192"
+			peers = ["127.0.0.1:8192",
+			"127.0.0.1:8193",
+			"127.0.0.1:8194",
+			"127.0.0.1:8195"])";
 
 		if (std::filesystem::exists("config.toml"))
 			return toml::parse_file("config.toml");
@@ -36,6 +43,38 @@ namespace
 		unsigned int width = config["video"]["width"].value_or(640);
 		unsigned int height = config["video"]["height"].value_or(400);
 		return autoResolution ? sf::VideoMode::getDesktopMode() : sf::VideoMode{ width, height };
+	}
+
+	tcp::endpoint StringToEndpoint(const std::string& str)
+	{
+		auto pos = str.find(':');
+		if (pos == std::string::npos)
+			return {};
+		auto ip = str.substr(0, pos);
+		int port = std::stoi(str.substr(pos+1));
+		return { asio::ip::make_address_v4(ip),	(unsigned short)port };
+	}
+
+	tcp::endpoint GetSelfEndpoint(const toml::table& config)
+	{
+		return StringToEndpoint(
+			config["net"]["self"].value_or<std::string>("127.0.0.1:8192"));
+	}
+
+	std::vector<tcp::endpoint> GetPeersEndpoint(const toml::table& config, tcp::endpoint self)
+	{
+		std::vector<tcp::endpoint> result;
+		auto peers = config["net"]["peers"];
+		if (!peers)
+			return result;
+		for (int index = 0; index < peers.as_array()->size(); ++index)
+		{
+			auto endpoint = StringToEndpoint(peers[index].value_or<std::string>(""));
+			if (endpoint == self)
+				continue;
+			result.push_back(endpoint);
+		}
+		return result;
 	}
 
 	entityx::Entity CreatePlayer(entityx::EntityManager& entities)
@@ -164,7 +203,9 @@ namespace ct
 		auto player = CreatePlayer(entities);
 		CreateFollowCamera(entities, player, cameraSize);
 
-		Net net{ io };
+		Net net(io, GetSelfEndpoint(config));
+		for (auto endpoint : GetPeersEndpoint(config,GetSelfEndpoint(config)))
+			net.Connect(endpoint);
 		
 		sf::Clock clock;
 		sf::Time accumulated = sf::seconds(0);
