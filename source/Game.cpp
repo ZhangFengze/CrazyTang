@@ -11,10 +11,33 @@
 #include "Map.h"
 #include "Texture.h"
 #include "Net.h"
+#include "toml.hpp"
+#include <fstream>
+#include <filesystem>
 
 namespace
 {
 	using namespace ct;
+
+	toml::table GetConfig()
+	{
+		std::string default = "[net]port=8912";
+
+		if (std::filesystem::exists("config.toml"))
+			return toml::parse_file("config.toml");
+		if (std::filesystem::exists("../../../config.toml"))
+			return toml::parse_file("../../../config.toml");
+		return toml::parse(default);
+	}
+
+	sf::VideoMode GetVideoMode(const toml::table& config)
+	{
+		bool autoResolution = config["video"]["auto_resolution"].value_or(false);
+		unsigned int width = config["video"]["width"].value_or(640);
+		unsigned int height = config["video"]["height"].value_or(400);
+		return autoResolution ? sf::VideoMode::getDesktopMode() : sf::VideoMode{ width, height };
+	}
+
 	entityx::Entity CreatePlayer(entityx::EntityManager& entities)
 	{
 		auto e = entities.create();
@@ -122,7 +145,8 @@ namespace ct
 
 	void Game::Run()
 	{
-		sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "CrazyTang", sf::Style::Default);
+		auto config = GetConfig();
+		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
 
 		systems.add<TextureLoader>();
 		systems.add<BackgroundSystem>();
