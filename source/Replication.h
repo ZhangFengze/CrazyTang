@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <entityx/entityx.h>
 #include "Net.h"
 
@@ -15,6 +16,9 @@ namespace ct
         void receive(const DataEvent&);
         void receive(const DisconnectionEvent&);
 
+        bool HasPeer(const std::string&) const;
+
 		Net& net_;
+        std::map<std::string, entityx::Entity> peers_;
 	};
 }
