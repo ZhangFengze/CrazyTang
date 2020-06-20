@@ -104,13 +104,12 @@ namespace ct
 
 	void Net::RemoveConnection(Connection& connection)
 	{
-		auto remote = ToString(connection.socket.remote_endpoint());
-
-		connections_.erase(
-			std::remove_if(connections_.begin(), connections_.end(),
-				[&connection](std::shared_ptr<Connection> p) {return p.get() == &connection; }),
-			connections_.end());
-
+		auto iter = std::find_if(connections_.begin(), connections_.end(),
+			[&connection](const auto& p) {return p.get() == &connection; });
+		if (iter == connections_.end())
+			return;
+		auto remote = ToString(iter->get()->socket.remote_endpoint());
+		connections_.erase(iter);
 		game->events.emit(DisconnectionEvent{ remote });
 	}
 }
