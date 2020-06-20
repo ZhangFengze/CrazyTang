@@ -1,6 +1,18 @@
 #include "Net.h"
+#include "Game.h"
+#include "Replication.h"
 
 using asio::ip::tcp;
+
+namespace
+{
+	std::string ToString(const tcp::endpoint& endpoint)
+	{
+		std::ostringstream os;
+		os << endpoint;
+		return os.str();
+	}
+}
 
 namespace ct
 {
@@ -22,13 +34,14 @@ namespace ct
 		});
 	}
 
-	void Net::Broadcast(std::vector<uint8_t>&& data)
+	void Net::Broadcast(const std::string& raw)
 	{
-		auto buffer = std::make_shared<std::vector<uint8_t>>(std::move(data));
+		assert(raw.find('\n') == std::string::npos);
+		auto data = std::make_shared<std::string>(raw + "\n");
 		for (auto& connection : connections_)
 		{
-			asio::async_write(connection->socket, asio::buffer(*buffer),
-				[this,connection,buffer](const asio::error_code& error, size_t size)
+			asio::async_write(connection->socket, asio::buffer(*data),
+				[this, connection, data](const asio::error_code& error, size_t size)
 			{
 				if (error)
 					RemoveConnection(*connection);
@@ -49,15 +62,17 @@ namespace ct
 
 	void Net::AddConnection(tcp::socket&& socket)
 	{
-		auto connection = std::make_shared<Connection>(Connection{ std::move(socket) });
+		auto connection = std::make_shared<Connection>(std::move(socket));
 		connections_.push_back(connection);
 		StartRead(*connections_.back());
+
+		game->events.emit(ConnectionEvent{ ToString(connection->socket.remote_endpoint()) });
 	}
 
 	void Net::StartRead(Connection& connection)
 	{
-		connection.socket.async_read_some(asio::buffer(connection.buffer),
-			[&connection,this](const asio::error_code& error, size_t size)
+		asio::async_read_until(connection.socket, connection.buffer, '\n', 
+			[&connection, this](const asio::error_code& error, size_t size)
 		{
 			if (error)
 			{
@@ -72,13 +87,30 @@ namespace ct
 
 	void Net::HandleMessage(Connection& connection, size_t size)
 	{
+		std::istream in(&connection.buffer);
+
+		DataEvent event;
+
+		event.from = ToString(connection.socket.remote_endpoint());
+
+		event.data.resize(size - 1);
+		in.read(event.data.data(), size - 1);
+
+		char c;
+		in.read(&c, 1);
+
+		game->events.emit<DataEvent>(event);
 	}
 
 	void Net::RemoveConnection(Connection& connection)
 	{
+		auto remote = ToString(connection.socket.remote_endpoint());
+
 		connections_.erase(
 			std::remove_if(connections_.begin(), connections_.end(),
 				[&connection](std::shared_ptr<Connection> p) {return p.get() == &connection; }),
 			connections_.end());
+
+		game->events.emit(DisconnectionEvent{ remote });
 	}
 }

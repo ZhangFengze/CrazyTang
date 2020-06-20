@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Texture.h"
 #include "Net.h"
+#include "Replication.h"
 #include <toml.hpp>
 #include <fstream>
 #include <filesystem>
@@ -187,11 +188,16 @@ namespace ct
 		auto config = GetConfig();
 		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
 
+		Net net(io, GetSelfEndpoint(config));
+		for (auto endpoint : GetPeersEndpoint(config,GetSelfEndpoint(config)))
+			net.Connect(endpoint);
+
 		systems.add<TextureLoader>();
 		systems.add<BackgroundSystem>();
 		systems.add<RenderSystem>(window);
 		systems.add<MoveSystem>();
 		systems.add<CameraSystem>(window);
+		systems.add<ReplicationSystem>(net);
 		systems.configure();
 
 		Vector2f cameraSize{ 640,400 };
@@ -202,10 +208,6 @@ namespace ct
 		LoadMap(entities, "../../../asset/level/map.json");
 		auto player = CreatePlayer(entities);
 		CreateFollowCamera(entities, player, cameraSize);
-
-		Net net(io, GetSelfEndpoint(config));
-		for (auto endpoint : GetPeersEndpoint(config,GetSelfEndpoint(config)))
-			net.Connect(endpoint);
 		
 		sf::Clock clock;
 		sf::Time accumulated = sf::seconds(0);

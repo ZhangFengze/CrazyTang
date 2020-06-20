@@ -5,9 +5,27 @@ namespace ct
 {
 	struct Connection
 	{
+		Connection(asio::ip::tcp::socket&& s) :socket(std::move(s)) {}
 		asio::ip::tcp::socket socket;
-		std::array<char, 1024> buffer;
+		asio::streambuf buffer{1024};
 	};
+
+	struct ConnectionEvent
+	{
+		std::string from;
+	};
+
+    struct DataEvent
+    {
+		std::string from;
+		std::string data;
+    };
+
+	struct DisconnectionEvent
+	{
+		std::string from;
+	};
+
 
 	class Net
 	{
@@ -15,7 +33,7 @@ namespace ct
 		Net(asio::io_context&, const asio::ip::tcp::endpoint&);
 
 		void Connect(const asio::ip::tcp::endpoint&);
-		void Broadcast(std::vector<uint8_t>&&);
+		void Broadcast(const std::string&);
 
 	private:
 		void StartAccept();
