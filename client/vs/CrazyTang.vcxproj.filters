@@ -102,6 +102,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="..\3rd\eigen\debug\msvc\eigen.natvis" />
+    <Natvis Include="..\..\3rd\eigen\debug\msvc\eigen.natvis" />
   </ItemGroup>
 </Project>
