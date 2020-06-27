@@ -41,17 +41,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)../../3rd/eigen/Eigen;$(ProjectDir)../../3rd/SFML-2.5.1/include;$(ProjectDir)../../3rd/entityx;$(ProjectDir)../../3rd/tileson/src;$(ProjectDir)../../3rd/tileson/external_libs;$(ProjectDir)../../3rd/asio-1.16.1/include;$(ProjectDir)../../3rd/tomlplusplus-1.3.0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)../../3rd/eigen/Eigen;$(ProjectDir)../../3rd/SFML-2.5.1/include;$(ProjectDir)../../3rd/entityx;$(ProjectDir)../../3rd/tileson/src;$(ProjectDir)../../3rd/tileson/external_libs;$(ProjectDir)../../3rd/asio-1.16.1/include;$(ProjectDir)../../3rd/tomlplusplus-1.3.0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx-d.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>common.lib;opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx-d.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -64,7 +64,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;libvcruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>common.lib;opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;libvcruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
