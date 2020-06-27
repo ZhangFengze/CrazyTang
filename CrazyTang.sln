@@ -4,12 +4,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\vs\client.vcxproj", "{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A} = {7F4B8992-0E37-4AA9-BC4D-D22456793D1A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\vs\server.vcxproj", "{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A} = {7F4B8992-0E37-4AA9-BC4D-D22456793D1A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "common\vs\common.vcxproj", "{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\vs\test.vcxproj", "{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A} = {7F4B8992-0E37-4AA9-BC4D-D22456793D1A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
