@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)../../3rd/Catch2-2.12.2/single_include/catch2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)../../3rd/Catch2-2.12.2/single_include/catch2;$(ProjectDir)../../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)../../3rd/Catch2-2.12.2/single_include/catch2;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)../../3rd/Catch2-2.12.2/single_include/catch2;$(ProjectDir)../../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
