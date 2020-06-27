@@ -42,12 +42,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)../../3rd/eigen/Eigen;$(ProjectDir)../../3rd/SFML-2.5.1/include;$(ProjectDir)../../3rd/entityx;$(ProjectDir)../../3rd/tileson/src;$(ProjectDir)../../3rd/tileson/external_libs;$(ProjectDir)../../3rd/asio-1.16.1/include;$(ProjectDir)../../3rd/tomlplusplus-1.3.0;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)../../build/$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)../../3rd/eigen/Eigen;$(ProjectDir)../../3rd/SFML-2.5.1/include;$(ProjectDir)../../3rd/entityx;$(ProjectDir)../../3rd/tileson/src;$(ProjectDir)../../3rd/tileson/external_libs;$(ProjectDir)../../3rd/asio-1.16.1/include;$(ProjectDir)../../3rd/tomlplusplus-1.3.0;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)../../3rd/SFML-2.5.1/lib;$(ProjectDir)../../3rd/entityx/build/$(Configuration);$(ProjectDir)../../3rd/tileson/build/$(Configuration);$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)../../build/$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
