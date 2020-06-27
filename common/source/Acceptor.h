@@ -12,7 +12,7 @@ namespace ct
 	private:
 		void StartAccept(std::function<void(const asio::error_code&, asio::ip::tcp::socket&&) > callback);
 
-	public:
+	private:
 		std::shared_ptr<bool> alive_ = std::make_shared<bool>();
 		asio::ip::tcp::acceptor acceptor_;
 	};
