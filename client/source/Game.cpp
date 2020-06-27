@@ -84,10 +84,10 @@ namespace
 
 		auto idleRight = AnimatedSprite(12,
 			{
-				"../../../asset/sprites/player/idle/player-idle-1.png",
-				"../../../asset/sprites/player/idle/player-idle-2.png",
-				"../../../asset/sprites/player/idle/player-idle-3.png",
-				"../../../asset/sprites/player/idle/player-idle-4.png"
+				"../../../../asset/sprites/player/idle/player-idle-1.png",
+				"../../../../asset/sprites/player/idle/player-idle-2.png",
+				"../../../../asset/sprites/player/idle/player-idle-3.png",
+				"../../../../asset/sprites/player/idle/player-idle-4.png"
 			}
 		);
 		auto idleLeft = idleRight;
@@ -95,12 +95,12 @@ namespace
 
 		auto runRight = AnimatedSprite(12,
 			{
-				"../../../asset/sprites/player/run/player-run-1.png",
-				"../../../asset/sprites/player/run/player-run-2.png",
-				"../../../asset/sprites/player/run/player-run-3.png",
-				"../../../asset/sprites/player/run/player-run-4.png",
-				"../../../asset/sprites/player/run/player-run-5.png",
-				"../../../asset/sprites/player/run/player-run-6.png",
+				"../../../../asset/sprites/player/run/player-run-1.png",
+				"../../../../asset/sprites/player/run/player-run-2.png",
+				"../../../../asset/sprites/player/run/player-run-3.png",
+				"../../../../asset/sprites/player/run/player-run-4.png",
+				"../../../../asset/sprites/player/run/player-run-5.png",
+				"../../../../asset/sprites/player/run/player-run-6.png",
 			}
 		);
 		auto runLeft = runRight;
@@ -108,8 +108,8 @@ namespace
 
 		auto crouchRight = AnimatedSprite(12,
 			{
-				"../../../asset/sprites/player/crouch/player-crouch-1.png",
-				"../../../asset/sprites/player/crouch/player-crouch-2.png",
+				"../../../../asset/sprites/player/crouch/player-crouch-1.png",
+				"../../../../asset/sprites/player/crouch/player-crouch-2.png",
 			}
 		);
 		auto crouchLeft = crouchRight;
@@ -117,7 +117,7 @@ namespace
 
 		auto jumpRiseRight = AnimatedSprite(12,
 			{
-				"../../../asset/sprites/player/jump/player-jump-1.png",
+				"../../../../asset/sprites/player/jump/player-jump-1.png",
 			}
 		);
 		auto jumpRiseLeft = jumpRiseRight;
@@ -125,7 +125,7 @@ namespace
 
 		auto jumpFallRight = AnimatedSprite(12,
 			{
-				"../../../asset/sprites/player/jump/player-jump-2.png",
+				"../../../../asset/sprites/player/jump/player-jump-2.png",
 			}
 		);
 		auto jumpFallLeft = jumpFallRight;
@@ -202,10 +202,10 @@ namespace ct
 
 		Vector2f cameraSize{ 640,400 };
 
-		CreateBackground(entities, "../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
-		CreateBackground(entities, "../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
+		CreateBackground(entities, "../../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
+		CreateBackground(entities, "../../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
 
-		LoadMap(entities, "../../../asset/level/map.json");
+		LoadMap(entities, "../../../../asset/level/map.json");
 		auto player = CreatePlayer(entities);
 		CreateFollowCamera(entities, player, cameraSize);
 		
