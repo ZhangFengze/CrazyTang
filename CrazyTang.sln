@@ -15,33 +15,38 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "server\vs\server.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "common\vs\common.vcxproj", "{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\vs\test.vcxproj", "{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A} = {7F4B8992-0E37-4AA9-BC4D-D22456793D1A}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		Test|x64 = Test|x64
+		TestCommon|x64 = TestCommon|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Debug|x64.ActiveCfg = Debug|x64
 		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Debug|x64.Build.0 = Debug|x64
 		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Release|x64.ActiveCfg = Release|x64
 		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Release|x64.Build.0 = Release|x64
+		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Test|x64.ActiveCfg = Test|x64
+		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.Test|x64.Build.0 = Test|x64
+		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.TestCommon|x64.ActiveCfg = Test|x64
+		{9B5D005B-8DD9-4DE4-821E-CDC66993DA22}.TestCommon|x64.Build.0 = Test|x64
 		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Debug|x64.ActiveCfg = Debug|x64
 		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Debug|x64.Build.0 = Debug|x64
 		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Release|x64.ActiveCfg = Release|x64
 		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Release|x64.Build.0 = Release|x64
+		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Test|x64.ActiveCfg = Test|x64
+		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.Test|x64.Build.0 = Test|x64
+		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.TestCommon|x64.ActiveCfg = Test|x64
+		{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}.TestCommon|x64.Build.0 = Test|x64
 		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Debug|x64.ActiveCfg = Debug|x64
 		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Debug|x64.Build.0 = Debug|x64
 		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Release|x64.ActiveCfg = Release|x64
 		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Release|x64.Build.0 = Release|x64
-		{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}.Debug|x64.ActiveCfg = Debug|x64
-		{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}.Debug|x64.Build.0 = Debug|x64
-		{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}.Release|x64.ActiveCfg = Release|x64
-		{8D657144-4D5B-40D7-A029-E3AD8DADA3F0}.Release|x64.Build.0 = Release|x64
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Test|x64.ActiveCfg = Debug|x64
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.Test|x64.Build.0 = Debug|x64
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.TestCommon|x64.ActiveCfg = Test|x64
+		{7F4B8992-0E37-4AA9-BC4D-D22456793D1A}.TestCommon|x64.Build.0 = Test|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

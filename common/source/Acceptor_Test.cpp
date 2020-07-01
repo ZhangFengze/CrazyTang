@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "../../common/source/Acceptor.h"
+#include "Acceptor.h"
 
 using asio::ip::tcp;
 

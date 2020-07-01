@@ -1,11 +1,4 @@
-#ifndef CT_TEST
-
-int main()
-{
-	return 0;
-}
-
-#else
+#ifdef CT_TEST
 
 #include <catch.hpp>
 
