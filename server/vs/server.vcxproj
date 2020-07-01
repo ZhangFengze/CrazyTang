@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\Connection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\Connection.cpp" />
+    <ClCompile Include="..\source\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{81EE40CB-00CB-41E4-BE57-628B25FF2D0B}</ProjectGuid>
@@ -73,6 +80,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
     <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)../../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -81,6 +89,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
     <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)../../3rd/asio-1.16.1/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -145,8 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
