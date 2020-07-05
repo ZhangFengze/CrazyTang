@@ -7,13 +7,11 @@ namespace ct
 	{
 	public:
 		Connection(asio::ip::tcp::socket&& socket);
-		void AsyncWritePacket(const char* data, size_t size);
 
-	private:
-		void AsyncReadPacket();
+		void AsyncWritePacket(const char* data, size_t size,
+			std::function<void(const std::error_code&)>&&);
 
-		void OnData(const char* data, size_t size);
-		void OnError(const std::error_code&);
+		void AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler);
 
 	private:
 		std::shared_ptr<bool> valid_ = std::make_shared<bool>(true);
