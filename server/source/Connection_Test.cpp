@@ -1,3 +1,4 @@
+#ifdef CT_TEST
 #include <catch.hpp>
 #include "Connection.h"
 
@@ -28,3 +29,4 @@ TEST_CASE("construction", "[Connection]")
 
 	io.run();
 }
+#endif
