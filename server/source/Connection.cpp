@@ -26,7 +26,7 @@ namespace ct
 			if (valid.expired())
 				return;
 			if (error)
-				return OnError();
+				return OnError(error);
 		});
 	}
 
@@ -39,11 +39,11 @@ namespace ct
 			if (valid.expired())
 				return;
 			if (error)
-				return OnError();
+				return OnError(error);
 
 			uint32_t length = *reinterpret_cast<uint32_t*>(buffer_.data());
 			if (length > buffer_.size())
-				return OnError();
+				return OnError({ asio::error::no_buffer_space });
 
 			asio::async_read(socket_, asio::buffer(buffer_, length),
 				[valid, this](const asio::error_code& error, size_t size)
@@ -51,7 +51,7 @@ namespace ct
 				if (valid.expired())
 					return;
 				if (error)
-					return OnError();
+					return OnError(error);
 
 				OnData(buffer_.data(), size);
 				AsyncReadPacket();
@@ -64,7 +64,7 @@ namespace ct
 		Write(data, size);
 	}
 
-	void Connection::OnError()
+	void Connection::OnError(const std::error_code&)
 	{
 		valid_.reset();
 	}

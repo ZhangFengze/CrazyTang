@@ -13,7 +13,7 @@ namespace ct
 		void AsyncReadPacket();
 
 		void OnData(const char* data, size_t size);
-		void OnError();
+		void OnError(const std::error_code&);
 
 	private:
 		std::shared_ptr<bool> valid_ = std::make_shared<bool>(true);
