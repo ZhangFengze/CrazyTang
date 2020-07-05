@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)../../build/$(ProjectName)/$(Platform)/$(Configuration)/</OutDir>
-    <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/$(Configuration)/;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)../../build/common/$(Platform)/Debug;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)../../3rd/asio-1.16.1/include;$(ProjectDir)../../3rd/Catch2-2.12.2/single_include/catch2;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
