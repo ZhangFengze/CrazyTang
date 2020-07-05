@@ -5,7 +5,7 @@ namespace ct
 	Connection::Connection(asio::ip::tcp::socket&& socket)
 		:socket_(std::move(socket))
 	{
-		ReadLength();
+		AsyncReadPacket();
 	}
 
 	void Connection::Write(const char* data, size_t size)
@@ -30,36 +30,32 @@ namespace ct
 		});
 	}
 
-	void Connection::ReadLength()
+	void Connection::AsyncReadPacket()
 	{
 		std::weak_ptr<bool> valid = valid_;
-		asio::async_read(socket_, asio::buffer(lengthBuffer_),
-			[this, valid](const asio::error_code& error, size_t size)
+		asio::async_read(socket_, asio::buffer(buffer_, 4),
+			[valid, this](const asio::error_code& error, size_t size)
 		{
 			if (valid.expired())
 				return;
 			if (error)
 				return OnError();
 
-			uint32_t length = 0;
-			length = *reinterpret_cast<uint32_t*>(lengthBuffer_.data());
-			ReadContent(length);
-		});
-	}
-
-	void Connection::ReadContent(uint32_t length)
-	{
-		std::weak_ptr<bool> valid = valid_;
-		asio::async_read(socket_, asio::buffer(contentBuffer_, length),
-			[this, valid](const asio::error_code& error, size_t size)
-		{
-			if (valid.expired())
-				return;
-			if (error)
+			uint32_t length = *reinterpret_cast<uint32_t*>(buffer_.data());
+			if (length > buffer_.size())
 				return OnError();
 
-			OnData(contentBuffer_.data(), size);
-			ReadLength();
+			asio::async_read(socket_, asio::buffer(buffer_, length),
+				[valid, this](const asio::error_code& error, size_t size)
+			{
+				if (valid.expired())
+					return;
+				if (error)
+					return OnError();
+
+				OnData(buffer_.data(), size);
+				AsyncReadPacket();
+			});
 		});
 	}
 
