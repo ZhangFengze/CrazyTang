@@ -8,17 +8,17 @@ namespace ct
 		AsyncReadPacket();
 	}
 
-	void Connection::Write(const char* data, size_t size)
+	void Connection::AsyncWritePacket(const char* data, size_t size)
 	{
 		std::weak_ptr<bool> valid = valid_;
 
 		auto buffer = std::make_shared<std::vector<char>>(size + 4);
 
-		uint32_t* lengthPointer = reinterpret_cast<uint32_t*>(buffer->data());
-		*lengthPointer = size;
+		uint32_t* length = reinterpret_cast<uint32_t*>(buffer->data());
+		*length = (uint32_t)size;
 
-		char* contentPointer = buffer->data() + 4;
-		std::copy(data, data + size, contentPointer);
+		char* content = buffer->data() + 4;
+		std::copy(data, data + size, content);
 
 		asio::async_write(socket_, asio::buffer(*buffer),
 			[this, valid, buffer](const asio::error_code& error, size_t size)
@@ -61,7 +61,7 @@ namespace ct
 
 	void Connection::OnData(const char* data, size_t size)
 	{
-		Write(data, size);
+		AsyncWritePacket(data, size);
 	}
 
 	void Connection::OnError(const std::error_code&)

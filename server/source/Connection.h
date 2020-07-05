@@ -7,7 +7,7 @@ namespace ct
 	{
 	public:
 		Connection(asio::ip::tcp::socket&& socket);
-		void Write(const char* data, size_t size);
+		void AsyncWritePacket(const char* data, size_t size);
 
 	private:
 		void AsyncReadPacket();
