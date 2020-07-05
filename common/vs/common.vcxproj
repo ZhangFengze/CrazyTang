@@ -116,10 +116,13 @@
   <ItemGroup>
     <ClCompile Include="..\source\Acceptor.cpp" />
     <ClCompile Include="..\source\Acceptor_Test.cpp" />
+    <ClCompile Include="..\source\Connection.cpp" />
+    <ClCompile Include="..\source\Connection_Test.cpp" />
     <ClCompile Include="..\source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Acceptor.h" />
+    <ClInclude Include="..\source\Connection.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
