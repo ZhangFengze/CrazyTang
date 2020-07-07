@@ -82,6 +82,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Test|x64'">
     <Link>
       <AdditionalDependencies>common.lib;opengl32.lib;winmm.lib;gdi32.lib;freetype.lib;tileson.lib;entityx-d.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
