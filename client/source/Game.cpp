@@ -11,7 +11,6 @@
 #include "Map.h"
 #include "Texture.h"
 #include "Net.h"
-#include "Replication.h"
 #include <toml.hpp>
 #include <fstream>
 #include <filesystem>
@@ -197,7 +196,6 @@ namespace ct
 		systems.add<RenderSystem>(window);
 		systems.add<MoveSystem>();
 		systems.add<CameraSystem>(window);
-		systems.add<ReplicationSystem>(net);
 		systems.configure();
 
 		Vector2f cameraSize{ 640,400 };

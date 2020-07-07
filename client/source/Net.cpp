@@ -1,6 +1,5 @@
 #include "Net.h"
 #include "Game.h"
-#include "Replication.h"
 
 using asio::ip::tcp;
 
