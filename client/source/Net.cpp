@@ -1,114 +1,91 @@
 #include "Net.h"
 #include "Game.h"
 
-using asio::ip::tcp;
-
-namespace
-{
-	std::string ToString(const tcp::endpoint& endpoint)
-	{
-		std::ostringstream os;
-		os << endpoint;
-		return os.str();
-	}
-}
-
 namespace ct
 {
-	Net::Net(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
-		:io_(io),
-		acceptor_(io, endpoint, false)
+	Net::Net(asio::io_context& io)
+		:io_(io)
 	{
-		StartAccept();
 	}
 
-	void Net::Connect(const asio::ip::tcp::endpoint& endpoint)
+	bool Net::Working() const
 	{
-		auto socket = std::make_shared<tcp::socket>(io_);
-		socket->async_connect(endpoint,
-			[this,socket](const asio::error_code& error)
+		return state_ == State::Working;
+	}
+
+	void Net::Connect(const asio::ip::tcp::endpoint& server)
+	{
+		assert(state_ == State::Invalid);
+		assert(!connection_);
+
+		connection_ = std::make_shared<Connection>(asio::ip::tcp::socket{ io_ });
+		std::weak_ptr<Connection> alive = connection_;
+
+		connection_->socket_.async_connect(server,
+			[alive, this](const std::error_code& error)
 		{
-			if (!error)
-				AddConnection(std::move(*socket));
-		});
-	}
-
-	void Net::Broadcast(const std::string& raw)
-	{
-		assert(raw.find('\n') == std::string::npos);
-		auto data = std::make_shared<std::string>(raw + "\n");
-		for (auto& connection : connections_)
-		{
-			asio::async_write(connection->socket, asio::buffer(*data),
-				[this, connection, data](const asio::error_code& error, size_t size)
-			{
-				if (error)
-					RemoveConnection(*connection);
-			});
-		}
-	}
-
-	void Net::StartAccept()
-	{
-		acceptor_.async_accept(
-			[this](const asio::error_code& error, tcp::socket&& socket)
-		{
-			if (!error)
-				AddConnection(std::move(socket));
-			StartAccept();
-		});
-	}
-
-	void Net::AddConnection(tcp::socket&& socket)
-	{
-		auto connection = std::make_shared<Connection>(std::move(socket));
-		connections_.push_back(connection);
-		StartRead(*connections_.back());
-
-		game->events.emit(ConnectionEvent{ ToString(connection->socket.remote_endpoint()) });
-	}
-
-	void Net::StartRead(Connection& connection)
-	{
-		asio::async_read_until(connection.socket, connection.buffer, '\n', 
-			[&connection, this](const asio::error_code& error, size_t size)
-		{
+			if (alive.expired())
+				return;
+			assert(state_ == State::Connecting);
 			if (error)
 			{
-				RemoveConnection(connection);
+				state_ = State::Invalid;
 				return;
 			}
+			state_ = State::Working;
+			Read();
+		});
 
-			HandleMessage(connection, size);
-			StartRead(connection);
+		state_ = State::Connecting;
+	}
+
+	void Net::Send(const char* data, size_t size)
+	{
+		assert(state_ == State::Working);
+		assert(connection_);
+
+		std::weak_ptr<Connection> alive = connection_;
+		connection_->AsyncWritePacket(data, size,
+			[alive, this](const std::error_code& error)
+		{
+			if (alive.expired())
+				return;
+			assert(state_ == State::Working);
+			if (error)
+			{
+				connection_.reset();
+				state_ = State::Invalid;
+				return;
+			}
 		});
 	}
 
-	void Net::HandleMessage(Connection& connection, size_t size)
+	void Net::OnData(const std::function<void(const char*, size_t)>& function)
 	{
-		std::istream in(&connection.buffer);
-
-		DataEvent event;
-
-		event.from = ToString(connection.socket.remote_endpoint());
-
-		event.data.resize(size - 1);
-		in.read(event.data.data(), size - 1);
-
-		char c;
-		in.read(&c, 1);
-
-		game->events.emit<DataEvent>(event);
+		onData_ = function;
 	}
 
-	void Net::RemoveConnection(Connection& connection)
+	void Net::Read()
 	{
-		auto iter = std::find_if(connections_.begin(), connections_.end(),
-			[&connection](const auto& p) {return p.get() == &connection; });
-		if (iter == connections_.end())
-			return;
-		auto remote = ToString(iter->get()->socket.remote_endpoint());
-		connections_.erase(iter);
-		game->events.emit(DisconnectionEvent{ remote });
+		assert(state_ == State::Working);
+		assert(connection_);
+
+		std::weak_ptr<Connection> alive = connection_;
+		connection_->AsyncReadPacket(
+			[alive, this](const std::error_code& error, const char* data, size_t size)
+		{
+			if (alive.expired())
+				return;
+			assert(state_ == State::Working);
+			if (error)
+			{
+				connection_.reset();
+				state_ = State::Invalid;
+				return;
+			}
+			if (onData_)
+				onData_(data, size);
+			Read();
+		});
 	}
 }

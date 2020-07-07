@@ -1,51 +1,33 @@
 #pragma once
 #include <asio.hpp>
+#include "../../common/source/Connection.h"
 
 namespace ct
 {
-	struct Connection
-	{
-		Connection(asio::ip::tcp::socket&& s) :socket(std::move(s)) {}
-		asio::ip::tcp::socket socket;
-		asio::streambuf buffer{1024};
-	};
-
-	struct ConnectionEvent
-	{
-		std::string from;
-	};
-
-    struct DataEvent
-    {
-		std::string from;
-		std::string data;
-    };
-
-	struct DisconnectionEvent
-	{
-		std::string from;
-	};
-
-
 	class Net
 	{
 	public:
-		Net(asio::io_context&, const asio::ip::tcp::endpoint&);
+		enum class State
+		{
+			Invalid,
+			Connecting,
+			Working,
+		};
 
-		void Connect(const asio::ip::tcp::endpoint&);
-		void Broadcast(const std::string&);
+		Net(asio::io_context& io);
+		bool Working() const;
+		void Connect(const asio::ip::tcp::endpoint& server);
+		void Send(const char*, size_t);
+		void OnData(const std::function<void(const char*, size_t)>&);
 
 	private:
-		void StartAccept();
-		void AddConnection(asio::ip::tcp::socket&&);
-
-		void StartRead(Connection&);
-		void HandleMessage(Connection&, size_t);
-		void RemoveConnection(Connection&);
+		void Read();
 
 	private:
+		State state_ = State::Invalid;
 		asio::io_context& io_;
-		asio::ip::tcp::acceptor acceptor_;
-		std::vector<std::shared_ptr<Connection>> connections_;
+		std::shared_ptr<Connection> connection_;
+		std::function<void(const char*, size_t)> onData_;
+		std::shared_ptr<bool> alive_ = std::make_shared<bool>(true);
 	};
 }
