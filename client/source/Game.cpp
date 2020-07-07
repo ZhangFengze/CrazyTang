@@ -11,6 +11,8 @@
 #include "Map.h"
 #include "Texture.h"
 #include "Net.h"
+#include "MessageHandler.h"
+#include "Replication.h"
 #include <toml.hpp>
 #include <fstream>
 #include <filesystem>
@@ -55,26 +57,10 @@ namespace
 		return { asio::ip::make_address_v4(ip),	(unsigned short)port };
 	}
 
-	tcp::endpoint GetSelfEndpoint(const toml::table& config)
+	tcp::endpoint ServerEndpoint(const toml::table& config)
 	{
 		return StringToEndpoint(
-			config["net"]["self"].value_or<std::string>("127.0.0.1:8192"));
-	}
-
-	std::vector<tcp::endpoint> GetPeersEndpoint(const toml::table& config, tcp::endpoint self)
-	{
-		std::vector<tcp::endpoint> result;
-		auto peers = config["net"]["peers"];
-		if (!peers)
-			return result;
-		for (int index = 0; index < peers.as_array()->size(); ++index)
-		{
-			auto endpoint = StringToEndpoint(peers[index].value_or<std::string>(""));
-			if (endpoint == self)
-				continue;
-			result.push_back(endpoint);
-		}
-		return result;
+			config["net"]["server"].value_or(std::string("127.0.0.1:3377")));
 	}
 
 	entityx::Entity CreatePlayer(entityx::EntityManager& entities)
@@ -187,15 +173,21 @@ namespace ct
 		auto config = GetConfig();
 		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
 
-		Net net(io, GetSelfEndpoint(config));
-		for (auto endpoint : GetPeersEndpoint(config,GetSelfEndpoint(config)))
-			net.Connect(endpoint);
+		Net net{ io };
+		net.Connect(ServerEndpoint(config));
+
+		MessageHandler messageHandler;
+		net.OnData([&](const char* data, size_t size)
+		{
+			messageHandler.OnMessage(std::string{ data,size });
+		});
 
 		systems.add<TextureLoader>();
 		systems.add<BackgroundSystem>();
 		systems.add<RenderSystem>(window);
 		systems.add<MoveSystem>();
 		systems.add<CameraSystem>(window);
+		systems.add<ReplicationSystem>(net, messageHandler);
 		systems.configure();
 
 		Vector2f cameraSize{ 640,400 };

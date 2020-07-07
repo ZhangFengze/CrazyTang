@@ -56,6 +56,9 @@
     <ClCompile Include="..\source\MessageHandler_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Replication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Math.h">
@@ -101,6 +104,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\MessageHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Replication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
