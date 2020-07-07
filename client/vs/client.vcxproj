@@ -114,6 +114,8 @@
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\Map.cpp" />
     <ClCompile Include="..\source\Math.cpp" />
+    <ClCompile Include="..\source\MessageHandler.cpp" />
+    <ClCompile Include="..\source\MessageHandler_Test.cpp" />
     <ClCompile Include="..\source\Move.cpp" />
     <ClCompile Include="..\source\Net.cpp" />
     <ClCompile Include="..\source\Render.cpp" />
@@ -130,6 +132,7 @@
     <ClInclude Include="..\source\Collider.h" />
     <ClInclude Include="..\source\Game.h" />
     <ClInclude Include="..\source\Math.h" />
+    <ClInclude Include="..\source\MessageHandler.h" />
     <ClInclude Include="..\source\Move.h" />
     <ClInclude Include="..\source\Net.h" />
     <ClInclude Include="..\source\Render.h" />
