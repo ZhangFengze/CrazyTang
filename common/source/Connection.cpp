@@ -2,12 +2,12 @@
 
 namespace ct
 {
-	Connection::Connection(asio::ip::tcp::socket&& socket)
+	Socket::Socket(asio::ip::tcp::socket&& socket)
 		:socket_(std::move(socket))
 	{
 	}
 
-	void Connection::AsyncWritePacket(const char* data, size_t size,
+	void Socket::AsyncWritePacket(const char* data, size_t size,
 		std::function<void(const std::error_code&)>&& handler)
 	{
 		auto buffer = std::make_shared<std::vector<char>>(size + 4);
@@ -25,7 +25,7 @@ namespace ct
 		});
 	}
 
-	void Connection::AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler)
+	void Socket::AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler)
 	{
 		std::weak_ptr<bool> valid = valid_;
 		asio::async_read(socket_, asio::buffer(buffer_, 4),

@@ -11,11 +11,11 @@ namespace ct
 		BroadcastServer(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint);
 
 	private:
-		void Broadcast(std::shared_ptr<Connection> socket);
-		void Remove(std::shared_ptr<Connection> socket);
+		void Broadcast(std::shared_ptr<Socket> socket);
+		void Remove(std::shared_ptr<Socket> socket);
 
 	private:
 		ct::Acceptor acceptor_;
-		std::vector<std::shared_ptr<ct::Connection>> sockets_;
+		std::vector<std::shared_ptr<ct::Socket>> sockets_;
 	};
 }

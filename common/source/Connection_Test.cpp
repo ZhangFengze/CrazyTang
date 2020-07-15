@@ -12,24 +12,24 @@ namespace
 	}
 }
 
-TEST_CASE("construction", "[Connection]")
+TEST_CASE("construction", "[Socket]")
 {
 	asio::io_context io;
-	ct::Connection connection{ tcp::socket{io} };
+	ct::Socket connection{ tcp::socket{io} };
 }
 
-TEST_CASE("async read, async write", "[Connection]")
+TEST_CASE("async read, async write", "[Socket]")
 {
 	asio::io_context io;
 	auto endpoint = AvailableLocalEndpoint();
 
-	std::shared_ptr<ct::Connection> socket;
+	std::shared_ptr<ct::Socket> socket;
 
 	tcp::acceptor acceptor{ io,endpoint };
 	acceptor.async_accept([&socket](asio::error_code error, tcp::socket&& lowLevelSocket)
 	{
 		REQUIRE(!error);
-		socket = std::make_shared<ct::Connection>(std::move(lowLevelSocket));
+		socket = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
 		socket->AsyncReadPacket([](std::error_code error, const char* data, size_t size)
 		{
 			REQUIRE(!error);
@@ -42,7 +42,7 @@ TEST_CASE("async read, async write", "[Connection]")
 	lowLevelSocket.async_connect(endpoint, [&lowLevelSocket](asio::error_code error)
 	{
 		REQUIRE(!error);
-		ct::Connection c{ std::move(lowLevelSocket) };
+		ct::Socket c{ std::move(lowLevelSocket) };
 		c.AsyncWritePacket("hello", 6,
 			[](std::error_code error) 
 		{
@@ -53,18 +53,18 @@ TEST_CASE("async read, async write", "[Connection]")
 	io.run();
 }
 
-TEST_CASE("multiple read write", "[Connection]")
+TEST_CASE("multiple read write", "[Socket]")
 {
 	asio::io_context io;
 	auto endpoint = AvailableLocalEndpoint();
 
-	std::shared_ptr<ct::Connection> socket;
+	std::shared_ptr<ct::Socket> socket;
 
 	tcp::acceptor acceptor{ io,endpoint };
 	acceptor.async_accept([&socket](asio::error_code error, tcp::socket&& lowLevelSocket)
 	{
 		REQUIRE(!error);
-		socket = std::make_shared<ct::Connection>(std::move(lowLevelSocket));
+		socket = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
 		socket->AsyncReadPacket([socket](std::error_code error, const char* data, size_t size)
 		{
 			REQUIRE(!error);
@@ -84,7 +84,7 @@ TEST_CASE("multiple read write", "[Connection]")
 	lowLevelSocket.async_connect(endpoint, [&lowLevelSocket](asio::error_code error)
 	{
 		REQUIRE(!error);
-		auto c = std::make_shared<ct::Connection>(std::move(lowLevelSocket));
+		auto c = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
 		c->AsyncWritePacket("first hello here", 17,
 			[c](std::error_code error)
 		{

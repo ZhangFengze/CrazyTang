@@ -3,10 +3,10 @@
 
 namespace ct
 {
-	class Connection
+	class Socket
 	{
 	public:
-		Connection(asio::ip::tcp::socket&& socket);
+		Socket(asio::ip::tcp::socket&& socket);
 
 		void AsyncWritePacket(const char* data, size_t size,
 			std::function<void(const std::error_code&)>&&);

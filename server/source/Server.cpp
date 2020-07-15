@@ -7,7 +7,7 @@ namespace ct
 		{
 			if (!error)
 			{
-				auto socket = std::make_shared<Connection>(std::move(lowLevelSocket));
+				auto socket = std::make_shared<Socket>(std::move(lowLevelSocket));
 				sockets_.push_back(socket);
 				Broadcast(socket);
 			}
@@ -15,7 +15,7 @@ namespace ct
 	{
 	}
 
-	void BroadcastServer::Broadcast(std::shared_ptr<Connection> socket)
+	void BroadcastServer::Broadcast(std::shared_ptr<Socket> socket)
 	{
 		socket->AsyncReadPacket(
 			[this, socket](std::error_code error, const char* data, size_t size)
@@ -38,7 +38,7 @@ namespace ct
 		});
 	}
 
-	void BroadcastServer::Remove(std::shared_ptr<Connection> socket)
+	void BroadcastServer::Remove(std::shared_ptr<Socket> socket)
 	{
 		sockets_.erase(
 			std::find(sockets_.begin(), sockets_.end(), socket));

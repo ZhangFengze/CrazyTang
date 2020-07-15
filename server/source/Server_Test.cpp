@@ -20,7 +20,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 
 	struct TestClient
 	{
-		TestClient(std::shared_ptr<ct::Connection> socket, int index)
+		TestClient(std::shared_ptr<ct::Socket> socket, int index)
 			:socket_(socket), index_(index)
 		{
 		}
@@ -45,7 +45,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 			});
 		}
 
-		std::shared_ptr<ct::Connection> socket_;
+		std::shared_ptr<ct::Socket> socket_;
 		int index_;
 		int received_ = 0;
 	};
@@ -56,7 +56,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 		tcp::socket socket{ io };
 		socket.connect(endpoint);
 		clients.emplace_back(
-			std::make_shared<ct::Connection>(std::move(socket)), i);
+			std::make_shared<ct::Socket>(std::move(socket)), i);
 	}
 	io.poll();
 

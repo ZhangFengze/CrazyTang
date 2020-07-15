@@ -26,7 +26,7 @@ namespace ct
 	private:
 		State state_ = State::Invalid;
 		asio::io_context& io_;
-		std::shared_ptr<Connection> socket_;
+		std::shared_ptr<Socket> socket_;
 		std::function<void(const char*, size_t)> onData_;
 		std::shared_ptr<bool> alive_ = std::make_shared<bool>(true);
 	};

@@ -18,8 +18,8 @@ namespace ct
 		assert(state_ == State::Invalid);
 		assert(!socket_);
 
-		socket_ = std::make_shared<Connection>(asio::ip::tcp::socket{ io_ });
-		std::weak_ptr<Connection> alive = socket_;
+		socket_ = std::make_shared<Socket>(asio::ip::tcp::socket{ io_ });
+		std::weak_ptr<Socket> alive = socket_;
 
 		socket_->socket_.async_connect(server,
 			[alive, this](const std::error_code& error)
@@ -44,7 +44,7 @@ namespace ct
 		assert(state_ == State::Working);
 		assert(socket_);
 
-		std::weak_ptr<Connection> alive = socket_;
+		std::weak_ptr<Socket> alive = socket_;
 		socket_->AsyncWritePacket(data, size,
 			[alive, this](const std::error_code& error)
 		{
@@ -70,7 +70,7 @@ namespace ct
 		assert(state_ == State::Working);
 		assert(socket_);
 
-		std::weak_ptr<Connection> alive = socket_;
+		std::weak_ptr<Socket> alive = socket_;
 		socket_->AsyncReadPacket(
 			[alive, this](const std::error_code& error, const char* data, size_t size)
 		{
