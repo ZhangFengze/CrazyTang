@@ -20,8 +20,8 @@ TEST_CASE("broadcast", "[broadcast server]")
 
 	struct TestClient
 	{
-		TestClient(std::shared_ptr<ct::Connection> connection, int index)
-			:connection_(connection), index_(index)
+		TestClient(std::shared_ptr<ct::Connection> socket, int index)
+			:socket_(socket), index_(index)
 		{
 		}
 
@@ -33,7 +33,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 		void CheckRead()
 		{
 			auto expected = "hello from " + std::to_string(NextExpectNumber());
-			connection_->AsyncReadPacket([=](std::error_code error, const char* data, size_t size)
+			socket_->AsyncReadPacket([=](std::error_code error, const char* data, size_t size)
 			{
 				REQUIRE(!error);
 				auto got = std::string{ data,size - 1 };
@@ -45,7 +45,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 			});
 		}
 
-		std::shared_ptr<ct::Connection> connection_;
+		std::shared_ptr<ct::Connection> socket_;
 		int index_;
 		int received_ = 0;
 	};
@@ -63,7 +63,7 @@ TEST_CASE("broadcast", "[broadcast server]")
 	for (int index = 0; index < 5; ++index)
 	{
 		std::string msg = "hello from " + std::to_string(index);
-		clients[index].connection_->AsyncWritePacket(msg.data(), msg.size() + 1,
+		clients[index].socket_->AsyncWritePacket(msg.data(), msg.size() + 1,
 			[](std::error_code error)
 		{
 			REQUIRE(!error);
