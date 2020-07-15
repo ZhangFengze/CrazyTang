@@ -1,6 +1,6 @@
 #pragma once
 #include <asio.hpp>
-#include "../../common/source/Connection.h"
+#include "../../common/source/Socket.h"
 
 namespace ct
 {

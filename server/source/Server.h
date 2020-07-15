@@ -1,7 +1,7 @@
 #pragma once
 #include <asio.hpp>
 #include "../../common/source/Acceptor.h"
-#include "../../common/source/Connection.h"
+#include "../../common/source/Socket.h"
 
 namespace ct
 {

@@ -1,6 +1,6 @@
 #ifdef CT_TEST
 #include <catch.hpp>
-#include "Connection.h"
+#include "Socket.h"
 
 using asio::ip::tcp;
 

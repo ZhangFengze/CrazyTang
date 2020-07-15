@@ -24,10 +24,10 @@
     <ClCompile Include="..\source\Acceptor_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Connection.cpp">
+    <ClCompile Include="..\source\Socket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Connection_Test.cpp">
+    <ClCompile Include="..\source\Socket_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="..\source\Acceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\Connection.h">
+    <ClInclude Include="..\source\Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
