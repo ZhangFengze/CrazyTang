@@ -3,29 +3,29 @@ namespace ct
 {
 	BroadcastServer::BroadcastServer(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
 		:acceptor_(io, endpoint,
-			[this](asio::error_code error, asio::ip::tcp::socket&& socket)
+			[this](asio::error_code error, asio::ip::tcp::socket&& lowLevelSocket)
 		{
 			if (!error)
 			{
-				auto connection = std::make_shared<Connection>(std::move(socket));
-				connections_.push_back(connection);
-				Broadcast(connection);
+				auto socket = std::make_shared<Connection>(std::move(lowLevelSocket));
+				sockets_.push_back(socket);
+				Broadcast(socket);
 			}
 		})
 	{
 	}
 
-	void BroadcastServer::Broadcast(std::shared_ptr<Connection> connection)
+	void BroadcastServer::Broadcast(std::shared_ptr<Connection> socket)
 	{
-		connection->AsyncReadPacket(
-			[this, connection](std::error_code error, const char* data, size_t size)
+		socket->AsyncReadPacket(
+			[this, socket](std::error_code error, const char* data, size_t size)
 		{
 			if (error)
-				return Remove(connection);
+				return Remove(socket);
 
-			for (auto peer : connections_)
+			for (auto peer : sockets_)
 			{
-				if (peer == connection)
+				if (peer == socket)
 					continue;
 				peer->AsyncWritePacket(data, size,
 					[this, peer](std::error_code error)
@@ -34,13 +34,13 @@ namespace ct
 						Remove(peer);
 				});
 			}
-			Broadcast(connection);
+			Broadcast(socket);
 		});
 	}
 
-	void BroadcastServer::Remove(std::shared_ptr<Connection> connection)
+	void BroadcastServer::Remove(std::shared_ptr<Connection> socket)
 	{
-		connections_.erase(
-			std::find(connections_.begin(), connections_.end(), connection));
+		sockets_.erase(
+			std::find(sockets_.begin(), sockets_.end(), socket));
 	}
 }
