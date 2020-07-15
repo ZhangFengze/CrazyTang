@@ -15,7 +15,7 @@ namespace
 TEST_CASE("construction", "[Socket]")
 {
 	asio::io_context io;
-	ct::Socket connection{ tcp::socket{io} };
+	ct::Socket socket{ tcp::socket{io} };
 }
 
 TEST_CASE("async read, async write", "[Socket]")
