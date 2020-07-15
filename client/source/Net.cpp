@@ -16,12 +16,12 @@ namespace ct
 	void Net::Connect(const asio::ip::tcp::endpoint& server)
 	{
 		assert(state_ == State::Invalid);
-		assert(!connection_);
+		assert(!socket_);
 
-		connection_ = std::make_shared<Connection>(asio::ip::tcp::socket{ io_ });
-		std::weak_ptr<Connection> alive = connection_;
+		socket_ = std::make_shared<Connection>(asio::ip::tcp::socket{ io_ });
+		std::weak_ptr<Connection> alive = socket_;
 
-		connection_->socket_.async_connect(server,
+		socket_->socket_.async_connect(server,
 			[alive, this](const std::error_code& error)
 		{
 			if (alive.expired())
@@ -42,10 +42,10 @@ namespace ct
 	void Net::Send(const char* data, size_t size)
 	{
 		assert(state_ == State::Working);
-		assert(connection_);
+		assert(socket_);
 
-		std::weak_ptr<Connection> alive = connection_;
-		connection_->AsyncWritePacket(data, size,
+		std::weak_ptr<Connection> alive = socket_;
+		socket_->AsyncWritePacket(data, size,
 			[alive, this](const std::error_code& error)
 		{
 			if (alive.expired())
@@ -53,7 +53,7 @@ namespace ct
 			assert(state_ == State::Working);
 			if (error)
 			{
-				connection_.reset();
+				socket_.reset();
 				state_ = State::Invalid;
 				return;
 			}
@@ -68,10 +68,10 @@ namespace ct
 	void Net::Read()
 	{
 		assert(state_ == State::Working);
-		assert(connection_);
+		assert(socket_);
 
-		std::weak_ptr<Connection> alive = connection_;
-		connection_->AsyncReadPacket(
+		std::weak_ptr<Connection> alive = socket_;
+		socket_->AsyncReadPacket(
 			[alive, this](const std::error_code& error, const char* data, size_t size)
 		{
 			if (alive.expired())
@@ -79,7 +79,7 @@ namespace ct
 			assert(state_ == State::Working);
 			if (error)
 			{
-				connection_.reset();
+				socket_.reset();
 				state_ = State::Invalid;
 				return;
 			}
