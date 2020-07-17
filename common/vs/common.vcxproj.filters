@@ -30,12 +30,18 @@
     <ClCompile Include="..\source\Socket_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Pipe_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Acceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Socket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Pipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
