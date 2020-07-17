@@ -1,72 +1,10 @@
 #ifdef CT_TEST
 #include <catch.hpp>
+#include "Socket.h"
 #include "Pipe.h"
 
 namespace
 {
-	struct StubSocket
-	{
-		void AsyncWritePacket(const char* data, size_t size,
-			std::function<void(const std::error_code&)>&& handler) {}
-
-		void AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler) {}
-	};
-
-	class MockSocket
-	{
-	public:
-		MockSocket(asio::io_context& io)
-			:io_(io)
-		{}
-
-		void AsyncWritePacket(const char* data, size_t size,
-			std::function<void(const std::error_code&)>&& handler)
-		{
-			std::string packet{ data,size };
-			asio::defer(io_, [=]()
-			{
-				writtenPackets.push_back(packet);
-				handler(std::error_code{});
-			});
-		}
-
-		void AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler)
-		{
-			if (receivedPackets.empty())
-			{
-				pendingReader = handler;
-				return;
-			}
-			auto packet = receivedPackets.front();
-			receivedPackets.pop_front();
-			asio::defer(io_, [=]()
-			{
-				handler(packet.first, packet.second.data(), packet.second.size());
-			});
-		}
-
-		void PacketArrive(const std::error_code& error, const char* data, size_t size)
-		{
-			receivedPackets.emplace_back(error, std::string{ data,size });
-
-			if (pendingReader)
-			{
-				auto packet = receivedPackets.front();
-				receivedPackets.pop_front();
-				auto reader = pendingReader;
-				pendingReader = nullptr;
-				reader(packet.first, packet.second.data(), packet.second.size());
-			}
-		}
-
-		std::vector<std::string> writtenPackets;
-		std::list<std::pair<std::error_code, std::string>> receivedPackets;
-
-		std::function<void(const std::error_code&, const char*, size_t)> pendingReader;
-
-		asio::io_context& io_;
-	};
-
 	const std::string packet0{ "hello world" };
 	const std::string packet1{ "no bugs" };
 	const std::string packet2{ "long story" };
@@ -75,13 +13,13 @@ namespace
 
 TEST_CASE("pipe construction")
 {
-	ct::Pipe<StubSocket> pipe{ StubSocket{} };
+	ct::Pipe<ct::StubSocket> pipe{ ct::StubSocket{} };
 }
 
 TEST_CASE("pipe write packet")
 {
 	asio::io_context io;
-	ct::Pipe<MockSocket> pipe{ MockSocket{io} };
+	ct::Pipe<ct::MockSocket> pipe{ ct::MockSocket{io} };
 
 	pipe.SendPacket(packet0.data(), packet0.size());
 	pipe.SendPacket(packet1.data(), packet1.size());
@@ -97,7 +35,7 @@ TEST_CASE("pipe write packet")
 TEST_CASE("pipe read packet")
 {
 	asio::io_context io;
-	ct::Pipe<MockSocket> pipe{ MockSocket{io} };
+	ct::Pipe<ct::MockSocket> pipe{ ct::MockSocket{io} };
 
 	std::vector<std::string> packets;
 	pipe.OnPacket([&packets](const char* data, size_t size)
@@ -119,7 +57,7 @@ TEST_CASE("pipe read packet")
 TEST_CASE("pipe broken")
 {
 	asio::io_context io;
-	ct::Pipe<MockSocket> pipe{ MockSocket{io} };
+	ct::Pipe<ct::MockSocket> pipe{ ct::MockSocket{io} };
 	REQUIRE(!pipe.IsBroken());
 
 	bool broken = false;
@@ -143,7 +81,7 @@ TEST_CASE("pipe broken")
 TEST_CASE("pipe should stop working after broken")
 {
 	asio::io_context io;
-	ct::Pipe<MockSocket> pipe{ MockSocket{io} };
+	ct::Pipe<ct::MockSocket> pipe{ ct::MockSocket{io} };
 
 	bool broken = false;
 	std::vector<std::string> packets;
@@ -175,7 +113,7 @@ TEST_CASE("pipe should stop working after broken")
 TEST_CASE("pipe change packet handler")
 {
 	asio::io_context io;
-	ct::Pipe<MockSocket> pipe{ MockSocket{io} };
+	ct::Pipe<ct::MockSocket> pipe{ ct::MockSocket{io} };
 
 	std::vector<std::string> packets0;
 	pipe.OnPacket([&packets0](const char* data, size_t size)

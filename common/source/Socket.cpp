@@ -51,4 +51,47 @@ namespace ct
 			});
 		});
 	}
+
+	MockSocket::MockSocket(asio::io_context& io)
+		:io_(io)
+	{}
+
+	void MockSocket::AsyncWritePacket(const char* data, size_t size, std::function<void(const std::error_code&)> && handler)
+	{
+		std::string packet{ data,size };
+		asio::defer(io_, [=]()
+		{
+			writtenPackets.push_back(packet);
+			handler(std::error_code{});
+		});
+	}
+
+	void MockSocket::AsyncReadPacket(std::function<void(const std::error_code&, const char*, size_t)>&& handler)
+	{
+		if (receivedPackets.empty())
+		{
+			pendingReader = handler;
+			return;
+		}
+		auto packet = receivedPackets.front();
+		receivedPackets.pop_front();
+		asio::defer(io_, [=]()
+		{
+			handler(packet.first, packet.second.data(), packet.second.size());
+		});
+	}
+
+	void MockSocket::PacketArrive(const std::error_code& error, const char* data, size_t size)
+	{
+		receivedPackets.emplace_back(error, std::string{ data,size });
+
+		if (pendingReader)
+		{
+			auto packet = receivedPackets.front();
+			receivedPackets.pop_front();
+			auto reader = pendingReader;
+			pendingReader = nullptr;
+			reader(packet.first, packet.second.data(), packet.second.size());
+		}
+	}
 }
