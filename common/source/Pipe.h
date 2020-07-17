@@ -130,8 +130,9 @@ namespace ct
 			return;
 		while (packetHandler_ && (!in_.empty()))
 		{
-			packetHandler_(in_.front()->data(), in_.front()->size());
+			auto packet = in_.front();
 			in_.pop_front();
+			packetHandler_(packet->data(), packet->size());
 		}
 	}
 
