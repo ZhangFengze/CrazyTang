@@ -5,17 +5,17 @@
 
 namespace ct
 {
-	class BroadcastServer
+	class Server
 	{
 	public:
-		BroadcastServer(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint);
+		Server(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint);
 
 	private:
-		void Broadcast(std::shared_ptr<Socket> socket);
-		void Remove(std::shared_ptr<Socket> socket);
+		void OnConnection(const std::error_code&, asio::ip::tcp::socket&&);
 
 	private:
+		asio::io_context& io_;
 		ct::Acceptor acceptor_;
-		std::vector<std::shared_ptr<ct::Socket>> sockets_;
+		uint64_t connectionID_ = 0;
 	};
 }

@@ -1,46 +1,31 @@
 #include "Server.h"
+#include "Login.h"
+#include "../../common/source/Pipe.h"
+
+using namespace std::placeholders;
+
 namespace ct
 {
-	BroadcastServer::BroadcastServer(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
-		:acceptor_(io, endpoint,
-			[this](asio::error_code error, asio::ip::tcp::socket&& lowLevelSocket)
-		{
-			if (!error)
-			{
-				auto socket = std::make_shared<Socket>(std::move(lowLevelSocket));
-				sockets_.push_back(socket);
-				Broadcast(socket);
-			}
-		})
+	Server::Server(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
+		:io_(io), acceptor_(io, endpoint, std::bind(&Server::OnConnection, this, _1, _2))
 	{
 	}
 
-	void BroadcastServer::Broadcast(std::shared_ptr<Socket> socket)
+	void Server::OnConnection(const std::error_code& error, asio::ip::tcp::socket&& socket)
 	{
-		socket->AsyncReadPacket(
-			[this, socket](std::error_code error, const char* data, size_t size)
+		if (error)
+			return;
+		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
+		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{ 3 });
+		login->OnSuccess(
+			[login]()
 		{
-			if (error)
-				return Remove(socket);
-
-			for (auto peer : sockets_)
-			{
-				if (peer == socket)
-					continue;
-				peer->AsyncWritePacket(data, size,
-					[this, peer](std::error_code error)
-				{
-					if (error)
-						Remove(peer);
-				});
-			}
-			Broadcast(socket);
+			login->OnSuccess(nullptr);
 		});
-	}
-
-	void BroadcastServer::Remove(std::shared_ptr<Socket> socket)
-	{
-		sockets_.erase(
-			std::find(sockets_.begin(), sockets_.end(), socket));
+		login->OnError(
+			[login]()
+		{
+			login->OnError(nullptr);
+		});
 	}
 }
