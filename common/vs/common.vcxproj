@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\Acceptor.cpp" />
     <ClCompile Include="..\source\Acceptor_Test.cpp" />
+    <ClCompile Include="..\source\Pipe.cpp" />
     <ClCompile Include="..\source\Pipe_Test.cpp" />
     <ClCompile Include="..\source\Socket.cpp" />
     <ClCompile Include="..\source\Socket_Test.cpp" />

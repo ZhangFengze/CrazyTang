@@ -45,6 +45,32 @@ namespace ct
 		bool broken_ = false;
 	};
 
+	class MockPipe
+	{
+	public:
+		void OnPacket(std::function<void(const char*, size_t)> handler);
+		void SendPacket(const char*, size_t);
+
+		void OnBroken(std::function<void(void)>);
+		bool IsBroken() const;
+
+	public:
+		void PacketArrive(const char*, size_t);
+		void SetBroken();
+
+	private:
+		void ProcessPackets();
+
+	public:
+		std::function<void(const char*, size_t)> packetHandler_;
+		std::list<std::string> receivedPackets_;
+
+		std::function<void(void)> brokenHandler_;
+		bool broken_ = false;
+
+		std::vector<std::string> writtenPackets_;
+	};
+
 	template<typename Socket>
 	Pipe<Socket>::Pipe(Socket&& socket)
 		:socket_(std::move(socket))
