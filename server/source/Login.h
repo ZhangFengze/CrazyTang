@@ -79,15 +79,17 @@ namespace ct
 	template<typename Pipe>
 	void Login<Pipe>::OnError()
 	{
+		auto callback = std::move(errorCallback_);
 		CleanUp();
-		errorCallback_();
+		callback();
 	}
 
 	template<typename Pipe>
 	void Login<Pipe>::OnSuccess()
 	{
+		auto callback = std::move(successCallback_);
 		CleanUp();
-		successCallback_();
+		callback();
 	}
 
 	template<typename Pipe>
@@ -95,6 +97,13 @@ namespace ct
 	{
 		pipe_->OnPacket(nullptr);
 		pipe_->OnBroken(nullptr);
+		pipe_.reset();
+
+		id_ = -1;
+
 		timeout_.cancel();
+
+		successCallback_ = nullptr;
+		errorCallback_ = nullptr;
 	}
 }
