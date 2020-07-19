@@ -23,7 +23,7 @@ TEST_CASE("login")
 
 	bool success = false;
 	uint64_t id = -1;
-	login.OnSuccess([&success, &id](uint64_t id_) {success = true; id = id_; });
+	login.OnSuccess([&success, &id](uint64_t id_) {REQUIRE(!success); success = true; id = id_; });
 
 	REQUIRE(pipe->writtenPackets_.size() == 1);
 	REQUIRE(pipe->writtenPackets_[0] == clientHello);
