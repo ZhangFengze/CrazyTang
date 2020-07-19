@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\Acceptor.cpp" />
     <ClCompile Include="..\source\Acceptor_Test.cpp" />
+    <ClCompile Include="..\source\AsyncConnect.cpp" />
     <ClCompile Include="..\source\Pipe.cpp" />
     <ClCompile Include="..\source\Pipe_Test.cpp" />
     <ClCompile Include="..\source\Socket.cpp" />
@@ -125,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Acceptor.h" />
+    <ClInclude Include="..\source\AsyncConnect.h" />
     <ClInclude Include="..\source\Pipe.h" />
     <ClInclude Include="..\source\Socket.h" />
   </ItemGroup>
