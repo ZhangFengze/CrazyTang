@@ -51,6 +51,22 @@ TEST_CASE("login failed by wrong server hello")
 	REQUIRE(error);
 }
 
+TEST_CASE("login failed by wrong id")
+{
+	asio::io_context io;
+	auto pipe = std::make_shared<ct::MockPipe>();
+	Login login{ pipe, io, std::chrono::seconds{10} };
+
+	bool error = false;
+	login.OnError([&error]() {error = true; });
+	login.OnSuccess([](uint64_t) {REQUIRE(false); });
+
+	auto reply = serverHello + "not a number";
+	pipe->PacketArrive(reply.data(), reply.size());
+
+	REQUIRE(error);
+}
+
 TEST_CASE("login failed by timeout")
 {
 	asio::io_context io;
