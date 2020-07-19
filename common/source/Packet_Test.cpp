@@ -60,4 +60,18 @@ TEST_CASE("packet should deep copy")
 	REQUIRE(0 == memcmp(p1.Data(), testData.data(), p1.Size()));
 }
 
+TEST_CASE("packet should move rvalue")
+{
+	ct::Packet p0{ testData.data(),testData.size() };
+	ct::Packet p1{ std::move(p0) };
+
+	REQUIRE(p0.Size() == 0);
+	REQUIRE(p1.Size() == testData.size());
+
+	ct::Packet p2;
+	p2 = std::move(p1);
+	REQUIRE(p1.Size() == 0);
+	REQUIRE(p2.Size() == testData.size());
+}
+
 #endif
