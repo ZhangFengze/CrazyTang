@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <asio.hpp>
+#include "../../common/source/Packet.h"
 
 namespace ct
 {
@@ -14,7 +15,7 @@ namespace ct
 		void OnSuccess(std::function<void()>);
 
 	private:
-		void OnClientHello(const char*, size_t);
+		void OnClientHello(Packet&&);
 		void OnError();
 		void OnSuccess();
 		void CleanUp();
@@ -34,9 +35,9 @@ namespace ct
 		:pipe_(pipe), id_(id), timeout_(io, duration)
 	{
 		pipe_->OnPacket(
-			[this](const char* data, size_t size)
+			[this](Packet&& packet)
 		{
-			OnClientHello(data, size);
+			OnClientHello(std::move(packet));
 		});
 
 		pipe_->OnBroken(
@@ -66,13 +67,13 @@ namespace ct
 	}
 
 	template<typename Pipe>
-	void Login<Pipe>::OnClientHello(const char* data, size_t size)
+	void Login<Pipe>::OnClientHello(Packet&& packet)
 	{
-		const std::string_view expected = "hello from client";
-		if (std::string(data, size) != expected)
+		const Packet expected = std::string("hello from client");
+		if (packet != expected)
 			return OnError();
 		auto reply = "hello client, your id is " + std::to_string(id_);
-		pipe_->SendPacket(reply.data(), reply.size());
+		pipe_->SendPacket(Packet{ reply });
 		OnSuccess();
 	}
 

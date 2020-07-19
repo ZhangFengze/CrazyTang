@@ -12,6 +12,16 @@ namespace ct
 	{
 	}
 
+	Packet::Packet(const std::string_view& view)
+		: buffer_(view.data(), view.data() + view.size())
+	{
+	}
+
+	Packet::Packet(const std::string& str)
+		: buffer_(str.data(), str.data() + str.size())
+	{
+	}
+
 	const char* Packet::Data() const
 	{
 		return buffer_.data();

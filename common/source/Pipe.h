@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <system_error>
+#include "Packet.h"
 #include "Socket.h"
 
 namespace ct
@@ -12,8 +13,9 @@ namespace ct
 		Pipe(Socket&&);
 
 	public:
-		void OnPacket(std::function<void(const char*, size_t)> handler);
-		void SendPacket(const char*, size_t);
+		void OnPacket(std::function<void(Packet&&)> handler);
+		void SendPacket(Packet&&);
+		void SendPacket(const Packet&);
 
 		void OnBroken(std::function<void(void)>);
 		bool IsBroken() const;
@@ -23,8 +25,6 @@ namespace ct
 		void Send();
 		void ProcessPackets();
 
-		std::shared_ptr<std::vector<char>> MakePacket(const char*, size_t);
-
 		void OnReceivedPacket();
 		void OnSetPacketHandler();
 		void OnError(const std::error_code&);
@@ -33,12 +33,12 @@ namespace ct
 		std::shared_ptr<bool> alive_ = std::make_shared<bool>(false);
 		Socket socket_;
 
-		std::function<void(const char*, size_t)> packetHandler_;
+		std::function<void(Packet&&)> packetHandler_;
 
-		std::list<std::shared_ptr<std::vector<char>>> in_;
+		std::list<Packet> in_;
 		bool receiving_ = false;
 
-		std::list<std::shared_ptr<std::vector<char>>> out_;
+		std::list<Packet> out_;
 		bool sending_ = false;
 
 		std::function<void()> brokenHandler_;
@@ -48,27 +48,28 @@ namespace ct
 	class MockPipe
 	{
 	public:
-		void OnPacket(std::function<void(const char*, size_t)> handler);
-		void SendPacket(const char*, size_t);
+		void OnPacket(std::function<void(Packet&&)> handler);
+		void SendPacket(Packet&&);
+		void SendPacket(const Packet&);
 
 		void OnBroken(std::function<void(void)>);
 		bool IsBroken() const;
 
 	public:
-		void PacketArrive(const char*, size_t);
+		void PacketArrive(const Packet&);
 		void SetBroken();
 
 	private:
 		void ProcessPackets();
 
 	public:
-		std::function<void(const char*, size_t)> packetHandler_;
-		std::list<std::string> receivedPackets_;
+		std::function<void(Packet&&)> packetHandler_;
+		std::list<Packet> receivedPackets_;
 
 		std::function<void(void)> brokenHandler_;
 		bool broken_ = false;
 
-		std::vector<std::string> writtenPackets_;
+		std::vector<Packet> writtenPackets_;
 	};
 
 	template<typename Socket>
@@ -78,7 +79,7 @@ namespace ct
 	}
 
 	template<typename Socket>
-	void Pipe<Socket>::OnPacket(std::function<void(const char*, size_t)> handler)
+	void Pipe<Socket>::OnPacket(std::function<void(Packet&&)> handler)
 	{
 		packetHandler_ = handler;
 		if (!packetHandler_)
@@ -99,12 +100,19 @@ namespace ct
 	}
 
 	template<typename Socket>
-	void Pipe<Socket>::SendPacket(const char* data, size_t size)
+	void Pipe<Socket>::SendPacket(Packet&& packet)
 	{
 		if (broken_)
 			return;
-		out_.push_back(MakePacket(data, size));
+		out_.emplace_back(std::move(packet));
 		Send();
+	}
+
+	template<typename Socket>
+	void Pipe<Socket>::SendPacket(const Packet& packet)
+	{
+		auto copy = packet;
+		return SendPacket(std::move(copy));
 	}
 
 	template<typename Socket>
@@ -116,13 +124,13 @@ namespace ct
 
 		std::weak_ptr<bool> alive = alive_;
 		socket_.AsyncReadPacket(
-			[alive, this](const std::error_code& error, const char* data, size_t size)
+			[alive, this](const std::error_code& error, Packet&& packet)
 		{
 			if (alive.expired())
 				return;
 			if (error)
 				return OnError(error);
-			in_.push_back(MakePacket(data, size));
+			in_.emplace_back(std::move(packet));
 			receiving_ = false;
 			OnReceivedPacket();
 		});
@@ -136,7 +144,7 @@ namespace ct
 		sending_ = true;
 
 		std::weak_ptr<bool> alive = alive_;
-		socket_.AsyncWritePacket(out_.front()->data(), out_.front()->size(),
+		socket_.AsyncWritePacket(std::move(out_.front()),
 			[alive, this](const std::error_code& error)
 		{
 			if (alive.expired())
@@ -156,18 +164,10 @@ namespace ct
 			return;
 		while (packetHandler_ && (!in_.empty()))
 		{
-			auto packet = in_.front();
+			auto packet = std::move(in_.front());
 			in_.pop_front();
-			packetHandler_(packet->data(), packet->size());
+			packetHandler_(std::move(packet));
 		}
-	}
-
-	template<typename Socket>
-	std::shared_ptr<std::vector<char>> Pipe<Socket>::MakePacket(const char* data, size_t size)
-	{
-		auto packet = std::make_shared<std::vector<char>>(size);
-		std::copy(data, data + size, packet->data());
-		return packet;
 	}
 
 	template<typename Socket>

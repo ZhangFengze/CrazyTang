@@ -2,6 +2,7 @@
 #include <catch.hpp>
 #include "Socket.h"
 
+using namespace std::literals;
 using asio::ip::tcp;
 
 namespace
@@ -10,6 +11,9 @@ namespace
 	{
 		return tcp::endpoint{ asio::ip::make_address("127.0.0.1"),53453 };
 	}
+	const ct::Packet packet0 = "hello"sv;
+	const ct::Packet packet1 = "first hello"sv;
+	const ct::Packet packet2 = "second"sv;
 }
 
 TEST_CASE("construction", "[Socket]")
@@ -30,11 +34,10 @@ TEST_CASE("async read, async write", "[Socket]")
 	{
 		REQUIRE(!error);
 		socket = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
-		socket->AsyncReadPacket([](std::error_code error, const char* data, size_t size)
+		socket->AsyncReadPacket([](std::error_code error, ct::Packet&& packet)
 		{
 			REQUIRE(!error);
-			REQUIRE(size == 6);
-			REQUIRE(strcmp(data, "hello") == 0);
+			REQUIRE(packet == packet0);
 		});
 	});
 
@@ -43,7 +46,7 @@ TEST_CASE("async read, async write", "[Socket]")
 	{
 		REQUIRE(!error);
 		ct::Socket c{ std::move(lowLevelSocket) };
-		c.AsyncWritePacket("hello", 6,
+		c.AsyncWritePacket(packet0,
 			[](std::error_code error) 
 		{
 			REQUIRE(!error);
@@ -65,17 +68,15 @@ TEST_CASE("multiple read write", "[Socket]")
 	{
 		REQUIRE(!error);
 		socket = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
-		socket->AsyncReadPacket([socket](std::error_code error, const char* data, size_t size)
+		socket->AsyncReadPacket([socket](std::error_code error, ct::Packet&& packet)
 		{
 			REQUIRE(!error);
-			REQUIRE(size == 17);
-			REQUIRE(strcmp(data, "first hello here") == 0);
+			REQUIRE(packet == packet1);
 
-			socket->AsyncReadPacket([](std::error_code error, const char* data, size_t size)
+			socket->AsyncReadPacket([](std::error_code error, ct::Packet&& packet)
 			{
 				REQUIRE(!error);
-				REQUIRE(size == 14);
-				REQUIRE(strcmp(data, "that's second") == 0);
+				REQUIRE(packet == packet2);
 			});
 		});
 	});
@@ -85,12 +86,12 @@ TEST_CASE("multiple read write", "[Socket]")
 	{
 		REQUIRE(!error);
 		auto c = std::make_shared<ct::Socket>(std::move(lowLevelSocket));
-		c->AsyncWritePacket("first hello here", 17,
+		c->AsyncWritePacket(packet1, 
 			[c](std::error_code error)
 		{
 			REQUIRE(!error);
 			
-			c->AsyncWritePacket("that's second", 14,
+			c->AsyncWritePacket(packet2,
 				[c](std::error_code error)
 			{
 				REQUIRE(!error);

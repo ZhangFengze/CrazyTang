@@ -45,7 +45,7 @@ namespace ct
 		assert(socket_);
 
 		std::weak_ptr<Socket> alive = socket_;
-		socket_->AsyncWritePacket(data, size,
+		socket_->AsyncWritePacket(Packet{ data,size }, 
 			[alive, this](const std::error_code& error)
 		{
 			if (alive.expired())
@@ -72,7 +72,7 @@ namespace ct
 
 		std::weak_ptr<Socket> alive = socket_;
 		socket_->AsyncReadPacket(
-			[alive, this](const std::error_code& error, const char* data, size_t size)
+			[alive, this](const std::error_code& error, Packet&& packet)
 		{
 			if (alive.expired())
 				return;
@@ -84,7 +84,7 @@ namespace ct
 				return;
 			}
 			if (onData_)
-				onData_(data, size);
+				onData_(packet.Data(),packet.Size());
 			Read();
 		});
 	}

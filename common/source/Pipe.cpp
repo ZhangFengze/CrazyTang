@@ -2,7 +2,7 @@
 
 namespace ct
 {
-	void MockPipe::OnPacket(std::function<void(const char*, size_t)> handler)
+	void MockPipe::OnPacket(std::function<void(Packet&&)> handler)
 	{
 		packetHandler_ = handler;
 		if (!packetHandler_)
@@ -10,11 +10,17 @@ namespace ct
 		ProcessPackets();
 	}
 
-	void MockPipe::SendPacket(const char* data, size_t size)
+	void MockPipe::SendPacket(Packet&& packet)
 	{
 		if (broken_)
 			return;
-		writtenPackets_.push_back(std::string{ data,size });
+		writtenPackets_.emplace_back(std::move(packet));
+	}
+
+	void MockPipe::SendPacket(const Packet& packet)
+	{
+		auto copy = packet;
+		return SendPacket(std::move(copy));
 	}
 
 	void MockPipe::OnBroken(std::function<void(void)> handler)
@@ -27,11 +33,11 @@ namespace ct
 		return broken_;
 	}
 
-	void MockPipe::PacketArrive(const char* data, size_t size)
+	void MockPipe::PacketArrive(const Packet& packet)
 	{
 		if (broken_)
 			return;
-		receivedPackets_.push_back(std::string{ data,size });
+		receivedPackets_.emplace_back(packet);
 		ProcessPackets();
 	}
 
@@ -52,9 +58,9 @@ namespace ct
 			return;
 		while (packetHandler_ && (!receivedPackets_.empty()))
 		{
-			auto packet = receivedPackets_.front();
+			auto packet = std::move(receivedPackets_.front());
 			receivedPackets_.pop_front();
-			packetHandler_(packet.data(), packet.size());
+			packetHandler_(std::move(packet));
 		}
 	}
 }

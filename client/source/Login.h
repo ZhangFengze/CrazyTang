@@ -2,6 +2,7 @@
 #include <memory>
 #include <optional>
 #include <asio.hpp>
+#include "../../common/source/Packet.h"
 
 namespace ct
 {
@@ -15,7 +16,7 @@ namespace ct
 		void OnSuccess(std::function<void(uint64_t)>);
 
 	private:
-		void OnServerHello(const char*, size_t);
+		void OnServerHello(Packet&&);
 		void OnError();
 		void OnSuccess(uint64_t id);
 		void CleanUp();
@@ -34,13 +35,13 @@ namespace ct
 	Login<Pipe>::Login(std::shared_ptr<Pipe> pipe, asio::io_context& io, Duration duration)
 		:pipe_(pipe), timeout_(io, duration)
 	{
-		const std::string_view hello = "hello from client";
-		pipe_->SendPacket(hello.data(), hello.size());
+		const Packet hello = std::string("hello from client");
+		pipe_->SendPacket(hello);
 
 		pipe_->OnPacket(
-			[this](const char* data, size_t size)
+			[this](Packet&& packet)
 		{
-			OnServerHello(data, size);
+			OnServerHello(std::move(packet));
 		});
 
 		pipe_->OnBroken(
@@ -70,10 +71,10 @@ namespace ct
 	}
 
 	template<typename Pipe>
-	void Login<Pipe>::OnServerHello(const char* data, size_t size)
+	void Login<Pipe>::OnServerHello(Packet&& packet)
 	{
 		const std::string_view expected = "hello client, your id is ";
-		auto reply = std::string(data, size);
+		auto reply = std::string(packet.Data(), packet.Size());
 		if (reply.substr(0, expected.size()) != expected)
 			return OnError();
 

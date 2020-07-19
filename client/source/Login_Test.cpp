@@ -1,14 +1,19 @@
 #ifdef CT_TEST
 #include <catch.hpp>
 #include "Login.h"
+#include "../../common/source/Packet.h"
 #include "../../common/source/Pipe.h"
+
+using namespace std::literals;
 
 namespace
 {
-	const std::string clientHello = "hello from client";
-	const std::string wrongClientHello = "hi from client";
-	const std::string serverHello = "hello client, your id is ";
-	const std::string wrongServerHello = "hi client, your id is ";
+	const ct::Packet clientHello = "hello from client"sv;
+	const ct::Packet wrongClientHello = "hi from client"sv;
+	uint64_t expectedID = 123;
+	const ct::Packet serverHello = "hello client, your id is 123"sv;
+	const ct::Packet wrongServerHello = "hi client, your id is 123"sv;
+	const ct::Packet wrongIDServerHello = "hello client, your id is not a number"sv;
 
 	using Login = ct::Login<ct::MockPipe>;
 }
@@ -28,11 +33,10 @@ TEST_CASE("login")
 	REQUIRE(pipe->writtenPackets_.size() == 1);
 	REQUIRE(pipe->writtenPackets_[0] == clientHello);
 
-	auto reply = serverHello + "123";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(serverHello);
 
 	REQUIRE(success);
-	REQUIRE(id == 123);
+	REQUIRE(id == expectedID);
 }
 
 TEST_CASE("login failed by wrong server hello")
@@ -45,8 +49,7 @@ TEST_CASE("login failed by wrong server hello")
 	login.OnError([&error]() {error = true; });
 	login.OnSuccess([](uint64_t) {REQUIRE(false); });
 
-	auto reply = wrongServerHello + "123";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(wrongServerHello);
 
 	REQUIRE(error);
 }
@@ -61,8 +64,7 @@ TEST_CASE("login failed by wrong id")
 	login.OnError([&error]() {error = true; });
 	login.OnSuccess([](uint64_t) {REQUIRE(false); });
 
-	auto reply = serverHello + "not a number";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(wrongIDServerHello);
 
 	REQUIRE(error);
 }
@@ -110,10 +112,9 @@ TEST_CASE("login cleanup pipe after success")
 	login.OnError([&error] {error = true; });
 	login.OnSuccess([](uint64_t){});
 
-	auto reply = serverHello + "123";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(serverHello);
 
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(serverHello);
 
 	pipe->SetBroken();
 
@@ -130,8 +131,7 @@ TEST_CASE("login cleanup pipe after failed by wrong server hello")
 	login.OnError([&error] {++error; });
 	login.OnSuccess([](uint64_t) {});
 
-	auto reply = wrongServerHello + "123";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(wrongServerHello);
 
 	pipe->SetBroken();
 
@@ -152,8 +152,7 @@ TEST_CASE("login cleanup pipe after failed by timeout")
 	t.wait();
 	io.run();
 
-	auto reply = wrongServerHello + "123";
-	pipe->PacketArrive(reply.data(), reply.size());
+	pipe->PacketArrive(wrongServerHello);
 	pipe->SetBroken();
 
 	REQUIRE(pipe->receivedPackets_.size() == 1);

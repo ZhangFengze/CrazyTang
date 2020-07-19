@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <string_view>
 
 namespace ct
 {
@@ -10,6 +12,8 @@ namespace ct
 		Packet(Packet&&) = default;
 		Packet(size_t);
 		Packet(const char*, size_t);
+		Packet(const std::string_view&);
+		Packet(const std::string&);
 		Packet& operator=(const Packet&) = default;
 		Packet& operator=(Packet&&) = default;
 
