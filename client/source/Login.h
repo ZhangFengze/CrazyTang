@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <optional>
 #include <asio.hpp>
 
 namespace ct
@@ -18,7 +19,7 @@ namespace ct
 		void OnError();
 		void OnSuccess(uint64_t id);
 		void CleanUp();
-		bool ToNumber(const std::string&, uint64_t&);
+		std::optional<uint64_t> ToNumber(const std::string&);
 
 	public:
 		std::shared_ptr<Pipe> pipe_;
@@ -76,10 +77,10 @@ namespace ct
 		if (reply.substr(0, expected.size()) != expected)
 			return OnError();
 
-		uint64_t id = -1;
-		if (!ToNumber(reply.substr(expected.size()), id))
+		auto id = ToNumber(reply.substr(expected.size()));
+		if (!id)
 			return OnError();
-		OnSuccess(id);
+		OnSuccess(*id);
 	}
 
 	template<typename Pipe>
@@ -112,16 +113,15 @@ namespace ct
 	}
 
 	template<typename Pipe>
-	bool Login<Pipe>::ToNumber(const std::string& str, uint64_t& number)
+	std::optional<uint64_t> Login<Pipe>::ToNumber(const std::string& str)
 	{
 		try
 		{
-			number = std::stoull(str);
-			return true;
+			return std::stoull(str);
 		}
 		catch (...)
 		{
-			return false;
+			return std::nullopt;
 		}
 	}
 }
