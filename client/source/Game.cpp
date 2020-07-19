@@ -13,6 +13,10 @@
 #include "Net.h"
 #include "MessageHandler.h"
 #include "Replication.h"
+#include "Login.h"
+#include "../../common/source/AsyncConnect.h"
+#include "../../common/source/Socket.h"
+#include "../../common/source/Pipe.h"
 #include <toml.hpp>
 #include <fstream>
 #include <filesystem>
@@ -174,7 +178,24 @@ namespace ct
 		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
 
 		Net net{ io };
-		net.Connect(ServerEndpoint(config));
+		//net.Connect(ServerEndpoint(config));
+
+		AsyncConnect(io, ServerEndpoint(config),
+			[this](const std::error_code& error, std::shared_ptr<Socket> socket)
+		{
+			auto pipe = std::make_shared<Pipe<Socket>>(std::move(*socket));
+			auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, io, std::chrono::seconds{ 3 });
+			login->OnSuccess(
+				[login](uint64_t id)
+			{
+				login->OnSuccess(nullptr);
+			});
+			login->OnError(
+				[login]()
+			{
+				login->OnError(nullptr);
+			});
+		});
 
 		MessageHandler messageHandler;
 		net.OnData([&](const char* data, size_t size)

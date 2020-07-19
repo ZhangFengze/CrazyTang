@@ -131,6 +131,7 @@
     <ClInclude Include="..\source\Camera.h" />
     <ClInclude Include="..\source\Collider.h" />
     <ClInclude Include="..\source\Game.h" />
+    <ClInclude Include="..\source\Login.h" />
     <ClInclude Include="..\source\Math.h" />
     <ClInclude Include="..\source\MessageHandler.h" />
     <ClInclude Include="..\source\Move.h" />

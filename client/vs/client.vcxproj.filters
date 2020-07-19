@@ -109,6 +109,9 @@
     <ClInclude Include="..\source\Replication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Login.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\..\3rd\eigen\debug\msvc\eigen.natvis" />
