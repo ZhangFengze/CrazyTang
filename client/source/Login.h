@@ -18,6 +18,7 @@ namespace ct
 		void OnError();
 		void OnSuccess(uint64_t id);
 		void CleanUp();
+		bool ToNumber(const std::string&, uint64_t&);
 
 	public:
 		std::shared_ptr<Pipe> pipe_;
@@ -75,15 +76,10 @@ namespace ct
 		if (reply.substr(0, expected.size()) != expected)
 			return OnError();
 
-		try
-		{
-			uint64_t id = std::stoull(reply.substr(expected.size()));
-			OnSuccess(id);
-		}
-		catch (...)
-		{
-			OnError();
-		}
+		uint64_t id = -1;
+		if (!ToNumber(reply.substr(expected.size()), id))
+			return OnError();
+		OnSuccess(id);
 	}
 
 	template<typename Pipe>
@@ -113,5 +109,19 @@ namespace ct
 
 		successCallback_ = nullptr;
 		errorCallback_ = nullptr;
+	}
+
+	template<typename Pipe>
+	bool Login<Pipe>::ToNumber(const std::string& str, uint64_t& number)
+	{
+		try
+		{
+			number = std::stoull(str);
+			return true;
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 }
