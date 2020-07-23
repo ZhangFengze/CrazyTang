@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <sstream>
 
 namespace ct
 {
@@ -26,6 +27,55 @@ namespace ct
 		std::ostream& os_;
 	};
 
+	class OutputStringArchive
+	{
+	public:
+		OutputStringArchive();
+
+		template<typename T>
+		void Write(const T&);
+
+		std::string String() const;
+
+	private:
+		std::ostringstream os_;
+		OutputArchive ar_;
+	};
+
+	class InputArchive
+	{
+	public:
+		InputArchive(std::istream&);
+
+		template<typename T>
+		std::optional<T> Read();
+
+		template<typename T>
+		bool Read(T&);
+
+		template<>
+		bool Read(std::string&);
+
+	private:
+		std::istream& is_;
+	};
+
+	class InputStringArchive
+	{
+	public:
+		InputStringArchive(const std::string&);
+
+		template<typename T>
+		std::optional<T> Read();
+
+		template<typename T>
+		bool Read(T&);
+
+	private:
+		std::istringstream is_;
+		InputArchive ar_;
+	};
+
 	template<typename T>
 	void OutputArchive::Write(const T& value)
 	{
@@ -45,24 +95,6 @@ namespace ct
 	{
 		Write(std::string_view{ value });
 	}
-
-	class InputArchive
-	{
-	public:
-		InputArchive(std::istream&);
-
-		template<typename T>
-		std::optional<T> Read();
-
-		template<typename T>
-		bool Read(T&);
-
-		template<>
-		bool Read(std::string&);
-
-	private:
-		std::istream& is_;
-	};
 
 	template<typename T>
 	bool InputArchive::Read(T& value)
@@ -89,5 +121,23 @@ namespace ct
 		if (!Read(result))
 			return std::nullopt;
 		return result;
+	}
+
+	template<typename T>
+	void OutputStringArchive::Write(const T& value)
+	{
+		ar_.Write(value);
+	}
+
+	template<typename T>
+	std::optional<T> InputStringArchive::Read()
+	{
+		return ar_.Read<T>();
+	}
+
+	template<typename T>
+	bool InputStringArchive::Read(T& value)
+	{
+		return ar_.Read(value);
 	}
 }

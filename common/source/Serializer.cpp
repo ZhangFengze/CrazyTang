@@ -7,8 +7,23 @@ namespace ct
 	{
 	}
 
+	OutputStringArchive::OutputStringArchive()
+		: ar_(os_)
+	{
+	}
+
+	std::string OutputStringArchive::String() const
+	{
+		return os_.str();
+	}
+
 	InputArchive::InputArchive(std::istream& is)
 		:is_(is)
+	{
+	}
+
+	InputStringArchive::InputStringArchive(const std::string& str)
+		: is_(str), ar_(is_)
 	{
 	}
 }
