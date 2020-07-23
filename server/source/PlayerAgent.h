@@ -1,12 +1,14 @@
 #pragma once
+#include "../../common/source/Packet.h"
+#include "../../common/source/Pipe.h"
+#include "../../common/source/Serializer.h"
 #include <string>
 #include <functional>
-#include "../../common/source/Packet.h"
-#include "../../common/source/Serializer.h"
+#include <cassert>
 
 namespace ct
 {
-	template<typename Pipe>
+	template<typename Pipe = ct::Pipe<>>
 	class PlayerAgent
 	{
 	public:
