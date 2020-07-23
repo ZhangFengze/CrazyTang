@@ -122,6 +122,8 @@
     <ClCompile Include="..\source\Packet_Test.cpp" />
     <ClCompile Include="..\source\Pipe.cpp" />
     <ClCompile Include="..\source\Pipe_Test.cpp" />
+    <ClCompile Include="..\source\Serializer.cpp" />
+    <ClCompile Include="..\source\Serializer_Test.cpp" />
     <ClCompile Include="..\source\Socket.cpp" />
     <ClCompile Include="..\source\Socket_Test.cpp" />
     <ClCompile Include="..\source\main.cpp" />
@@ -131,6 +133,7 @@
     <ClInclude Include="..\source\AsyncConnect.h" />
     <ClInclude Include="..\source\Packet.h" />
     <ClInclude Include="..\source\Pipe.h" />
+    <ClInclude Include="..\source\Serializer.h" />
     <ClInclude Include="..\source\Socket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
