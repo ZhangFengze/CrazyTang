@@ -6,7 +6,7 @@
 
 namespace ct
 {
-	template<typename Socket>
+	template<typename Socket = ct::Socket>
 	class Pipe
 	{
 	public:
