@@ -27,12 +27,18 @@
     <ClCompile Include="..\source\Login_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\PlayerAgent_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Login.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PlayerAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
