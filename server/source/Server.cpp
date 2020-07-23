@@ -18,14 +18,14 @@ namespace ct
 		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
 		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{ 3 });
 		login->OnSuccess(
-			[login]()
+			[login, pipe, this]()
 		{
-			login->OnSuccess(nullptr);
+			auto agent = std::make_shared<PlayerAgent<>>(pipe);
+			agents_.push_back(agent);
 		});
 		login->OnError(
 			[login]()
 		{
-			login->OnError(nullptr);
 		});
 	}
 }
