@@ -14,9 +14,14 @@ namespace ct
 	public:
 		PlayerAgent(std::shared_ptr<Pipe>);
 		void Listen(const std::string& tag, std::function<void(std::string&&)>);
+		void OnError(std::function<void()>);
+
+	private:
+		void OnPacket(Packet&&);
 
 	private:
 		std::shared_ptr<Pipe> pipe_;
+		std::function<void()> errorHandler_;
 		std::unordered_map<std::string, std::function<void(std::string&&)>> listeners_;
 	};
 
@@ -27,20 +32,12 @@ namespace ct
 		pipe_->OnPacket(
 			[this](Packet&& packet)
 		{
-			InputStringArchive ar(std::string{ packet.Data(),packet.Size() });
-			auto tag = ar.Read<std::string>();
-			if (!tag)
-				return;
+			OnPacket(std::move(packet));
+		});
 
-			auto iter = listeners_.find(*tag);
-			if (iter == listeners_.end())
-				return;
-
-			auto content = ar.Read<std::string>();
-			if (!content)
-				return;
-
-			iter->second(std::move(*content));
+		pipe_->OnBroken([this]()
+		{
+			errorHandler_();
 		});
 	}
 
@@ -49,5 +46,30 @@ namespace ct
 	{
 		assert(listeners_.find(tag) == listeners_.end());
 		listeners_[tag] = handler;
+	}
+
+	template<typename Pipe>
+	void PlayerAgent<Pipe>::OnError(std::function<void()> handler)
+	{
+		errorHandler_ = handler;
+	}
+
+	template<typename Pipe>
+	void PlayerAgent<Pipe>::OnPacket(Packet&& packet)
+	{
+		InputStringArchive ar(std::string{ packet.Data(),packet.Size() });
+		auto tag = ar.Read<std::string>();
+		if (!tag)
+			return;
+
+		auto iter = listeners_.find(*tag);
+		if (iter == listeners_.end())
+			return;
+
+		auto content = ar.Read<std::string>();
+		if (!content)
+			return;
+
+		iter->second(std::move(*content));
 	}
 }

@@ -48,4 +48,19 @@ TEST_CASE("player agent has no listener")
 
 	REQUIRE(!called);
 }
+
+TEST_CASE("player agent pipe broken")
+{
+	auto pipe = std::make_shared<ct::MockPipe>();
+	ct::PlayerAgent agent{ pipe };
+	bool called = false;
+	agent.OnError([&]()
+	{
+		called = true;
+	});
+
+	pipe->SetBroken();
+
+	REQUIRE(called);
+}
 #endif
