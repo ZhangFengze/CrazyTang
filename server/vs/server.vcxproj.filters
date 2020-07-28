@@ -27,7 +27,7 @@
     <ClCompile Include="..\source\Login_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\PlayerAgent_Test.cpp">
+    <ClCompile Include="..\source\NetAgent_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClInclude Include="..\source\Login.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PlayerAgent.h">
+    <ClInclude Include="..\source\NetAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

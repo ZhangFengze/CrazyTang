@@ -9,10 +9,10 @@
 namespace ct
 {
 	template<typename Pipe = ct::Pipe<>>
-	class PlayerAgent
+	class NetAgent
 	{
 	public:
-		PlayerAgent(std::shared_ptr<Pipe>);
+		NetAgent(std::shared_ptr<Pipe>);
 		void Listen(const std::string& tag, std::function<void(std::string&&)>);
 		void OnError(std::function<void()>);
 
@@ -26,7 +26,7 @@ namespace ct
 	};
 
 	template<typename Pipe>
-	PlayerAgent<Pipe>::PlayerAgent(std::shared_ptr<Pipe> pipe)
+	NetAgent<Pipe>::NetAgent(std::shared_ptr<Pipe> pipe)
 		:pipe_(pipe)
 	{
 		pipe_->OnPacket(
@@ -42,20 +42,20 @@ namespace ct
 	}
 
 	template<typename Pipe>
-	void PlayerAgent<Pipe>::Listen(const std::string& tag, std::function<void(std::string&&)> handler)
+	void NetAgent<Pipe>::Listen(const std::string& tag, std::function<void(std::string&&)> handler)
 	{
 		assert(listeners_.find(tag) == listeners_.end());
 		listeners_[tag] = handler;
 	}
 
 	template<typename Pipe>
-	void PlayerAgent<Pipe>::OnError(std::function<void()> handler)
+	void NetAgent<Pipe>::OnError(std::function<void()> handler)
 	{
 		errorHandler_ = handler;
 	}
 
 	template<typename Pipe>
-	void PlayerAgent<Pipe>::OnPacket(Packet&& packet)
+	void NetAgent<Pipe>::OnPacket(Packet&& packet)
 	{
 		InputStringArchive ar(std::string{ packet.Data(),packet.Size() });
 		auto tag = ar.Read<std::string>();

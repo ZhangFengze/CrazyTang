@@ -1,6 +1,6 @@
 #ifdef CT_TEST
 #include <catch.hpp>
-#include "PlayerAgent.h"
+#include "NetAgent.h"
 #include "../../common/source/Pipe.h"
 #include "../../common/source/Serializer.h"
 
@@ -16,7 +16,7 @@ namespace
 TEST_CASE("player agent has listener")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
-	ct::PlayerAgent agent{ pipe };
+	ct::NetAgent agent{ pipe };
 	std::string received;
 	agent.Listen(tag, [&](std::string&& content)
 	{
@@ -34,7 +34,7 @@ TEST_CASE("player agent has listener")
 TEST_CASE("player agent has no listener")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
-	ct::PlayerAgent agent{ pipe };
+	ct::NetAgent agent{ pipe };
 	bool called = false;
 	agent.Listen(tag, [&](std::string&& content)
 	{
@@ -52,7 +52,7 @@ TEST_CASE("player agent has no listener")
 TEST_CASE("player agent pipe broken")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
-	ct::PlayerAgent agent{ pipe };
+	ct::NetAgent agent{ pipe };
 	bool called = false;
 	agent.OnError([&]()
 	{

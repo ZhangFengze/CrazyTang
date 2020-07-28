@@ -1,5 +1,5 @@
 #pragma once
-#include "PlayerAgent.h"
+#include "NetAgent.h"
 #include "../../common/source/Acceptor.h"
 #include <asio.hpp>
 
@@ -17,6 +17,6 @@ namespace ct
 		asio::io_context& io_;
 		ct::Acceptor acceptor_;
 		uint64_t connectionID_ = 0;
-		std::list<std::shared_ptr<PlayerAgent<>>> agents_;
+		std::list<std::shared_ptr<NetAgent<>>> agents_;
 	};
 }

@@ -20,7 +20,7 @@ namespace ct
 		login->OnSuccess(
 			[login, pipe, this]()
 		{
-			auto agent = std::make_shared<PlayerAgent<>>(pipe);
+			auto agent = std::make_shared<NetAgent<>>(pipe);
 			agents_.push_back(agent);
 		});
 		login->OnError(
