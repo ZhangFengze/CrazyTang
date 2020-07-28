@@ -63,4 +63,44 @@ namespace ct
 			packetHandler_(std::move(packet));
 		}
 	}
+
+	void PairedPipe::OnPacket(std::function<void(Packet&&)> handler)
+	{
+		pipe_.OnPacket(handler);
+	}
+
+	void PairedPipe::SendPacket(Packet&& packet)
+	{
+		auto copy = packet;
+		pipe_.SendPacket(std::move(packet));
+		auto mate = mate_.lock();
+		if (mate)
+			mate->pipe_.PacketArrive(copy);
+	}
+
+	void PairedPipe::SendPacket(const Packet& packet)
+	{
+		auto copy = packet;
+		SendPacket(std::move(copy));
+	}
+
+	void PairedPipe::OnBroken(std::function<void(void)> handler)
+	{
+		pipe_.OnBroken(handler);
+	}
+
+	bool PairedPipe::IsBroken() const
+	{
+		return pipe_.IsBroken();
+	}
+
+	std::pair<std::shared_ptr<PairedPipe>, std::shared_ptr<PairedPipe>> PairedPipe::CreatePair()
+	{
+		auto pipe0 = std::make_shared<PairedPipe>();
+		auto pipe1 = std::make_shared<PairedPipe>();
+
+		pipe0->mate_ = pipe1;
+		pipe1->mate_ = pipe0;
+		return { pipe0, pipe1 };
+	}
 }

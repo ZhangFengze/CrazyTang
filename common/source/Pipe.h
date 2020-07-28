@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
 #include <system_error>
+#include <utility>
+#include <memory>
 #include "Packet.h"
 #include "Socket.h"
 
@@ -70,6 +72,25 @@ namespace ct
 		bool broken_ = false;
 
 		std::vector<Packet> writtenPackets_;
+	};
+
+	class PairedPipe
+	{
+	public:
+		void OnPacket(std::function<void(Packet&&)> handler);
+		void SendPacket(Packet&&);
+		void SendPacket(const Packet&);
+
+		void OnBroken(std::function<void(void)>);
+		bool IsBroken() const;
+
+	public:
+		static std::pair<std::shared_ptr<PairedPipe>,
+			std::shared_ptr<PairedPipe>> CreatePair();
+
+	private:
+		std::weak_ptr<PairedPipe> mate_;
+		MockPipe pipe_;
 	};
 
 	template<typename Socket>
