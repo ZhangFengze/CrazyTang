@@ -13,7 +13,7 @@ namespace
 	const std::string anotherTag = "tag2";
 }
 
-TEST_CASE("player agent has listener")
+TEST_CASE("net agent has listener")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
 	ct::NetAgent agent{ pipe };
@@ -31,7 +31,7 @@ TEST_CASE("player agent has listener")
 	REQUIRE(received == content);
 }
 
-TEST_CASE("player agent has no listener")
+TEST_CASE("net agent has no listener")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
 	ct::NetAgent agent{ pipe };
@@ -49,7 +49,7 @@ TEST_CASE("player agent has no listener")
 	REQUIRE(!called);
 }
 
-TEST_CASE("player agent pipe broken")
+TEST_CASE("net agent pipe broken")
 {
 	auto pipe = std::make_shared<ct::MockPipe>();
 	ct::NetAgent agent{ pipe };
