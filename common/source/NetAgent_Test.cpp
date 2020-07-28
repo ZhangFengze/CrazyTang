@@ -15,36 +15,32 @@ namespace
 
 TEST_CASE("net agent has listener")
 {
-	auto pipe = std::make_shared<ct::MockPipe>();
-	ct::NetAgent agent{ pipe };
+	auto [pipe0, pipe1] = ct::PairedPipe::CreatePair();
+	ct::NetAgent agent0{ pipe0 };
+	ct::NetAgent agent1{ pipe1 };
+
 	std::string received;
-	agent.Listen(tag, [&](std::string&& content)
+	agent0.Listen(tag, [&](std::string&& content)
 	{
 		received = content;
 	});
-
-	ct::OutputStringArchive ar;
-	ar.Write(tag);
-	ar.Write(content);
-	pipe->PacketArrive(ct::Packet(ar.String()));
+	agent1.Send(tag, content);
 
 	REQUIRE(received == content);
 }
 
 TEST_CASE("net agent has no listener")
 {
-	auto pipe = std::make_shared<ct::MockPipe>();
-	ct::NetAgent agent{ pipe };
+	auto [pipe0, pipe1] = ct::PairedPipe::CreatePair();
+	ct::NetAgent agent0{ pipe0 };
+	ct::NetAgent agent1{ pipe1 };
+
 	bool called = false;
-	agent.Listen(tag, [&](std::string&& content)
+	agent0.Listen(tag, [&](std::string&& content)
 	{
 		called = true;
 	});
-
-	ct::OutputStringArchive ar;
-	ar.Write(anotherTag);
-	ar.Write(content);
-	pipe->PacketArrive(ct::Packet(ar.String()));
+	agent1.Send(anotherTag, content);
 
 	REQUIRE(!called);
 }

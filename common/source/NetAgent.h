@@ -13,8 +13,11 @@ namespace ct
 	{
 	public:
 		NetAgent(std::shared_ptr<Pipe>);
+
 		void Listen(const std::string& tag, std::function<void(std::string&&)>);
 		void OnError(std::function<void()>);
+		
+		void Send(const std::string& tag, const std::string& content);
 
 	private:
 		void OnPacket(Packet&&);
@@ -52,6 +55,15 @@ namespace ct
 	void NetAgent<Pipe>::OnError(std::function<void()> handler)
 	{
 		errorHandler_ = handler;
+	}
+
+	template<typename Pipe>
+	void NetAgent<Pipe>::Send(const std::string& tag, const std::string& content)
+	{
+		OutputStringArchive ar;
+		ar.Write(tag);
+		ar.Write(content);
+		pipe_->SendPacket(Packet{ ar.String() });
 	}
 
 	template<typename Pipe>
