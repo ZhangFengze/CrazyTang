@@ -1,5 +1,5 @@
 #pragma once
-#include "NetAgent.h"
+#include "../../common/source/NetAgent.h"
 #include "../../common/source/Acceptor.h"
 #include <asio.hpp>
 

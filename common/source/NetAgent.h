@@ -1,7 +1,7 @@
 #pragma once
-#include "../../common/source/Packet.h"
-#include "../../common/source/Pipe.h"
-#include "../../common/source/Serializer.h"
+#include "Packet.h"
+#include "Pipe.h"
+#include "Serializer.h"
 #include <string>
 #include <functional>
 #include <cassert>

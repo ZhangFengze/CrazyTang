@@ -1,8 +1,8 @@
 #ifdef CT_TEST
 #include <catch.hpp>
 #include "NetAgent.h"
-#include "../../common/source/Pipe.h"
-#include "../../common/source/Serializer.h"
+#include "Pipe.h"
+#include "Serializer.h"
 
 using namespace std::literals;
 

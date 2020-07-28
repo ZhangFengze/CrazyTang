@@ -17,13 +17,11 @@
   <ItemGroup>
     <ClCompile Include="..\source\Login_Test.cpp" />
     <ClCompile Include="..\source\main.cpp" />
-    <ClCompile Include="..\source\NetAgent_Test.cpp" />
     <ClCompile Include="..\source\Server.cpp" />
     <ClCompile Include="..\source\Server_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Login.h" />
-    <ClInclude Include="..\source\NetAgent.h" />
     <ClInclude Include="..\source\Server.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
