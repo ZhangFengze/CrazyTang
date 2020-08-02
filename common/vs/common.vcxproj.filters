@@ -54,10 +54,10 @@
     <ClCompile Include="..\source\NetAgent_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\ECS_Test.cpp">
+    <ClCompile Include="..\source\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\ECS.cpp">
+    <ClCompile Include="..\source\Entity_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClInclude Include="..\source\NetAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\ECS.h">
+    <ClInclude Include="..\source\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

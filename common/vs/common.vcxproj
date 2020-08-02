@@ -118,8 +118,8 @@
     <ClCompile Include="..\source\Acceptor.cpp" />
     <ClCompile Include="..\source\Acceptor_Test.cpp" />
     <ClCompile Include="..\source\AsyncConnect.cpp" />
-    <ClCompile Include="..\source\ECS.cpp" />
-    <ClCompile Include="..\source\ECS_Test.cpp" />
+    <ClCompile Include="..\source\Entity.cpp" />
+    <ClCompile Include="..\source\Entity_Test.cpp" />
     <ClCompile Include="..\source\NetAgent_Test.cpp" />
     <ClCompile Include="..\source\Packet.cpp" />
     <ClCompile Include="..\source\Packet_Test.cpp" />
@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClInclude Include="..\source\Acceptor.h" />
     <ClInclude Include="..\source\AsyncConnect.h" />
-    <ClInclude Include="..\source\ECS.h" />
+    <ClInclude Include="..\source\Entity.h" />
     <ClInclude Include="..\source\NetAgent.h" />
     <ClInclude Include="..\source\Packet.h" />
     <ClInclude Include="..\source\Pipe.h" />

@@ -1,6 +1,6 @@
 #ifdef CT_TEST
 #include <catch.hpp>
-#include "ECS.h"
+#include "Entity.h"
 
 namespace
 {
