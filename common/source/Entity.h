@@ -19,10 +19,13 @@ namespace ct
 		void Remove();
 
 		template<typename Component>
-		bool Has();
+		bool Has() const;
 
 		template<typename Component>
 		Component* Get();
+
+		template<typename Component>
+		const Component* Get() const;
 
 	public:
 		void Destroy();
@@ -80,13 +83,19 @@ namespace ct
 	}
 
 	template<typename Component>
-	bool EntityHandle::Has()
+	bool EntityHandle::Has() const
 	{
 		return container_->Has<Component>(id_);
 	}
 
 	template<typename Component>
 	Component* EntityHandle::Get()
+	{
+		return container_->Get<Component>(id_);
+	}
+
+	template<typename Component>
+	const Component* EntityHandle::Get() const
 	{
 		return container_->Get<Component>(id_);
 	}
