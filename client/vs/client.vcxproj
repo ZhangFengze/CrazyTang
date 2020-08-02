@@ -120,7 +120,6 @@
     <ClCompile Include="..\source\Move.cpp" />
     <ClCompile Include="..\source\Net.cpp" />
     <ClCompile Include="..\source\Render.cpp" />
-    <ClCompile Include="..\source\Replication.cpp" />
     <ClCompile Include="..\source\Sprite.cpp" />
     <ClCompile Include="..\source\Texture.cpp" />
     <ClCompile Include="..\source\Transformable.cpp" />
@@ -138,7 +137,6 @@
     <ClInclude Include="..\source\Move.h" />
     <ClInclude Include="..\source\Net.h" />
     <ClInclude Include="..\source\Render.h" />
-    <ClInclude Include="..\source\Replication.h" />
     <ClInclude Include="..\source\Sprite.h" />
     <ClInclude Include="..\source\Map.h" />
     <ClInclude Include="..\source\Texture.h" />

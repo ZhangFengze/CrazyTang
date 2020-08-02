@@ -12,7 +12,6 @@
 #include "Texture.h"
 #include "Net.h"
 #include "MessageHandler.h"
-#include "Replication.h"
 #include "Login.h"
 #include "../../common/source/AsyncConnect.h"
 #include "../../common/source/Socket.h"
@@ -208,7 +207,6 @@ namespace ct
 		systems.add<RenderSystem>(window);
 		systems.add<MoveSystem>();
 		systems.add<CameraSystem>(window);
-		systems.add<ReplicationSystem>(net, messageHandler);
 		systems.configure();
 
 		Vector2f cameraSize{ 640,400 };
