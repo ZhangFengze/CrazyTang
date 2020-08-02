@@ -5,7 +5,7 @@
 
 namespace ct
 {
-	class Entity
+	class EntityHandle
 	{
 	public:
 		template<typename Component>
@@ -25,7 +25,7 @@ namespace ct
 	};
 
 	template<typename Component>
-	Component* Entity::Add()
+	Component* EntityHandle::Add()
 	{
 		assert(components_.find(typeid(Component)) == components_.end());
 		auto type = std::type_index(typeid(Component));
@@ -35,7 +35,7 @@ namespace ct
 	}
 
 	template<typename Component>
-	void Entity::Remove()
+	void EntityHandle::Remove()
 	{
 		assert(components_.find(typeid(Component)) != components_.end());
 		auto type = std::type_index(typeid(Component));
@@ -43,14 +43,14 @@ namespace ct
 	}
 
 	template<typename Component>
-	bool Entity::Has()
+	bool EntityHandle::Has()
 	{
 		auto type = std::type_index(typeid(Component));
 		return components_.find(type) != components_.end();
 	}
 
 	template<typename Component>
-	Component* Entity::Get()
+	Component* EntityHandle::Get()
 	{
 		if (!Has<Component>())
 			return nullptr;
