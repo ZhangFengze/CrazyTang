@@ -11,7 +11,6 @@
 #include "Map.h"
 #include "Texture.h"
 #include "Net.h"
-#include "MessageHandler.h"
 #include "Login.h"
 #include "../../common/source/AsyncConnect.h"
 #include "../../common/source/Socket.h"
@@ -194,12 +193,6 @@ namespace ct
 			{
 				login->OnError(nullptr);
 			});
-		});
-
-		MessageHandler messageHandler;
-		net.OnData([&](const char* data, size_t size)
-		{
-			messageHandler.OnMessage(std::string{ data,size });
 		});
 
 		systems.add<TextureLoader>();

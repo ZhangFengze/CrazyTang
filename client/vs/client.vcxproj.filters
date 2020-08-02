@@ -50,12 +50,6 @@
     <ClCompile Include="..\source\Net.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\MessageHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\MessageHandler_Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Login_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -101,9 +95,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Net.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\MessageHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Login.h">
