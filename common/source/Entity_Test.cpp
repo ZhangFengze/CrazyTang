@@ -7,7 +7,7 @@ namespace
 	struct Data {};
 }
 
-TEST_CASE("entity")
+TEST_CASE("entity component")
 {
 	ct::EntityContainer entities;
 	ct::EntityHandle e = entities.Create();
