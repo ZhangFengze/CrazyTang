@@ -35,4 +35,14 @@ TEST_CASE("entity comparison")
 	REQUIRE(e0Copy == e0);
 	REQUIRE(e0Copy != e1);
 }
+
+TEST_CASE("entity destroy")
+{
+	ct::EntityContainer entities;
+
+	ct::EntityHandle e = entities.Create();
+	REQUIRE(e.Valid());
+	e.Destroy();
+	REQUIRE(e.Valid() == false);
+}
 #endif

@@ -25,6 +25,10 @@ namespace ct
 		Component* Get();
 
 	public:
+		void Destroy();
+		bool Valid() const;
+
+	public:
 		bool operator==(const EntityHandle&) const = default;
 		bool operator!=(const EntityHandle&) const = default;
 
@@ -44,7 +48,9 @@ namespace ct
 
 	private:
 		bool Has(uint64_t) const;
+		void Remove(uint64_t);
 
+	private:
 		template<typename Component>
 		Component* Add(uint64_t id);
 
