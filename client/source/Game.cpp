@@ -177,17 +177,15 @@ namespace ct
 		AsyncConnect(io, ServerEndpoint(config),
 			[this](const std::error_code& error, std::shared_ptr<Socket> socket)
 		{
-			auto pipe = std::make_shared<Pipe<Socket>>(std::move(*socket));
-			auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, io, std::chrono::seconds{ 3 });
+			auto pipe = std::make_shared<Pipe<>>(std::move(*socket));
+			auto login = std::make_shared<Login<>>(pipe, io, std::chrono::seconds{ 3 });
 			login->OnSuccess(
 				[login](uint64_t id)
 			{
-				login->OnSuccess(nullptr);
 			});
 			login->OnError(
 				[login]()
 			{
-				login->OnError(nullptr);
 			});
 		});
 

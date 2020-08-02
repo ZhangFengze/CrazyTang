@@ -6,7 +6,7 @@
 
 namespace ct
 {
-	template<typename Pipe>
+	template<typename Pipe = ct::Pipe<>>
 	class Login
 	{
 	public:
