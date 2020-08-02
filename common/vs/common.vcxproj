@@ -118,6 +118,7 @@
     <ClCompile Include="..\source\Acceptor.cpp" />
     <ClCompile Include="..\source\Acceptor_Test.cpp" />
     <ClCompile Include="..\source\AsyncConnect.cpp" />
+    <ClCompile Include="..\source\ECS.cpp" />
     <ClCompile Include="..\source\ECS_Test.cpp" />
     <ClCompile Include="..\source\NetAgent_Test.cpp" />
     <ClCompile Include="..\source\Packet.cpp" />

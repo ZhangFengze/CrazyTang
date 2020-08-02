@@ -25,6 +25,12 @@ namespace ct
 		std::unordered_map<std::type_index, std::any> components_;
 	};
 
+	class EntityContainer
+	{
+	public:
+		EntityHandle Create();
+	};
+
 	template<typename Component>
 	Component* EntityHandle::Add()
 	{

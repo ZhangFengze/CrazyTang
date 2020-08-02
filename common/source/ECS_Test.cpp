@@ -9,7 +9,8 @@ namespace
 
 TEST_CASE("entity")
 {
-	ct::EntityHandle e;
+	ct::EntityContainer entities;
+	ct::EntityHandle e = entities.Create();
 
 	REQUIRE(e.Has<Data>() == false);
 	REQUIRE(e.Get<Data>() == nullptr);
