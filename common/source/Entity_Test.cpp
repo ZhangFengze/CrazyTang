@@ -40,6 +40,10 @@ TEST_CASE("entity comparison")
 	auto e0Copy = e0;
 	REQUIRE(e0Copy == e0);
 	REQUIRE(e0Copy != e1);
+
+	ct::EntityHandle defaultConstructed;
+	REQUIRE(defaultConstructed != e0);
+	REQUIRE(defaultConstructed != e1);
 }
 
 TEST_CASE("entity destroy")
