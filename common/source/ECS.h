@@ -37,9 +37,10 @@ namespace ct
 	{
 	public:
 		EntityHandle Create();
-		bool Has(uint64_t) const;
 
 	private:
+		bool Has(uint64_t) const;
+
 		template<typename Component>
 		Component* Add(uint64_t id);
 
