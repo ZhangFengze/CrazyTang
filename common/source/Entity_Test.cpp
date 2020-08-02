@@ -7,6 +7,12 @@ namespace
 	struct Data {};
 }
 
+TEST_CASE("entity default constructor")
+{
+	ct::EntityHandle e;
+	REQUIRE(!e.Valid());
+}
+
 TEST_CASE("entity component")
 {
 	ct::EntityContainer entities;

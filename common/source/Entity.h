@@ -33,12 +33,9 @@ namespace ct
 		bool operator!=(const EntityHandle&) const = default;
 
 	private:
+		friend class EntityContainer;
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;
-
-	private:
-		EntityHandle() = default;
-		friend class EntityContainer;
 	};
 
 	class EntityContainer

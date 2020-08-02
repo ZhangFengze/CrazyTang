@@ -9,6 +9,8 @@ namespace ct
 
 	bool EntityHandle::Valid() const
 	{
+		if (!container_)
+			return false;
 		return container_->Has(id_);
 	}
 
