@@ -24,6 +24,10 @@ namespace ct
 		template<typename Component>
 		Component* Get();
 
+	public:
+		bool operator==(const EntityHandle&) const = default;
+		bool operator!=(const EntityHandle&) const = default;
+
 	private:
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;

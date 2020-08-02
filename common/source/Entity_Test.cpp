@@ -23,4 +23,16 @@ TEST_CASE("entity")
 	REQUIRE(e.Has<Data>() == false);
 	REQUIRE(e.Get<Data>() == nullptr);
 }
+
+TEST_CASE("entity comparison")
+{
+	ct::EntityContainer entities;
+	ct::EntityHandle e0 = entities.Create();
+	ct::EntityHandle e1 = entities.Create();
+	REQUIRE(e0 != e1);
+
+	auto e0Copy = e0;
+	REQUIRE(e0Copy == e0);
+	REQUIRE(e0Copy != e1);
+}
 #endif
