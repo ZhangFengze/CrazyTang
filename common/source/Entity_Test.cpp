@@ -35,6 +35,7 @@ TEST_CASE("entity comparison")
 	ct::EntityContainer entities;
 	ct::EntityHandle e0 = entities.Create();
 	ct::EntityHandle e1 = entities.Create();
+	REQUIRE(e0 == e0);
 	REQUIRE(e0 != e1);
 
 	auto e0Copy = e0;
