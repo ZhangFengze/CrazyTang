@@ -47,9 +47,6 @@
     <ClCompile Include="..\source\Transformable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Net.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Login_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -92,9 +89,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Net.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Login.h">

@@ -10,7 +10,6 @@
 #include "Move.h"
 #include "Map.h"
 #include "Texture.h"
-#include "Net.h"
 #include "Login.h"
 #include "../../common/source/AsyncConnect.h"
 #include "../../common/source/Socket.h"
@@ -174,9 +173,6 @@ namespace ct
 	{
 		auto config = GetConfig();
 		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
-
-		Net net{ io };
-		//net.Connect(ServerEndpoint(config));
 
 		AsyncConnect(io, ServerEndpoint(config),
 			[this](const std::error_code& error, std::shared_ptr<Socket> socket)
