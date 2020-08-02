@@ -4,6 +4,15 @@
 
 using namespace std::placeholders;
 
+namespace
+{
+	struct ConnectionInfo
+	{
+		uint64_t connectionID;
+		std::weak_ptr<ct::NetAgent<>> agent;
+	};
+}
+
 namespace ct
 {
 	Server::Server(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
@@ -20,12 +29,29 @@ namespace ct
 		login->OnSuccess(
 			[login, pipe, this]()
 		{
-			auto agent = std::make_shared<NetAgent<>>(pipe);
-			agents_.push_back(agent);
+			OnLoginSuccess(pipe, login->id_);
 		});
 		login->OnError(
 			[login]()
 		{
+		});
+	}
+
+	void Server::OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID)
+	{
+		auto agent = std::make_shared<NetAgent<>>(pipe);
+		agents_[connectionID] = agent;
+
+		auto e = entities_.Create();
+		auto info = e.Add<ConnectionInfo>();
+		info->connectionID = connectionID;
+		info->agent = agent;
+
+		agent->OnError([e, connectionID, this]() mutable
+		{
+			if (e.Valid())
+				e.Destroy();
+			agents_.erase(connectionID);
 		});
 	}
 }
