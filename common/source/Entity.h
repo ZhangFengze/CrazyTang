@@ -61,10 +61,10 @@ namespace ct
 		Component* Get(uint64_t id);
 
 	private:
-		using EntityComponents = std::unordered_map<std::type_index, std::any>;
-		uint64_t assignedID_ = 0;
-		std::unordered_map<uint64_t, EntityComponents> entities_;
 		friend class EntityHandle;
+		uint64_t assignedID_ = 0;
+		using EntityComponents = std::unordered_map<std::type_index, std::any>;
+		std::unordered_map<uint64_t, EntityComponents> entities_;
 	};
 
 	template<typename Component>
