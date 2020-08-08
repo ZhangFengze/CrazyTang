@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <asio.hpp>
-#include "../../common/source/Packet.h"
+#include "../common/source/Packet.h"
 
 namespace ct
 {

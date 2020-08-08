@@ -1,6 +1,6 @@
 #include "Server.h"
 #include "Login.h"
-#include "../../common/source/Pipe.h"
+#include "../common/source/Pipe.h"
 
 using namespace std::placeholders;
 
