@@ -174,14 +174,29 @@ namespace ct
 		auto config = GetConfig();
 		sf::RenderWindow window(GetVideoMode(config), "CrazyTang", sf::Style::Default);
 
+		std::shared_ptr<Pipe<>> pipe;
 		AsyncConnect(io, ServerEndpoint(config),
-			[this](const std::error_code& error, std::shared_ptr<Socket> socket)
+			[this, &window, &pipe](const std::error_code& error, std::shared_ptr<Socket> socket)
 		{
-			auto pipe = std::make_shared<Pipe<>>(std::move(*socket));
+			if (error)
+			{
+				window.close();
+				return;
+			}
+
+			pipe = std::make_shared<Pipe<>>(std::move(*socket));
 			auto login = std::make_shared<Login<>>(pipe, io, std::chrono::seconds{ 3 });
 			login->OnSuccess(
-				[login](uint64_t id)
+				[login, this](uint64_t id)
 			{
+				Vector2f cameraSize{ 640,400 };
+
+				CreateBackground(entities, "../../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
+				CreateBackground(entities, "../../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
+
+				LoadMap(entities, "../../../../asset/level/map.json");
+				auto player = CreatePlayer(entities);
+				CreateFollowCamera(entities, player, cameraSize);
 			});
 			login->OnError(
 				[login]()
@@ -195,15 +210,6 @@ namespace ct
 		systems.add<MoveSystem>();
 		systems.add<CameraSystem>(window);
 		systems.configure();
-
-		Vector2f cameraSize{ 640,400 };
-
-		CreateBackground(entities, "../../../../asset/environment/back.png", { 2.f,2.f }, 0.05f, -200.f, cameraSize.x());
-		CreateBackground(entities, "../../../../asset/environment/middle.png", { 1.f,1.f }, 0.1f, -0.f, cameraSize.x());
-
-		LoadMap(entities, "../../../../asset/level/map.json");
-		auto player = CreatePlayer(entities);
-		CreateFollowCamera(entities, player, cameraSize);
 		
 		sf::Clock clock;
 		sf::Time accumulated = sf::seconds(0);
