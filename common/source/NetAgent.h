@@ -21,6 +21,7 @@ namespace ct
 
 	private:
 		void OnPacket(Packet&&);
+		void CleanUp();
 
 	private:
 		std::shared_ptr<Pipe> pipe_;
@@ -40,7 +41,9 @@ namespace ct
 
 		pipe_->OnBroken([this]()
 		{
-			errorHandler_();
+			auto callback = std::move(errorHandler_);
+			CleanUp();
+			callback();
 		});
 	}
 
@@ -83,5 +86,13 @@ namespace ct
 			return;
 
 		iter->second(std::move(*content));
+	}
+
+	template<typename Pipe>
+	void NetAgent<Pipe>::CleanUp()
+	{
+		pipe_.reset();
+		errorHandler_ = nullptr;
+		listeners_.clear();
 	}
 }

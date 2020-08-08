@@ -11,6 +11,16 @@ namespace
 	const std::string tag = "tag";
 	const std::string content = "content";
 	const std::string anotherTag = "tag2";
+
+	struct CallFunctionWhenDestroy
+	{
+		CallFunctionWhenDestroy(std::function<void(void)> f) :func(f) {}
+		~CallFunctionWhenDestroy()
+		{
+			func();
+		}
+		std::function<void(void)> func;
+	};
 }
 
 TEST_CASE("net agent has listener")
@@ -58,5 +68,26 @@ TEST_CASE("net agent pipe broken")
 	pipe->SetBroken();
 
 	REQUIRE(called);
+}
+
+TEST_CASE("net agent clean up after broken")
+{
+	auto pipe = std::make_shared<ct::MockPipe>();
+	ct::NetAgent agent{ pipe };
+
+	bool called = false;
+	{
+		auto call = std::make_shared<CallFunctionWhenDestroy>([&called]
+		{
+			called = true;
+		});
+		agent.OnError([call]()
+		{
+		});
+	}
+
+	pipe->SetBroken();
+
+	REQUIRE(called == true);
 }
 #endif
