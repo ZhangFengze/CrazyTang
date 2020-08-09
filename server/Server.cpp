@@ -11,30 +11,28 @@ namespace
 		uint64_t connectionID;
 		std::weak_ptr<ct::NetAgent<>> agent;
 	};
-}
+} // namespace
 
 namespace ct
 {
-	Server::Server(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint)
-		:io_(io), acceptor_(io, endpoint, std::bind(&Server::OnConnection, this, _1, _2))
+	Server::Server(asio::io_context &io, const asio::ip::tcp::endpoint &endpoint)
+		: io_(io), acceptor_(io, endpoint, std::bind(&Server::OnConnection, this, _1, _2))
 	{
 	}
 
-	void Server::OnConnection(const std::error_code& error, asio::ip::tcp::socket&& socket)
+	void Server::OnConnection(const std::error_code &error, asio::ip::tcp::socket &&socket)
 	{
 		if (error)
 			return;
 		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
-		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{ 3 });
+		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{3});
 		login->OnSuccess(
-			[login, pipe, this]()
-		{
-			OnLoginSuccess(pipe, login->id_);
-		});
+			[login, pipe, this]() {
+				OnLoginSuccess(pipe, login->id_);
+			});
 		login->OnError(
-			[login]()
-		{
-		});
+			[login]() {
+			});
 	}
 
 	void Server::OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID)
@@ -48,9 +46,9 @@ namespace ct
 		info->agent = agent;
 
 		agent->Listen("test",
-			[agent](std::string&& data) {
-			agent->Send("test", std::move(data));
-		});
+					  [agent](std::string &&data) {
+						  agent->Send("test",std::move(data));
+					  });
 
 		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
@@ -58,4 +56,4 @@ namespace ct
 			agents_.erase(connectionID);
 		});
 	}
-}
+} // namespace ct
