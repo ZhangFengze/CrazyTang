@@ -47,8 +47,12 @@ namespace ct
 		info->connectionID = connectionID;
 		info->agent = agent;
 
-		agent->OnError([e, connectionID, this]() mutable
-		{
+		agent->Listen("test",
+			[agent](std::string&& data) {
+			agent->Send("test", std::move(data));
+		});
+
+		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
 				e.Destroy();
 			agents_.erase(connectionID);
