@@ -6,7 +6,7 @@ import shutil
 
 def execute(cmd):
     print_colored(f"executing: {cmd}")
-    assert(0 == subprocess.call(cmd))
+    assert(0 == subprocess.call(cmd, shell=True))
 
 
 def get_root_path():
