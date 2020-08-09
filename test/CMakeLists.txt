@@ -6,11 +6,10 @@ project(test)
 aux_source_directory(. source)
 aux_source_directory(../common common)
 
-set(test_id 0)
-
 foreach(test ${source})
-    set(test_name "test_${test_id}")
-    math(EXPR test_id "${test_id}+1")
+    string(SUBSTRING ${test} 2 -1 test)
+
+    set(test_name "${test}")
 
     add_executable(${test_name} ${test} ${common})
 
