@@ -13,5 +13,3 @@ set(CMAKE_CXX_STACK_SIZE 100000000)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "../submodules/asio/asio/include")
 target_include_directories(${PROJECT_NAME} PUBLIC "../submodules/Catch2/single_include/catch2")
-
-target_compile_definitions(${PROJECT_NAME} PUBLIC CT_TEST)
