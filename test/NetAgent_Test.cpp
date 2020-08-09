@@ -1,3 +1,4 @@
+#define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include "../common/NetAgent.h"
 #include "../common/Pipe.h"
