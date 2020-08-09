@@ -27,8 +27,8 @@ namespace ct
 		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
 		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{3});
 		login->OnSuccess(
-			[login, pipe, this]() {
-				OnLoginSuccess(pipe, login->id_);
+			[login, pipe, this](uint64_t id) {
+				OnLoginSuccess(pipe, id);
 			});
 		login->OnError(
 			[login]() {

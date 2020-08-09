@@ -23,7 +23,7 @@ TEST_CASE("login")
 	Login login{ pipe, id, io, std::chrono::seconds{10} };
 	login.OnError([]() {REQUIRE(false); });
 	bool success = false;
-	login.OnSuccess([&success] {success = true; });
+	login.OnSuccess([&success](uint64_t) {success = true; });
 
 	pipe->PacketArrive(clientHello);
 
@@ -40,7 +40,7 @@ TEST_CASE("login failed by wrong client hello")
 	Login login{ pipe, id, io, std::chrono::seconds{10} };
 	bool failed = false;
 	login.OnError([&failed]() {failed = true; });
-	login.OnSuccess([] {REQUIRE(false); });
+	login.OnSuccess([](uint64_t) {REQUIRE(false); });
 
 	pipe->PacketArrive(wrongClientHello);
 
@@ -54,7 +54,7 @@ TEST_CASE("login failed by timeout")
 	Login login{ pipe, id, io, std::chrono::nanoseconds{1} };
 	bool failed = false;
 	login.OnError([&failed]() {failed = true; });
-	login.OnSuccess([] {REQUIRE(false); });
+	login.OnSuccess([](uint64_t) {REQUIRE(false); });
 
 	asio::steady_timer t{ io,std::chrono::nanoseconds{2} };
 	t.wait();
@@ -71,7 +71,7 @@ TEST_CASE("login failed by pipe broken")
 	Login login{ pipe, id, io, std::chrono::seconds{10} };
 	bool failed = false;
 	login.OnError([&failed]() {failed = true; });
-	login.OnSuccess([] {REQUIRE(false); });
+	login.OnSuccess([](uint64_t) {REQUIRE(false); });
 
 	pipe->SetBroken();
 
@@ -85,7 +85,7 @@ TEST_CASE("login cleanup pipe after success")
 	Login login{ pipe, id, io, std::chrono::seconds{10} };
 	bool error = false;
 	login.OnError([&error] {error = true; });
-	login.OnSuccess([]{});
+	login.OnSuccess([](uint64_t){});
 
 	pipe->PacketArrive(clientHello);
 	pipe->PacketArrive(clientHello);
@@ -104,7 +104,7 @@ TEST_CASE("login cleanup pipe after failed by wrong client hello")
 	Login login{ pipe, id, io, std::chrono::seconds{10} };
 	int error = 0;
 	login.OnError([&error] {++error; });
-	login.OnSuccess([]{});
+	login.OnSuccess([](uint64_t){});
 
 	pipe->PacketArrive(wrongClientHello);
 	pipe->PacketArrive(clientHello);
@@ -123,7 +123,7 @@ TEST_CASE("login cleanup pipe after failed by timeout")
 	Login login{ pipe, id, io, std::chrono::nanoseconds{1} };
 	int error = 0;
 	login.OnError([&error] {++error; });
-	login.OnSuccess([]{});
+	login.OnSuccess([](uint64_t){});
 
 	asio::steady_timer t{ io,std::chrono::nanoseconds{2} };
 	t.wait();
@@ -143,7 +143,7 @@ TEST_CASE("login cleanup pipe after failed by pipe broken")
 	Login login{ pipe, id, io, std::chrono::nanoseconds{1} };
 	int error = 0;
 	login.OnError([&error] {++error; });
-	login.OnSuccess([]{});
+	login.OnSuccess([](uint64_t){});
 
 	pipe->SetBroken();
 

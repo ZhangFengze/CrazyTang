@@ -12,7 +12,7 @@ namespace ct
 		template<typename Duration>
 		Login(std::shared_ptr<Pipe>, uint64_t id, asio::io_context& io, Duration timeout);
 		void OnError(std::function<void()>);
-		void OnSuccess(std::function<void()>);
+		void OnSuccess(std::function<void(uint64_t)>);
 
 	private:
 		void OnClientHello(Packet&&);
@@ -26,7 +26,7 @@ namespace ct
 		asio::steady_timer timeout_;
 
 		std::function<void()> errorCallback_;
-		std::function<void()> successCallback_;
+		std::function<void(uint64_t)> successCallback_;
 	};
 
 	template<typename Pipe>
@@ -61,7 +61,7 @@ namespace ct
 	}
 
 	template<typename Pipe>
-	void Login<Pipe>::OnSuccess(std::function<void()> callback)
+	void Login<Pipe>::OnSuccess(std::function<void(uint64_t)> callback)
 	{
 		successCallback_ = callback;
 	}
@@ -89,8 +89,9 @@ namespace ct
 	void Login<Pipe>::OnSuccess()
 	{
 		auto callback = std::move(successCallback_);
+		uint64_t id=id_;
 		CleanUp();
-		callback();
+		callback(id);
 	}
 
 	template<typename Pipe>
