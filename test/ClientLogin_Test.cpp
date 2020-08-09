@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Login.h"
 #include "../../common/source/Packet.h"
@@ -176,4 +175,3 @@ TEST_CASE("login cleanup pipe after failed by pipe broken")
 
 	REQUIRE(error == 1);
 }
-#endif
