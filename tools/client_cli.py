@@ -14,6 +14,6 @@ output_path = build_dir.joinpath("Debug/client_cli")
 if args.clean:
     rmdir(build_dir)
 
-execute(f"cmake -S {source_dir} -B {build_dir}")
-execute(f"cmake --build {build_dir} --config debug -j {os.cpu_count()}")
+cmake(source_dir, build_dir)
+build(build_dir, "debug")
 execute(str(output_path))

@@ -14,8 +14,8 @@ output_dir = build_dir.joinpath("Debug")
 if args.clean:
     rmdir(build_dir)
 
-execute(f"cmake -S {source_dir} -B {build_dir}")
-execute(f"cmake --build {build_dir} --config debug -j {os.cpu_count()}")
+cmake(source_dir, build_dir)
+build(build_dir, "debug")
 
 with os.scandir(output_dir) as it:
     for entry in it:

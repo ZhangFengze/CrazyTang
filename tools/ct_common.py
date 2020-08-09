@@ -24,3 +24,11 @@ def print_colored(str):
 def rmdir(dir):
     print_colored(f"executing: rmdir {dir}")
     shutil.rmtree(dir)
+
+
+def cmake(source_dir, build_dir):
+    execute(f"cmake -S {source_dir} -B {build_dir}")
+
+
+def build(build_dir, config):
+    execute(f"cmake --build {build_dir} --config {config} -j {os.cpu_count()}")
