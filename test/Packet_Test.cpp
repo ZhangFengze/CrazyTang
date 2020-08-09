@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "Packet.h"
+#include "../common/Packet.h"
 
 namespace
 {

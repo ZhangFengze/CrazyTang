@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "Socket.h"
+#include "../common/Socket.h"
 
 using namespace std::literals;
 using asio::ip::tcp;

@@ -1,7 +1,7 @@
 #include <catch.hpp>
-#include "NetAgent.h"
-#include "Pipe.h"
-#include "Serializer.h"
+#include "../common/NetAgent.h"
+#include "../common/Pipe.h"
+#include "../common/Serializer.h"
 
 using namespace std::literals;
 

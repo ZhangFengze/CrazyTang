@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "Login.h"
+#include "../server/Login.h"
 #include "../common/Packet.h"
 #include "../common/Pipe.h"
 

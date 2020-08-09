@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "Entity.h"
+#include "../common/Entity.h"
 
 namespace
 {

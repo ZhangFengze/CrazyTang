@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include "Server.h"
+#include "../server/Server.h"
 
 using asio::ip::tcp;
 

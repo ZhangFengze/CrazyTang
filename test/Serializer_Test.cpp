@@ -1,6 +1,6 @@
 #include <catch.hpp>
-#include "Serializer.h"
 #include <sstream>
+#include "../common/Serializer.h"
 
 using namespace std::literals;
 

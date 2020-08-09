@@ -1,7 +1,7 @@
 #include <catch.hpp>
-#include "Packet.h"
-#include "Socket.h"
-#include "Pipe.h"
+#include "../common/Packet.h"
+#include "../common/Socket.h"
+#include "../common/Pipe.h"
 
 using namespace std::literals;
 
