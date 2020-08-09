@@ -1,5 +1,7 @@
 import os
 import subprocess
+import argparse
+import shutil
 
 
 def print_colored(str):
@@ -18,8 +20,16 @@ def get_root_path():
     return os.path.dirname(os.path.abspath(__file__))
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--clean", help="clean before build", action="store_true")
+args = parser.parse_args()
+
 test_dir = os.path.join(get_root_path(), "test")
 build_dir = os.path.join(get_root_path(), "build/test")
+
+if args.clean:
+    print_colored(f"executing: rmdir {build_dir}")
+    shutil.rmtree(build_dir) 
 
 execute(f"cmake -S {test_dir} -B {build_dir}")
 execute(f"cmake --build {build_dir} --config debug -j {os.cpu_count()}")
