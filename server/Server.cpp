@@ -50,6 +50,16 @@ namespace ct
 						  agent->Send("echo", std::move(data));
 					  });
 
+		agent->Listen("broadcast",
+					  [this, connectionID](std::string &&data) {
+						  OutputStringArchive out;
+						  out.Write(connectionID);
+						  out.Write(std::move(data));
+						  auto reply = out.String();
+						  for (auto &[_, other] : agents_)
+							  other->Send("broadcast", reply);
+					  });
+
 		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
 				e.Destroy();
