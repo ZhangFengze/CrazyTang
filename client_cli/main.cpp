@@ -46,9 +46,24 @@ namespace
                           in.Read(from);
                           std::string content;
                           in.Read(content);
-                          printf("net agent on broadcast, from %llu, content:%s\n",from, content.c_str());
+                          printf("net agent on broadcast, from %llu, content:%s\n", from, content.c_str());
                       });
         agent->Send("broadcast", "hello everyone?");
+
+        agent->Listen("list online",
+                      [agent](std::string &&data) {
+                          InputStringArchive in{std::move(data)};
+                          size_t size;
+                          in.Read(size);
+                          printf("net agent on list online: %llu online\n", size);
+                          for (size_t i = 0; i < size; ++i)
+                          {
+                              uint64_t id;
+                              in.Read(id);
+                              printf("%llu\n", id);
+                          }
+                      });
+        agent->Send("list online", "");
     }
 
     void OnConnected(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)
