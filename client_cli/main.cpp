@@ -3,6 +3,7 @@
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
+#include "../common/Serializer.h"
 
 using namespace ct;
 using asio::ip::tcp;
@@ -37,6 +38,17 @@ namespace
                           printf("net agent on echo:%s\n", data.c_str());
                       });
         agent->Send("echo", "hello?");
+
+        agent->Listen("broadcast",
+                      [agent](std::string &&data) {
+                          InputStringArchive in{std::move(data)};
+                          uint64_t from;
+                          in.Read(from);
+                          std::string content;
+                          in.Read(content);
+                          printf("net agent on broadcast, from %llu, content:%s\n",from, content.c_str());
+                      });
+        agent->Send("broadcast", "hello everyone?");
     }
 
     void OnConnected(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)
