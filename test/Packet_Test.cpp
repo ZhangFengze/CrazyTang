@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Packet.h"
 
@@ -73,5 +72,3 @@ TEST_CASE("packet should move rvalue")
 	REQUIRE(p1.Size() == 0);
 	REQUIRE(p2.Size() == testData.size());
 }
-
-#endif

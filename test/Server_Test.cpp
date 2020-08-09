@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Server.h"
 
@@ -11,6 +10,3 @@ namespace
 		return tcp::endpoint{ asio::ip::make_address("127.0.0.1"),53453 };
 	}
 }
-
-
-#endif

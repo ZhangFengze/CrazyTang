@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Entity.h"
 
@@ -56,4 +55,3 @@ TEST_CASE("entity destroy")
 	e.Destroy();
 	REQUIRE(e.Valid() == false);
 }
-#endif

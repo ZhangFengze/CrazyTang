@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "NetAgent.h"
 #include "Pipe.h"
@@ -90,4 +89,3 @@ TEST_CASE("net agent clean up after broken")
 
 	REQUIRE(called == true);
 }
-#endif

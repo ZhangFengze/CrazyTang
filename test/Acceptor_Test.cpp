@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Acceptor.h"
 
@@ -57,4 +56,3 @@ TEST_CASE("accpetor should callback once with error, after destruction", "[Accep
 	REQUIRE(hasError);
 	REQUIRE(called);
 }
-#endif

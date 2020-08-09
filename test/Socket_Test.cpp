@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Socket.h"
 
@@ -101,4 +100,3 @@ TEST_CASE("multiple read write", "[Socket]")
 
 	io.poll();
 }
-#endif

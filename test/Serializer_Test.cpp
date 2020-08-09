@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Serializer.h"
 #include <sstream>
@@ -48,4 +47,3 @@ TEST_CASE("string archive basic types")
 	REQUIRE(i.Read<std::string>() == "hi");
 	REQUIRE(i.Read<std::string>() == "hello");
 }
-#endif

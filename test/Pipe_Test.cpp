@@ -1,4 +1,3 @@
-#ifdef CT_TEST
 #include <catch.hpp>
 #include "Packet.h"
 #include "Socket.h"
@@ -148,5 +147,3 @@ TEST_CASE("pipe change packet handler")
 	REQUIRE(packet2 == packets1[0]);
 	REQUIRE(packet3 == packets1[1]);
 }
-
-#endif
