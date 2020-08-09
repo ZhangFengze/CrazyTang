@@ -42,25 +42,21 @@ namespace
         agent->Listen("broadcast",
                       [agent](std::string &&data) {
                           InputStringArchive in{std::move(data)};
-                          uint64_t from;
-                          in.Read(from);
-                          std::string content;
-                          in.Read(content);
-                          printf("net agent on broadcast, from %llu, content:%s\n", from, content.c_str());
+                          auto from = in.Read<uint64_t>();
+                          auto content = in.Read<std::string>();
+                          printf("net agent on broadcast, from %llu, content:%s\n", *from, content->c_str());
                       });
         agent->Send("broadcast", "hello everyone?");
 
         agent->Listen("list online",
                       [agent](std::string &&data) {
                           InputStringArchive in{std::move(data)};
-                          size_t size;
-                          in.Read(size);
-                          printf("net agent on list online: %llu online\n", size);
+                          auto size = in.Read<size_t>();
+                          printf("net agent on list online: %llu online\n", *size);
                           for (size_t i = 0; i < size; ++i)
                           {
-                              uint64_t id;
-                              in.Read(id);
-                              printf("%llu\n", id);
+                              auto id = in.Read<uint64_t>();
+                              printf("%llu\n", *id);
                           }
                       });
         agent->Send("list online", "");
