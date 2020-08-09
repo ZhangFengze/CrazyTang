@@ -2,7 +2,7 @@
 #include <memory>
 #include <optional>
 #include <asio.hpp>
-#include "../../common/source/Packet.h"
+#include "../common/Packet.h"
 
 namespace ct
 {
