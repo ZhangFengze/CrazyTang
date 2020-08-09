@@ -1,4 +1,3 @@
-#ifndef CT_TEST
 #include "Server.h"
 
 int main()
@@ -9,15 +8,3 @@ int main()
 	io.run();
 	return 0;
 }
-
-#else
-
-#define CATCH_CONFIG_RUNNER
-#include <catch.hpp>
-
-int main(int argc, char* argv[])
-{
-	return Catch::Session().run(argc, argv);
-}
-
-#endif
