@@ -1,7 +1,7 @@
 #include <catch.hpp>
-#include "Login.h"
-#include "../../common/source/Packet.h"
-#include "../../common/source/Pipe.h"
+#include "../client_logic/Login.h"
+#include "../common/Packet.h"
+#include "../common/Pipe.h"
 
 using namespace std::literals;
 
