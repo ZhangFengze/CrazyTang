@@ -60,6 +60,15 @@ namespace ct
 							  other->Send("broadcast", reply);
 					  });
 
+		agent->Listen("list online",
+					  [this, agent](std::string &&data) {
+						  OutputStringArchive out;
+						  out.Write(agents_.size());
+						  for (auto &[id, _] : agents_)
+							  out.Write(id);
+						  agent->Send("list online", out.String());
+					  });
+
 		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
 				e.Destroy();
