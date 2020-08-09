@@ -45,9 +45,9 @@ namespace ct
 		info->connectionID = connectionID;
 		info->agent = agent;
 
-		agent->Listen("test",
+		agent->Listen("echo",
 					  [agent](std::string &&data) {
-						  agent->Send("test",std::move(data));
+						  agent->Send("echo", std::move(data));
 					  });
 
 		agent->OnError([e, connectionID, this]() mutable {
