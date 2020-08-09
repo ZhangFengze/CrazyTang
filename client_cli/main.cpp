@@ -27,16 +27,16 @@ namespace
     void OnLoginSuccess(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)
     {
         auto agent = std::make_shared<NetAgent<>>(pipe);
-        agent->Listen("test",
-                      [agent](std::string &&data) {
-                          printf("net agent on data %s\n", data.c_str());
-                      });
         agent->OnError(
             [agent]() {
                 printf("net agent on error\n");
             });
 
-        agent->Send("test", "hello?");
+        agent->Listen("echo",
+                      [agent](std::string &&data) {
+                          printf("net agent on echo:%s\n", data.c_str());
+                      });
+        agent->Send("echo", "hello?");
     }
 
     void OnConnected(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)
