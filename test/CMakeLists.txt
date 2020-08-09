@@ -21,5 +21,4 @@ foreach(test ${source})
 
     target_include_directories(${test_name} PUBLIC "../submodules/asio/asio/include")
     target_include_directories(${test_name} PUBLIC "../submodules/Catch2/single_include/catch2")
-
 endforeach()
