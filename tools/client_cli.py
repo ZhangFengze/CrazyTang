@@ -2,6 +2,7 @@ import os
 import subprocess
 import argparse
 import shutil
+import pathlib
 
 
 def print_colored(str):
@@ -17,7 +18,8 @@ def execute(cmd):
 
 
 def get_root_path():
-    return os.path.dirname(os.path.abspath(__file__))
+    cur=pathlib.Path(__file__)
+    return cur.absolute().parent.parent
 
 
 parser = argparse.ArgumentParser()
