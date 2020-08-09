@@ -1,7 +1,7 @@
 project(server)
 
 aux_source_directory(. source)
-aux_source_directory(../common/source source)
+aux_source_directory(../common source)
 add_executable(${PROJECT_NAME} ${source})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)

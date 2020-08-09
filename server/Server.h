@@ -1,8 +1,8 @@
 #pragma once
-#include "../common/source/NetAgent.h"
-#include "../common/source/Acceptor.h"
-#include "../common/source/Entity.h"
-#include "../common/source/Pipe.h"
+#include "../common/NetAgent.h"
+#include "../common/Acceptor.h"
+#include "../common/Entity.h"
+#include "../common/Pipe.h"
 #include <asio.hpp>
 #include <memory>
 #include <unordered_map>
