@@ -17,6 +17,7 @@ TEST_CASE("archive basic types")
 	o.Write(3);
 	o.Write(5.3f);
 	o.Write(8.0);
+	o.Write(887llu);
 	o.Write("hi"sv);
 	o.Write(std::string("hello"));
 
@@ -26,6 +27,7 @@ TEST_CASE("archive basic types")
 	REQUIRE(i.Read<int>() == 3);
 	REQUIRE(i.Read<float>() == 5.3f);
 	REQUIRE(i.Read<double>() == 8.0);
+	REQUIRE(i.Read<uint64_t>() == 887llu);
 	REQUIRE(i.Read<std::string>() == "hi");
 	REQUIRE(i.Read<std::string>() == "hello");
 }
@@ -37,6 +39,7 @@ TEST_CASE("string archive basic types")
 	o.Write(3);
 	o.Write(5.3f);
 	o.Write(8.0);
+	o.Write(887llu);
 	o.Write("hi"sv);
 	o.Write(std::string("hello"));
 
@@ -45,6 +48,7 @@ TEST_CASE("string archive basic types")
 	REQUIRE(i.Read<int>() == 3);
 	REQUIRE(i.Read<float>() == 5.3f);
 	REQUIRE(i.Read<double>() == 8.0);
+	REQUIRE(i.Read<uint64_t>() == 887llu);
 	REQUIRE(i.Read<std::string>() == "hi");
 	REQUIRE(i.Read<std::string>() == "hello");
 }
