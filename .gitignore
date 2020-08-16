@@ -351,3 +351,6 @@ MigrationBackup/
 
 # custom build directory
 /build
+
+# vscode
+/.vscode
