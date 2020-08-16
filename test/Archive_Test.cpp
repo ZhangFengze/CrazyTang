@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <sstream>
-#include "../common/Serializer.h"
+#include "../common/Archive.h"
 
 using namespace std::literals;
 

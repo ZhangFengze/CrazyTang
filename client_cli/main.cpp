@@ -3,7 +3,7 @@
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
-#include "../common/Serializer.h"
+#include "../common/Archive.h"
 
 using namespace ct;
 using asio::ip::tcp;

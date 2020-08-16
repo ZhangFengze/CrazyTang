@@ -2,7 +2,7 @@
 #include <catch.hpp>
 #include "../common/NetAgent.h"
 #include "../common/Pipe.h"
-#include "../common/Serializer.h"
+#include "../common/Archive.h"
 
 using namespace std::literals;
 
