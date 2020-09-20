@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "Login.h"
+#include "Player.h"
 #include "../common/Pipe.h"
 
 using namespace std::placeholders;
@@ -41,6 +42,9 @@ namespace ct
 		agents_[connectionID] = agent;
 
 		auto e = entities_.Create();
+
+		InitPlayer(e);
+
 		auto info = e.Add<ConnectionInfo>();
 		info->connectionID = connectionID;
 		info->agent = agent;
