@@ -19,11 +19,11 @@ TEST_CASE("save & load")
     origin.data.z()=890.554f;
 
     ct::OutputStringArchive out;
-    ct::ArchivePosition(out,origin);
+    ct::ComponentTraits<ct::Position>::Archive(out,origin);
 
     ct::InputStringArchive in(out.String());
     ct::Position loaded;
-    ct::LoadPosition(in,loaded);
+    ct::ComponentTraits<ct::Position>::Load(in,loaded);
 
     REQUIRE(origin.data.x()==loaded.data.x());
     REQUIRE(origin.data.y()==loaded.data.y());

@@ -1,5 +1,6 @@
 #pragma once
 #include <Eigen/Eigen>
+#include "ComponentTraits.h"
 namespace ct
 {
     struct Position
@@ -7,15 +8,7 @@ namespace ct
         Eigen::Vector3f data=Eigen::Vector3f::Zero();
     };
 
-    template<typename OutputArchive>
-    void ArchivePosition(OutputArchive& ar, const Position& position)
-    {
-        ar.Write(position);
-    }
-
-    template<typename InputArchive>
-    void LoadPosition(InputArchive& ar, Position& position)
-    {
-        ar.Read(position);
-    }
+    template<>
+    struct ComponentTraits<Position>: public BitwiseComponentTraits<Position>
+    {};
 }

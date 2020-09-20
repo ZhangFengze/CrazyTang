@@ -10,16 +10,16 @@ namespace ct
     template<typename OutputArchive>
     void ArchivePlayer(OutputArchive& ar,EntityHandle e)
     {
-        ArchivePosition(ar,*e.Get<Position>());
-        ArchiveVelocity(ar,*e.Get<Velocity>());
+        ComponentTraits<Position>::Archive(ar,*e.Get<Position>());
+        ComponentTraits<Velocity>::Archive(ar,*e.Get<Velocity>());
     }
 
     template<typename InputArchive>
     void LoadPlayer(InputArchive& ar,EntityHandle e)
     {
         e.Add<Position>();
-        LoadPosition(ar,*e.Get<Position>());
+        ComponentTraits<Position>::Load(ar,*e.Get<Position>());
         e.Add<Velocity>();
-        LoadVelocity(ar,*e.Get<Velocity>());
+        ComponentTraits<Velocity>::Load(ar,*e.Get<Velocity>());
     }
 }
