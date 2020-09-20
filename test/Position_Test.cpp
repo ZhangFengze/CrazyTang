@@ -6,17 +6,17 @@
 TEST_CASE("default ctor")
 {
     ct::Position position;
-    REQUIRE(position.x==0);
-    REQUIRE(position.y==0);
-    REQUIRE(position.z==0);
+    REQUIRE(position.data.x()==0);
+    REQUIRE(position.data.y()==0);
+    REQUIRE(position.data.z()==0);
 }
 
 TEST_CASE("save & load")
 {
     ct::Position origin;
-    origin.x=123;
-    origin.y=456;
-    origin.z=890.554f;
+    origin.data.x()=123;
+    origin.data.y()=456;
+    origin.data.z()=890.554f;
 
     ct::OutputStringArchive out;
     ct::ArchivePosition(out,origin);
@@ -25,7 +25,7 @@ TEST_CASE("save & load")
     ct::Position loaded;
     ct::LoadPosition(in,loaded);
 
-    REQUIRE(origin.x==loaded.x);
-    REQUIRE(origin.y==loaded.y);
-    REQUIRE(origin.z==loaded.z);
+    REQUIRE(origin.data.x()==loaded.data.x());
+    REQUIRE(origin.data.y()==loaded.data.y());
+    REQUIRE(origin.data.z()==loaded.data.z());
 }

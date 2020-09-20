@@ -1,11 +1,10 @@
 #pragma once
+#include <Eigen/Eigen>
 namespace ct
 {
     struct Position
     {
-        float x=0;
-        float y=0;
-        float z=0;
+        Eigen::Vector3f data=Eigen::Vector3f::Zero();
     };
 
     template<typename OutputArchive>
