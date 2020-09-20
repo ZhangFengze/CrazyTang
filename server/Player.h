@@ -1,6 +1,7 @@
 #pragma once
 #include "../common/Entity.h"
 #include "../common/Position.h"
+#include "../common/Velocity.h"
 
 namespace ct
 {
@@ -10,6 +11,7 @@ namespace ct
     void ArchivePlayer(OutputArchive& ar,EntityHandle e)
     {
         ArchivePosition(ar,*e.Get<Position>());
+        ArchiveVelocity(ar,*e.Get<Velocity>());
     }
 
     template<typename InputArchive>
@@ -17,5 +19,7 @@ namespace ct
     {
         e.Add<Position>();
         LoadPosition(ar,*e.Get<Position>());
+        e.Add<Velocity>();
+        LoadVelocity(ar,*e.Get<Velocity>());
     }
 }
