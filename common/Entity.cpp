@@ -24,6 +24,17 @@ namespace ct
 		return e;
 	}
 
+	void EntityContainer::ForEach(std::function<void(EntityHandle)> func)
+	{
+		for (const auto& [id, components] : entities_)
+		{
+			auto e = EntityHandle{};
+			e.id_ = id;
+			e.container_ = this;
+			func(e);
+		}
+	}
+
 	void EntityContainer::Remove(uint64_t id)
 	{
 		assert(Has(id));

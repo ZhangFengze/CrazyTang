@@ -4,6 +4,7 @@
 #include <typeinfo>
 #include <typeindex>
 #include <unordered_map>
+#include <functional>
 
 namespace ct
 {
@@ -45,6 +46,7 @@ namespace ct
 	{
 	public:
 		EntityHandle Create();
+		void ForEach(std::function<void(EntityHandle)>);
 
 	private:
 		bool Has(uint64_t) const;
