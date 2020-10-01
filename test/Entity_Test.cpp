@@ -30,7 +30,7 @@ TEST_CASE("entity component")
 	REQUIRE(e.Get<Data>() == nullptr);
 }
 
-TEST_CASE("entity comparison")
+TEST_CASE("entity equality")
 {
 	ct::EntityContainer entities;
 	ct::EntityHandle e0 = entities.Create();
