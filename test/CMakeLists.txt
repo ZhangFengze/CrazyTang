@@ -15,7 +15,7 @@ foreach(test ${source})
 
     add_executable(${test_name} ${test} ${common} ${server})
 
-    set_property(TARGET ${test_name} PROPERTY CXX_STANDARD 17)
+    set_property(TARGET ${test_name} PROPERTY CXX_STANDARD 20)
     set_property(TARGET ${test_name} PROPERTY CXX_STANDARD_REQUIRED ON)
 
     set(CMAKE_CXX_STACK_SIZE 100000000)
