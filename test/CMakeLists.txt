@@ -1,4 +1,3 @@
-#define CATCH_CONFIG_MAIN
 cmake_minimum_required(VERSION 3.14)
 
 project(test)
