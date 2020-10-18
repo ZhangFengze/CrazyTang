@@ -32,18 +32,17 @@ namespace ct
 		void Destroy();
 		bool Valid() const;
 
-	public:
-		bool operator==(const EntityHandle&) const = default;
-		bool operator!=(const EntityHandle&) const = default;
-
 	private:
 		friend class EntityContainer;
 		friend bool operator<(EntityHandle, EntityHandle);
+		friend bool operator==(EntityHandle, EntityHandle);
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;
 	};
 
 	bool operator<(EntityHandle, EntityHandle);
+	bool operator==(EntityHandle, EntityHandle);
+	bool operator!=(EntityHandle, EntityHandle);
 
 	class EntityContainer
 	{

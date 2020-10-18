@@ -23,6 +23,16 @@ namespace ct
 		return lhs.id_ < rhs.id_;
 	}
 
+	bool operator==(EntityHandle lhs, EntityHandle rhs)
+	{
+		return lhs.container_ == rhs.container_ && lhs.id_ == rhs.id_;
+	}
+
+	bool operator!=(EntityHandle lhs, EntityHandle rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	EntityHandle EntityContainer::Create()
 	{
 		auto e = EntityHandle();
