@@ -32,11 +32,7 @@ namespace ct
 		void Destroy();
 		bool Valid() const;
 
-	private:
-		friend class EntityContainer;
-		friend bool operator<(EntityHandle, EntityHandle);
-		friend bool operator==(EntityHandle, EntityHandle);
-		friend struct std::hash<EntityHandle>;
+	public:
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;
 	};
