@@ -38,9 +38,12 @@ namespace ct
 
 	private:
 		friend class EntityContainer;
+		friend bool operator<(EntityHandle, EntityHandle);
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;
 	};
+
+	bool operator<(EntityHandle, EntityHandle);
 
 	class EntityContainer
 	{

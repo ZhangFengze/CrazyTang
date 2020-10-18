@@ -14,6 +14,15 @@ namespace ct
 		return container_->Has(id_);
 	}
 
+	bool operator<(EntityHandle lhs, EntityHandle rhs)
+	{
+		if (lhs.container_ < rhs.container_)
+			return true;
+		if (lhs.container_ > rhs.container_)
+			return false;
+		return lhs.id_ < rhs.id_;
+	}
+
 	EntityHandle EntityContainer::Create()
 	{
 		auto e = EntityHandle();

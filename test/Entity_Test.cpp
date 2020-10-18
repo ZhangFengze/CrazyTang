@@ -47,6 +47,14 @@ TEST_CASE("entity equality")
 	REQUIRE(defaultConstructed != e1);
 }
 
+TEST_CASE("entity comparison")
+{
+	ct::EntityContainer entities;
+	ct::EntityHandle e0 = entities.Create();
+	ct::EntityHandle e1 = entities.Create();
+	REQUIRE((e0 < e1) != (e1 < e0));
+}
+
 TEST_CASE("entity destroy")
 {
 	ct::EntityContainer entities;
