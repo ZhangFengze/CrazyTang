@@ -36,6 +36,7 @@ namespace ct
 		friend class EntityContainer;
 		friend bool operator<(EntityHandle, EntityHandle);
 		friend bool operator==(EntityHandle, EntityHandle);
+		friend struct std::hash<EntityHandle>;
 		uint64_t id_ = 0;
 		EntityContainer* container_ = nullptr;
 	};
@@ -151,4 +152,18 @@ namespace ct
 		auto value = &(components[type]);
 		return std::any_cast<Component>(value);
 	}
+}
+
+namespace std
+{
+	template<>
+	struct hash<ct::EntityHandle>
+	{
+		std::size_t operator()(ct::EntityHandle e) const noexcept
+		{
+			std::size_t h1 = std::hash<decltype(e.container_)>{}(e.container_);
+			std::size_t h2 = std::hash<decltype(e.id_)>{}(e.id_);
+			return h1 ^ (h2 << 1);
+		}
+	};
 }

@@ -55,6 +55,13 @@ TEST_CASE("entity comparison")
 	REQUIRE((e0 < e1) != (e1 < e0));
 }
 
+TEST_CASE("entity hash")
+{
+	ct::EntityContainer entities;
+	ct::EntityHandle e = entities.Create();
+	REQUIRE(std::hash<ct::EntityHandle>{}(e) == std::hash<ct::EntityHandle>{}(e));
+}
+
 TEST_CASE("entity destroy")
 {
 	ct::EntityContainer entities;
