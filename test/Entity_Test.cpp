@@ -76,14 +76,14 @@ TEST_CASE("for each")
 {
 	ct::EntityContainer container;
 
-	std::vector<ct::EntityHandle> entities;
+	std::set<ct::EntityHandle> entities;
 	for (int i = 0;i < 10;++i)
-		entities.emplace_back(container.Create());
+		entities.emplace(container.Create());
 
 	container.ForEach([&entities](ct::EntityHandle e)
 		{
 			REQUIRE(!entities.empty());
-			entities.erase(std::remove(entities.begin(), entities.end(), e), entities.end());
+			entities.erase(e);
 		}
 	);
 
