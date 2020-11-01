@@ -16,9 +16,12 @@ namespace
 
 namespace ct
 {
-	Server::Server(asio::io_context &io, const asio::ip::tcp::endpoint &endpoint)
-		: io_(io), acceptor_(io, endpoint, std::bind(&Server::OnConnection, this, _1, _2))
+	void Server::Run()
 	{
+		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::make_address("127.0.0.1"),3377 };
+		ct::Acceptor acceptor{io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2)};
+
+		io_.run();
 	}
 
 	void Server::OnConnection(const std::error_code &error, asio::ip::tcp::socket &&socket)

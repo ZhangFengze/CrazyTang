@@ -12,15 +12,14 @@ namespace ct
 	class Server
 	{
 	public:
-		Server(asio::io_context& io, const asio::ip::tcp::endpoint& endpoint);
+		void Run();
 
 	private:
 		void OnConnection(const std::error_code&, asio::ip::tcp::socket&&);
 		void OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID);
 
 	private:
-		asio::io_context& io_;
-		ct::Acceptor acceptor_;
+		asio::io_context io_;
 		uint64_t connectionID_ = 0;
 		std::unordered_map<uint64_t, std::shared_ptr<NetAgent<>>> agents_;
 		EntityContainer entities_;
