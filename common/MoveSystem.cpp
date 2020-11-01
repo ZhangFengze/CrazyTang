@@ -10,6 +10,8 @@ namespace ct
         {
             entities.ForEach([step](EntityHandle e)
                 {
+                    if (!e.Has<Position>() || !e.Has<Velocity>())
+                        return;
                     move::State s;
                     s.position = e.Get<Position>()->data;
                     s.velocity = e.Get<Velocity>()->data;
