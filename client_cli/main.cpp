@@ -4,6 +4,8 @@
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
 #include "../common/Archive.h"
+#include "../common/Entity.h"
+#include "../common/Player.h"
 
 using namespace ct;
 using asio::ip::tcp;
@@ -62,16 +64,22 @@ namespace
         agent->Send("list online", "");
 
         agent->Listen("world",
-        [](std::string&& data)
-        {
-            printf("net agent on world,");
-            InputStringArchive ar{std::move(data)};
-            for(std::string one; ar.Read(one);)
+            [](std::string&& rawWorld)
             {
-                printf("\t one %s",one.c_str());
-            }
-            printf("\n");
-        });
+                printf("net agent on world,");
+                InputStringArchive worldArchive{ std::move(rawWorld) };
+                while (true)
+                {
+                    auto id = worldArchive.Read<uint64_t>();
+                    if (!id)                   break;
+                    InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
+                    EntityContainer entities;
+                    auto e = entities.Create();
+                    LoadPlayer(entityArchive, e);
+                    printf(" [id:%llu],", id.value());
+                }
+                printf("\n");
+            });
     }
 
     void OnConnected(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)

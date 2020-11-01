@@ -35,8 +35,11 @@ namespace ct
 			OutputStringArchive worldArchive;
 			entities_.ForEach([&](EntityHandle e)
 				{
-					if (!e.Has<ConnectionInfo>())
+					auto info=e.Get<ConnectionInfo>();
+					if(!info)
 						return;
+					worldArchive.Write(info->connectionID);
+
 					OutputStringArchive ar;
 					ArchivePlayer(ar, e);
 					worldArchive.Write(ar.String());
