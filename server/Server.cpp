@@ -1,6 +1,6 @@
 #include "Server.h"
 #include "Login.h"
-#include "Player.h"
+#include "../common/Player.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
 #include "../common/Archive.h"
