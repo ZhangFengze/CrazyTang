@@ -1,9 +1,0 @@
-﻿  Building Custom Rule F:/CrazyTang/3rd/entityx/CMakeLists.txt
-  CMake does not need to re-run because F:/CrazyTang/3rd/entityx/build/CMakeFiles/generate.stamp is up-to-date.
-  System.cc
-  Event.cc
-  Entity.cc
-  Timer.cc
-  Pool.cc
-  正在生成代码...
-  entityx.vcxproj -> F:\CrazyTang\3rd\entityx\build\Debug\entityx-d.lib
