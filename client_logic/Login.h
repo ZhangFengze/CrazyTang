@@ -3,6 +3,7 @@
 #include <optional>
 #include <asio.hpp>
 #include "../common/Packet.h"
+#include "../common/Pipe.h"
 
 namespace ct
 {
