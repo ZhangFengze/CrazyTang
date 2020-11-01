@@ -88,10 +88,13 @@ namespace
                     EntityContainer entities;
                     auto e = entities.Create();
                     LoadPlayer(entityArchive, e);
-                    printf(" [id:%llu, position:%f %f %f],", id.value(),
+                    printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", id.value(),
                         e.Get<Position>()->data.x(),
                         e.Get<Position>()->data.y(),
-                        e.Get<Position>()->data.z());
+                        e.Get<Position>()->data.z(),
+                        e.Get<Velocity>()->data.x(),
+                        e.Get<Velocity>()->data.y(),
+                        e.Get<Velocity>()->data.z());
                 }
                 printf("\n");
             });
