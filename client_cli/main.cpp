@@ -63,6 +63,12 @@ namespace
                       });
         agent->Send("list online", "");
 
+        {
+            OutputStringArchive ar;
+            ar.Write(Eigen::Vector3f{ 1.f,0,0 });
+            agent->Send("set position", ar.String());
+        }
+
         agent->Listen("world",
             [](std::string&& rawWorld)
             {

@@ -4,6 +4,7 @@
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
 #include "../common/Archive.h"
+#include <Eigen/Eigen>
 #include <thread>
 #include <chrono>
 
@@ -103,6 +104,15 @@ namespace ct
 				for (auto& [id, _] : agents_)
 					out.Write(id);
 				agent->Send("list online", out.String());
+			});
+
+		agent->Listen("set position",
+			[this, agent, e](std::string&& data) mutable {
+				InputStringArchive in{std::move(data)}; 
+				auto pos=in.Read<Eigen::Vector3f>();
+				if(!pos)
+					return;
+				e.Get<Position>()->data=*pos;
 			});
 
 		agent->OnError([e, connectionID, this]() mutable {
