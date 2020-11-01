@@ -69,6 +69,12 @@ namespace
             agent->Send("set position", ar.String());
         }
 
+        {
+            OutputStringArchive ar;
+            ar.Write(Eigen::Vector3f{ 0,1.f,0 });
+            agent->Send("set velocity", ar.String());
+        }
+
         agent->Listen("world",
             [](std::string&& rawWorld)
             {

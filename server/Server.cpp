@@ -115,6 +115,15 @@ namespace ct
 				e.Get<Position>()->data=*pos;
 			});
 
+		agent->Listen("set velocity",
+			[this, agent, e](std::string&& data) mutable {
+				InputStringArchive in{std::move(data)}; 
+				auto vel=in.Read<Eigen::Vector3f>();
+				if(!vel)
+					return;
+				e.Get<Velocity>()->data=*vel;
+			});
+
 		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
 				e.Destroy();
