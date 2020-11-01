@@ -2,6 +2,8 @@
 #include "Login.h"
 #include "Player.h"
 #include "../common/Pipe.h"
+#include "../common/MoveSystem.h"
+#include <thread>
 
 using namespace std::placeholders;
 
@@ -21,7 +23,12 @@ namespace ct
 		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::make_address("127.0.0.1"),3377 };
 		ct::Acceptor acceptor{io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2)};
 
-		io_.run();
+		while (true)
+		{
+			io_.poll();
+			move_system::Process(entities_, 0.1f);
+			std::this_thread::sleep_for(std::chrono::microseconds{1});
+		}
 	}
 
 	void Server::OnConnection(const std::error_code &error, asio::ip::tcp::socket &&socket)
