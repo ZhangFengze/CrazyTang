@@ -24,11 +24,15 @@ namespace ct
 		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::make_address("127.0.0.1"),3377 };
 		ct::Acceptor acceptor{io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2)};
 
+		auto interval = std::chrono::milliseconds{ 33 };
+		auto shouldTick = std::chrono::steady_clock::now();
 		while (true)
 		{
 			io_.poll();
-			move_system::Process(entities_, 0.1f);
-			std::this_thread::sleep_for(std::chrono::microseconds{1});
+			move_system::Process(entities_, interval.count() / 1000.f);
+
+			shouldTick += interval;
+			io_.run_until(shouldTick);
 		}
 	}
 
