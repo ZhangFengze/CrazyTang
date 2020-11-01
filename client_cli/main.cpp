@@ -82,7 +82,10 @@ namespace
                     EntityContainer entities;
                     auto e = entities.Create();
                     LoadPlayer(entityArchive, e);
-                    printf(" [id:%llu],", id.value());
+                    printf(" [id:%llu, position:%f %f %f],", id.value(),
+                        e.Get<Position>()->data.x(),
+                        e.Get<Position>()->data.y(),
+                        e.Get<Position>()->data.z());
                 }
                 printf("\n");
             });
