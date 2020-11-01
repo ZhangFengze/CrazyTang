@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
+#include "../common/Archive.h"
 #include <thread>
 #include <chrono>
 
@@ -30,6 +31,19 @@ namespace ct
 		{
 			io_.poll();
 			move_system::Process(entities_, interval.count() / 1000.f);
+
+			OutputStringArchive worldArchive;
+			entities_.ForEach([&](EntityHandle e)
+				{
+					if (!e.Has<ConnectionInfo>())
+						return;
+					OutputStringArchive ar;
+					ArchivePlayer(ar, e);
+					worldArchive.Write(ar.String());
+				});
+			auto world = worldArchive.String();
+			for (auto& [_, agent] : agents_)
+				agent->Send("world", world);
 
 			shouldTick += interval;
 			io_.run_until(shouldTick);

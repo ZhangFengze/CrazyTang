@@ -60,6 +60,18 @@ namespace
                           }
                       });
         agent->Send("list online", "");
+
+        agent->Listen("world",
+        [](std::string&& data)
+        {
+            printf("net agent on world,");
+            InputStringArchive ar{std::move(data)};
+            for(std::string one; ar.Read(one);)
+            {
+                printf("\t one %s",one.c_str());
+            }
+            printf("\n");
+        });
     }
 
     void OnConnected(asio::io_context &io, std::shared_ptr<Pipe<>> pipe)
