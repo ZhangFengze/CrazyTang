@@ -1,5 +1,5 @@
 #include <memory>
-#include "../client_logic/Login.h"
+#include "../client_core/Login.h"
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"

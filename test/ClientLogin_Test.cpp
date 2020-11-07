@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
-#include "../client_logic/Login.h"
+#include "../client_core/Login.h"
 #include "../common/Packet.h"
 #include "../common/Pipe.h"
 
