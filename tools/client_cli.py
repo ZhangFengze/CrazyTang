@@ -1,4 +1,3 @@
-import os
 import argparse
 from ct_common import execute, get_root_path, rmdir, cmake, build
 
