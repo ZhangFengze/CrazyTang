@@ -6,6 +6,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "CrazyTangGameModeBase.generated.h"
 
+namespace asio
+{
+	class io_context;
+}
+
 /**
  * 
  */
@@ -14,4 +19,13 @@ class CRAZYTANG_API ACrazyTangGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	ACrazyTangGameModeBase();
+
+	void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
+	void Tick(float DeltaSeconds) override;
+
+private:
+	asio::io_context* io_ = nullptr;
 };
