@@ -17,9 +17,11 @@ namespace ct
     template<typename InputArchive>
     void LoadPlayer(InputArchive& ar,EntityHandle e)
     {
-        e.Add<Position>();
+        if(!e.Has<Position>())
+            e.Add<Position>();
         ComponentTraits<Position>::Load(ar,*e.Get<Position>());
-        e.Add<Velocity>();
+        if(!e.Has<Velocity>())
+            e.Add<Velocity>();
         ComponentTraits<Velocity>::Load(ar,*e.Get<Velocity>());
     }
 }

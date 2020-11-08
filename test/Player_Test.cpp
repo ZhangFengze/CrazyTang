@@ -34,3 +34,46 @@ TEST_CASE("save & load")
     
     REQUIRE(true);
 }
+
+TEST_CASE("LoadPlayer should overwrite existing data")
+{
+    ct::EntityContainer container;
+    auto origin = container.Create();
+    ct::InitPlayer(origin);
+    origin.Get<ct::Position>()->data = { 123.f,456.f,789.f };
+
+    ct::OutputStringArchive out;
+    ct::ArchivePlayer(out, origin);
+
+    ct::InputStringArchive in{ out.String() };
+    auto victim = container.Create();
+    ct::InitPlayer(victim);
+    victim.Get<ct::Position>()->data = { 1.f,1.f,1.f };
+
+    ct::LoadPlayer(in, victim);
+
+    REQUIRE(victim.Get<ct::Position>()->data == Eigen::Vector3f(123.f,456.f,789.f));
+}
+
+TEST_CASE("LoadPlayer should not modify irrelevant existing data")
+{
+    ct::EntityContainer container;
+    auto origin = container.Create();
+    ct::InitPlayer(origin);
+    origin.Get<ct::Position>()->data = { 123.f,456.f,789.f };
+
+    ct::OutputStringArchive out;
+    ct::ArchivePlayer(out, origin);
+
+    ct::InputStringArchive in{ out.String() };
+    auto victim = container.Create();
+    ct::InitPlayer(victim);
+    auto f=victim.Add<float>();
+    *f=3.f;
+    victim.Get<ct::Position>()->data = { 1.f,1.f,1.f };
+
+    ct::LoadPlayer(in, victim);
+
+    REQUIRE(victim.Has<float>());
+    REQUIRE(*victim.Get<float>() == 3.f);
+}
