@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "MyPawn.h"
 
 #if PLATFORM_WINDOWS
 #include "Windows/PreWindowsApi.h"
@@ -38,4 +39,7 @@ public:
 
 private:
 	asio::io_context io_;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMyPawn> MyPawn;
 };
