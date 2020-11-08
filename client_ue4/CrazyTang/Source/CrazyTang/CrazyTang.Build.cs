@@ -1,6 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 using System.IO;
+using System;
+using System.Linq;
+using System.Diagnostics;
+using System.Text;
 using UnrealBuildTool;
 
 public class CrazyTang : ModuleRules
@@ -36,7 +40,11 @@ public class CrazyTang : ModuleRules
 			return Path.Combine(RepositoryRoot, "submodules/eigen");
         }
     }
-	
+
+	bool BuildCore()
+	{
+		return ExecuteCommandSync("python tools/client_core.py --config release") == 0;
+    }
 
 	public CrazyTang(ReadOnlyTargetRules Target) : base(Target)
 	{
@@ -46,7 +54,9 @@ public class CrazyTang : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
+		BuildCore();
 		PublicAdditionalLibraries.Add(Core);
+
 		PublicIncludePaths.Add(RepositoryRoot);
 		PublicIncludePaths.Add(Asio);
 		PublicIncludePaths.Add(Eigen);
@@ -64,4 +74,24 @@ public class CrazyTang : ModuleRules
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 	}
+
+    int ExecuteCommandSync(string command)
+    {
+        var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+        {
+            CreateNoWindow = true,
+            UseShellExecute = false,
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            WorkingDirectory = RepositoryRoot,
+            StandardOutputEncoding = Encoding.Default
+        };
+
+        Process p = Process.Start(processInfo);
+        p.OutputDataReceived += (sender, args) => Console.WriteLine(args.Data);
+        p.BeginOutputReadLine();
+        p.WaitForExit();
+
+        return p.ExitCode;
+    }
 }
