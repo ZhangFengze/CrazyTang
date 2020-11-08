@@ -95,7 +95,7 @@ namespace
             while (true)
             {
                 auto id = worldArchive.Read<uint64_t>();
-                if (!id)                   break;
+				if (!id) break;
                 InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
                 EntityContainer entities;
                 auto e = entities.Create();
