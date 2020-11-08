@@ -5,7 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "MyPawn.h"
+#include "CrazyTangPawnBase.h"
 
 #if PLATFORM_WINDOWS
 #include "Windows/PreWindowsApi.h"
@@ -41,5 +41,5 @@ private:
 	asio::io_context io_;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMyPawn> MyPawn;
+	TSubclassOf<ACrazyTangPawnBase> MyPawn;
 };

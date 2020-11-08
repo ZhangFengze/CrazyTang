@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "MyPawn.generated.h"
+#include "CrazyTangPawnBase.generated.h"
 
 UCLASS()
-class CRAZYTANG_API AMyPawn : public APawn
+class CRAZYTANG_API ACrazyTangPawnBase : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AMyPawn();
+	ACrazyTangPawnBase();
 
 protected:
 	// Called when the game starts or when spawned
