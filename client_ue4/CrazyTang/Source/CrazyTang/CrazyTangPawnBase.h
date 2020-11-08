@@ -4,6 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+
+#if PLATFORM_WINDOWS
+#include "Windows/PreWindowsApi.h"
+#endif
+#include "Eigen/Eigen"
+#include "common/NetAgent.h"
+#if PLATFORM_WINDOWS
+#include "Windows/PostWindowsApi.h"
+#endif
+
 #include "CrazyTangPawnBase.generated.h"
 
 UCLASS()
@@ -25,4 +35,16 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	void SetupNetAgent(ct::NetAgent<>*);
+
+	void MoveX(float axis);
+	void MoveY(float axis);
+
+	void SendInput();
+
+private:
+	ct::NetAgent<>* m_NetAgent = nullptr;
+	Eigen::Vector3f m_Input;
 };

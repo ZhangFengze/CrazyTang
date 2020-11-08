@@ -100,7 +100,8 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 		agent->Send("set velocity", ar.String());
 	}
 
-	auto actor = GetWorld()->SpawnActor(MyPawn);
+	auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
+	actor->SetupNetAgent(agent.get());
 
 	agent->Listen("world",
 		[actor](std::string&& rawWorld)
