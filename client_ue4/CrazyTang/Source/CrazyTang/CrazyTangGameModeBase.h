@@ -2,6 +2,7 @@
 
 #pragma once
 #include <memory>
+#include <map>
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
@@ -12,6 +13,7 @@
 #endif
 #include "asio.hpp"
 #include "common/Pipe.h"
+#include "common/Entity.h"
 #if PLATFORM_WINDOWS
 #include "Windows/PostWindowsApi.h"
 #endif
@@ -35,11 +37,14 @@ public:
 
 public:
 	void OnConnected(asio::io_context& io, std::shared_ptr<ct::Pipe<>> pipe);
-	void OnLoginSuccess(asio::io_context& io, std::shared_ptr<ct::Pipe<>> pipe);
+	void OnLoginSuccess(asio::io_context& io, uint64_t id, std::shared_ptr<ct::Pipe<>> pipe);
 
 private:
 	asio::io_context io_;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;
+
+	ct::EntityContainer m_Entities;
+	std::map<uint64_t, ct::EntityHandle> m_EntitiesID;
 };

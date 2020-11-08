@@ -14,7 +14,7 @@ ACrazyTangPawnBase::ACrazyTangPawnBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set this pawn to be controlled by the lowest-numbered player
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 
@@ -30,7 +30,7 @@ void ACrazyTangPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SendInput();
+	//SendInput();
 }
 
 // Called to bind functionality to input

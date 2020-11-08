@@ -33,6 +33,11 @@ namespace
 	{
 		return StringToEndpoint("127.0.0.1:3377");
 	}
+
+	struct ActorInfo
+	{
+		ACrazyTangPawnBase* pawn = nullptr;
+	};
 }
 
 ACrazyTangGameModeBase::ACrazyTangGameModeBase()
@@ -72,7 +77,7 @@ void ACrazyTangGameModeBase::OnConnected(asio::io_context& io, std::shared_ptr<c
 	login->OnSuccess(
 		[login, &io, pipe, this](uint64_t id) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Login Succeed"));
-		OnLoginSuccess(io, pipe);
+		OnLoginSuccess(io, id, pipe);
 	});
 	login->OnError(
 		[login]() {
@@ -80,7 +85,7 @@ void ACrazyTangGameModeBase::OnConnected(asio::io_context& io, std::shared_ptr<c
 	});
 }
 
-void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_ptr<Pipe<>> pipe)
+void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t id, std::shared_ptr<Pipe<>> pipe)
 {
 	auto agent = std::make_shared<ct::NetAgent<>>(pipe);
 	agent->OnError(
@@ -100,29 +105,48 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 		agent->Send("set velocity", ar.String());
 	}
 
-	auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
-	actor->SetupNetAgent(agent.get());
-
 	agent->Listen("world",
-		[actor](std::string&& rawWorld)
+		[this](std::string&& rawWorld)
 	{
-		InputStringArchive worldArchive{ std::move(rawWorld) };
-		while (true)
-		{
-			auto id = worldArchive.Read<uint64_t>();
-			if (!id) break;
-			InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
-			EntityContainer entities;
-			auto e = entities.Create();
-			LoadPlayer(entityArchive, e);
+		std::map<uint64_t, ct::EntityHandle> oldEntities;
+		oldEntities.swap(m_EntitiesID);
 
-			FVector pos
+		InputStringArchive worldArchive{ std::move(rawWorld) };
+		while (auto id = worldArchive.Read<uint64_t>())
+		{
+			InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
+			if (auto iter = oldEntities.find(*id); iter != oldEntities.end())
 			{
-				e.Get<Position>()->data.x(),
-				e.Get<Position>()->data.y(),
-				e.Get<Position>()->data.z(),
-			};
-			actor->SetActorLocation(pos);
+				auto e = iter->second;
+				LoadPlayer(entityArchive, e);
+				m_EntitiesID[*id] = e;
+
+				oldEntities.erase(iter);
+
+				FVector pos
+				{
+					e.Get<Position>()->data.x(),
+					e.Get<Position>()->data.y(),
+					e.Get<Position>()->data.z(),
+				};
+				e.Get<ActorInfo>()->pawn->SetActorLocation(pos);
+			}
+			else
+			{
+				auto e = m_Entities.Create();
+				LoadPlayer(entityArchive, e);
+				m_EntitiesID[*id] = e;
+
+				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
+				auto info = e.Add<ActorInfo>();
+				info->pawn = actor;
+			}
+		}
+
+		for (auto [_, e] : oldEntities)
+		{
+			e.Get<ActorInfo>()->pawn->Destroy();
+			e.Destroy();
 		}
 	});
 }
