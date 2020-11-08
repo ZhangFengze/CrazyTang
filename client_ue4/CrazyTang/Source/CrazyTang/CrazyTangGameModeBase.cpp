@@ -128,7 +128,6 @@ namespace
 }
 
 ACrazyTangGameModeBase::ACrazyTangGameModeBase()
-	:io_(new asio::io_context)
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -138,7 +137,7 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 	Super::InitGame(MapName, Options, ErrorMessage);
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("InitGame"));
-	ct::AsyncConnect(*io_, ServerEndpoint(),
+	ct::AsyncConnect(io_, ServerEndpoint(),
 		[&](const std::error_code& ec, std::shared_ptr<ct::Socket> socket)
 	{
 		if (ec)
