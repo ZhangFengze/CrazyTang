@@ -8,20 +8,20 @@ namespace ct
     void InitPlayer(EntityHandle);
 
     template<typename OutputArchive>
-    void ArchivePlayer(OutputArchive& ar,EntityHandle e)
+    void ArchivePlayer(OutputArchive& ar, EntityHandle e)
     {
-        ComponentTraits<Position>::Archive(ar,*e.Get<Position>());
-        ComponentTraits<Velocity>::Archive(ar,*e.Get<Velocity>());
+        ComponentTraits<Position>::Archive(ar, *e.Get<Position>());
+        ComponentTraits<Velocity>::Archive(ar, *e.Get<Velocity>());
     }
 
     template<typename InputArchive>
-    void LoadPlayer(InputArchive& ar,EntityHandle e)
+    void LoadPlayer(InputArchive& ar, EntityHandle e)
     {
-        if(!e.Has<Position>())
+        if (!e.Has<Position>())
             e.Add<Position>();
-        ComponentTraits<Position>::Load(ar,*e.Get<Position>());
-        if(!e.Has<Velocity>())
+        ComponentTraits<Position>::Load(ar, *e.Get<Position>());
+        if (!e.Has<Velocity>())
             e.Add<Velocity>();
-        ComponentTraits<Velocity>::Load(ar,*e.Get<Velocity>());
+        ComponentTraits<Velocity>::Load(ar, *e.Get<Velocity>());
     }
 }
