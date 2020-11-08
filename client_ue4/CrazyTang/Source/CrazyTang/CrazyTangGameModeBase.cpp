@@ -85,7 +85,7 @@ void ACrazyTangGameModeBase::OnConnected(asio::io_context& io, std::shared_ptr<c
 	});
 }
 
-void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t id, std::shared_ptr<Pipe<>> pipe)
+void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clientID, std::shared_ptr<Pipe<>> pipe)
 {
 	auto agent = std::make_shared<ct::NetAgent<>>(pipe);
 	agent->OnError(
@@ -106,7 +106,7 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t id, s
 	}
 
 	agent->Listen("world",
-		[this](std::string&& rawWorld)
+		[this, clientID, agent](std::string&& rawWorld)
 	{
 		std::map<uint64_t, ct::EntityHandle> oldEntities;
 		oldEntities.swap(m_EntitiesID);
@@ -138,6 +138,8 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t id, s
 				m_EntitiesID[*id] = e;
 
 				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
+				if (*id == clientID)
+					actor->SetupNetAgent(agent.get());
 				auto info = e.Add<ActorInfo>();
 				info->pawn = actor;
 			}

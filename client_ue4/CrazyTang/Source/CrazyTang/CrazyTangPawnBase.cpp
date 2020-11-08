@@ -6,6 +6,8 @@ THIRD_PARTY_INCLUDES_START
 #include "common/Archive.h"
 THIRD_PARTY_INCLUDES_END
 #include "Components/InputComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 
 // Sets default values
 ACrazyTangPawnBase::ACrazyTangPawnBase()
@@ -30,7 +32,7 @@ void ACrazyTangPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//SendInput();
+	SendInput();
 }
 
 // Called to bind functionality to input
@@ -45,6 +47,8 @@ void ACrazyTangPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 void ACrazyTangPawnBase::SetupNetAgent(ct::NetAgent<>* agent)
 {
 	m_NetAgent = agent;
+	auto controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	controller->Possess(this);
 }
 
 void ACrazyTangPawnBase::MoveX(float axis)
@@ -59,7 +63,10 @@ void ACrazyTangPawnBase::MoveY(float axis)
 
 void ACrazyTangPawnBase::SendInput()
 {
-	ct::OutputStringArchive ar;
-	ar.Write(m_Input);
-	m_NetAgent->Send("set velocity", ar.String());
+	if (m_NetAgent)
+	{
+		ct::OutputStringArchive ar;
+		ar.Write(m_Input);
+		m_NetAgent->Send("set velocity", ar.String());
+	}
 }
