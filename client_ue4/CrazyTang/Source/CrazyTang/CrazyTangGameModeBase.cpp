@@ -125,12 +125,14 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 
 	{
 		OutputStringArchive ar;
-		ar.Write(Eigen::Vector3f{ 0,1.f,0 });
+		ar.Write(Eigen::Vector3f{ 0,50.f,0 });
 		agent->Send("set velocity", ar.String());
 	}
 
+	auto actor = GetWorld()->SpawnActor(MyPawn);
+
 	agent->Listen("world",
-		[](std::string&& rawWorld)
+		[actor](std::string&& rawWorld)
 	{
 		printf("net agent on world,");
 		InputStringArchive worldArchive{ std::move(rawWorld) };
@@ -142,6 +144,15 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 			EntityContainer entities;
 			auto e = entities.Create();
 			LoadPlayer(entityArchive, e);
+
+			FVector pos
+			{
+				e.Get<Position>()->data.x(),
+				e.Get<Position>()->data.y(),
+				e.Get<Position>()->data.z(),
+			};
+			actor->SetActorLocation(pos);
+
 			//printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", id.value(),
 			//    e.Get<Position>()->data.x(),
 			//    e.Get<Position>()->data.y(),
