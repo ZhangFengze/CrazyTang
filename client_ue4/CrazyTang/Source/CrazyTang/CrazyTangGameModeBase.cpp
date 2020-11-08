@@ -88,35 +88,6 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("NetAgent OnError"));
 	});
 
-	agent->Listen("echo",
-		[agent](std::string&& data) {
-		printf("net agent on echo:%s\n", data.c_str());
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("NetAgent OnEcho"));
-	});
-	agent->Send("echo", "hello?");
-
-	agent->Listen("broadcast",
-		[agent](std::string&& data) {
-		InputStringArchive in{ std::move(data) };
-		auto from = in.Read<uint64_t>();
-		auto content = in.Read<std::string>();
-		//printf("net agent on broadcast, from %llu, content:%s\n", *from, content->c_str());
-	});
-	agent->Send("broadcast", "hello everyone?");
-
-	agent->Listen("list online",
-		[agent](std::string&& data) {
-		InputStringArchive in{ std::move(data) };
-		auto size = in.Read<size_t>();
-		//printf("net agent on list online: %llu online\n", *size);
-		for (size_t i = 0; i < size; ++i)
-		{
-			auto id = in.Read<uint64_t>();
-			//printf("%llu\n", *id);
-		}
-	});
-	agent->Send("list online", "");
-
 	{
 		OutputStringArchive ar;
 		ar.Write(Eigen::Vector3f{ 1.f,0,0 });
@@ -134,7 +105,6 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 	agent->Listen("world",
 		[actor](std::string&& rawWorld)
 	{
-		printf("net agent on world,");
 		InputStringArchive worldArchive{ std::move(rawWorld) };
 		while (true)
 		{
@@ -152,15 +122,6 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, std::shared_pt
 				e.Get<Position>()->data.z(),
 			};
 			actor->SetActorLocation(pos);
-
-			//printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", id.value(),
-			//    e.Get<Position>()->data.x(),
-			//    e.Get<Position>()->data.y(),
-			//    e.Get<Position>()->data.z(),
-			//    e.Get<Velocity>()->data.x(),
-			//    e.Get<Velocity>()->data.y(),
-			//    e.Get<Velocity>()->data.z());
 		}
-		printf("\n");
 	});
 }
