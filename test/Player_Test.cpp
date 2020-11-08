@@ -4,6 +4,12 @@
 #include "../common/Entity.h"
 #include "../common/Archive.h"
 
+namespace
+{
+    const Eigen::Vector3f position{ 123.f,456.f,789.f };
+    const Eigen::Vector3f position2{ 1.f,6.f,9.f };
+}
+
 TEST_CASE("dummy init")
 {
     ct::EntityContainer container;
@@ -17,9 +23,7 @@ TEST_CASE("save & load")
     ct::EntityContainer container;
     auto origin = container.Create();
     ct::InitPlayer(origin);
-    origin.Get<ct::Position>()->data.x() = 123;
-    origin.Get<ct::Position>()->data.y() = 456;
-    origin.Get<ct::Position>()->data.z() = 456;
+    origin.Get<ct::Position>()->data = position;
 
     ct::OutputStringArchive out;
     ct::ArchivePlayer(out, origin);
@@ -28,11 +32,7 @@ TEST_CASE("save & load")
     auto loaded = container.Create();
     ct::LoadPlayer(in, loaded);
 
-    REQUIRE(loaded.Get<ct::Position>()->data.x() == origin.Get<ct::Position>()->data.x());
-    REQUIRE(loaded.Get<ct::Position>()->data.y() == origin.Get<ct::Position>()->data.y());
-    REQUIRE(loaded.Get<ct::Position>()->data.z() == origin.Get<ct::Position>()->data.z());
-
-    REQUIRE(true);
+    REQUIRE(loaded.Get<ct::Position>()->data == position);
 }
 
 TEST_CASE("LoadPlayer should overwrite existing data")
@@ -40,7 +40,7 @@ TEST_CASE("LoadPlayer should overwrite existing data")
     ct::EntityContainer container;
     auto origin = container.Create();
     ct::InitPlayer(origin);
-    origin.Get<ct::Position>()->data = { 123.f,456.f,789.f };
+    origin.Get<ct::Position>()->data = position;
 
     ct::OutputStringArchive out;
     ct::ArchivePlayer(out, origin);
@@ -48,11 +48,11 @@ TEST_CASE("LoadPlayer should overwrite existing data")
     ct::InputStringArchive in{ out.String() };
     auto victim = container.Create();
     ct::InitPlayer(victim);
-    victim.Get<ct::Position>()->data = { 1.f,1.f,1.f };
+    victim.Get<ct::Position>()->data = position2;
 
     ct::LoadPlayer(in, victim);
 
-    REQUIRE(victim.Get<ct::Position>()->data == Eigen::Vector3f(123.f, 456.f, 789.f));
+    REQUIRE(victim.Get<ct::Position>()->data == position);
 }
 
 TEST_CASE("LoadPlayer should not modify irrelevant existing data")
@@ -60,7 +60,7 @@ TEST_CASE("LoadPlayer should not modify irrelevant existing data")
     ct::EntityContainer container;
     auto origin = container.Create();
     ct::InitPlayer(origin);
-    origin.Get<ct::Position>()->data = { 123.f,456.f,789.f };
+    origin.Get<ct::Position>()->data = position;
 
     ct::OutputStringArchive out;
     ct::ArchivePlayer(out, origin);
@@ -68,12 +68,12 @@ TEST_CASE("LoadPlayer should not modify irrelevant existing data")
     ct::InputStringArchive in{ out.String() };
     auto victim = container.Create();
     ct::InitPlayer(victim);
-    auto f = victim.Add<float>();
-    *f = 3.f;
-    victim.Get<ct::Position>()->data = { 1.f,1.f,1.f };
+
+    float* data = victim.Add<float>();
+    *data = 123.f;
 
     ct::LoadPlayer(in, victim);
 
     REQUIRE(victim.Has<float>());
-    REQUIRE(*victim.Get<float>() == 3.f);
+    REQUIRE(*victim.Get<float>() == 123.f);
 }
