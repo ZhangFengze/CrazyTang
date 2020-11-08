@@ -149,12 +149,12 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Connection Succeed"));
 
 		auto pipe = std::make_shared<ct::Pipe<>>(std::move(*socket));
-		OnConnected(*io_, pipe);
+		OnConnected(io_, pipe);
 	});
 }
 
 void ACrazyTangGameModeBase::Tick(float DeltaSeconds)
 {
-	io_->poll();
+	io_.poll();
 	return Super::Tick(DeltaSeconds);
 }

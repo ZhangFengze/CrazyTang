@@ -4,12 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "CrazyTangGameModeBase.generated.h"
 
-namespace asio
-{
-	class io_context;
-}
+#if PLATFORM_WINDOWS
+#include "Windows/PreWindowsApi.h"
+#endif
+#include <asio.hpp>
+#if PLATFORM_WINDOWS
+#include "Windows/PostWindowsApi.h"
+#endif
+
+#include "CrazyTangGameModeBase.generated.h"
 
 /**
  * 
@@ -27,5 +31,5 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 private:
-	asio::io_context* io_ = nullptr;
+	asio::io_context io_;
 };
