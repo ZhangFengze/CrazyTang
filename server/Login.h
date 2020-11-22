@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <memory>
 #include <asio.hpp>
 #include "../common/Packet.h"

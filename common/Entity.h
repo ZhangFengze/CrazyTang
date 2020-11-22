@@ -1,6 +1,7 @@
 #pragma once
 #include <any>
 #include <cassert>
+#include <cstdint>
 #include <typeinfo>
 #include <typeindex>
 #include <unordered_map>

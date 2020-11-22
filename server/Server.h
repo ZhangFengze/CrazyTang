@@ -4,6 +4,7 @@
 #include "../common/Entity.h"
 #include "../common/Pipe.h"
 #include <asio.hpp>
+#include <cstdint>
 #include <memory>
 #include <unordered_map>
 
