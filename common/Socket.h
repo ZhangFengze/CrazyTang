@@ -1,6 +1,10 @@
 #pragma once
 #include "Packet.h"
 #include <asio.hpp>
+#include <array>
+#include <list>
+#include <vector>
+#include <functional>
 
 namespace ct
 {
