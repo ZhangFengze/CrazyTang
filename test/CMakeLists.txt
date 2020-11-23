@@ -7,6 +7,8 @@ aux_source_directory(../common common)
 aux_source_directory(../server server)
 list(REMOVE_ITEM server "../server/main.cpp")
 
+find_package(Threads REQUIRED)
+
 foreach(test ${source})
     string(SUBSTRING ${test} 2 -1 test)
 
@@ -22,4 +24,6 @@ foreach(test ${source})
     target_include_directories(${test_name} PUBLIC "../submodules/asio/asio/include")
     target_include_directories(${test_name} PUBLIC "../submodules/Catch2/single_include/catch2")
     target_include_directories(${test_name} PUBLIC "../submodules/eigen")
+
+    target_link_libraries(${test_name} ${CMAKE_THREAD_LIBS_INIT})
 endforeach()
