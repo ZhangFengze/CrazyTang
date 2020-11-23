@@ -1,4 +1,5 @@
 #include "Packet.h"
+#include <cstring>
 
 namespace ct
 {
