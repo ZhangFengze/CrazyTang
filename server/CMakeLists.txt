@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 project(server)
 
+find_package(Threads REQUIRED)
+
 aux_source_directory(. source)
 aux_source_directory(../common source)
 add_executable(${PROJECT_NAME} ${source})
@@ -13,3 +15,5 @@ set(CMAKE_CXX_STACK_SIZE 100000000)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "../submodules/asio/asio/include")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/eigen")
+
+target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
