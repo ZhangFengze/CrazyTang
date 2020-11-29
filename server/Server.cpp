@@ -23,7 +23,7 @@ namespace ct
 {
 	void Server::Run()
 	{
-		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::make_address("127.0.0.1"),3377 };
+		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::tcp::v4(),33773 };
 		ct::Acceptor acceptor{ io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2) };
 
 		auto interval = std::chrono::milliseconds{ 33 };
