@@ -32,3 +32,8 @@ def cmake(source_dir, build_dir):
 
 def build(build_dir, config):
     execute(f"cmake --build {build_dir} --config {config} -j {os.cpu_count()}")
+
+
+def install(build_dir, install_dir, config):
+    execute(
+        f"cmake --install {build_dir} --prefix {install_dir} --config {config}")

@@ -1,5 +1,5 @@
 import argparse
-from ct_common import execute, get_root_path, rmdir, cmake, build
+from ct_common import execute, get_root_path, rmdir, cmake, build, install
 
 
 parser = argparse.ArgumentParser()
@@ -8,12 +8,13 @@ parser.add_argument("--config", help="configuration", default="debug")
 args = parser.parse_args()
 
 source_dir = get_root_path().joinpath("server")
-build_dir = get_root_path().joinpath("build/server")
-output_path = build_dir.joinpath(f"{args.config}/server")
+build_dir = get_root_path().joinpath("build/build_server")
+install_dir = get_root_path().joinpath(f"build/server/{args.config}")
 
 if args.clean:
     rmdir(build_dir)
 
 cmake(source_dir, build_dir)
 build(build_dir, args.config)
-execute(str(output_path))
+install(build_dir,install_dir, args.config)
+execute(str(install_dir.joinpath("bin/server")))

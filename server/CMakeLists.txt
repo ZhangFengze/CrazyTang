@@ -17,3 +17,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/eigen")
 
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+
+install(TARGETS ${PROJECT_NAME})
