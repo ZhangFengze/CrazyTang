@@ -4,6 +4,8 @@ project(server)
 
 find_package(Threads REQUIRED)
 
+set(CMAKE_EXE_LINKER_FLAGS " -static")
+
 aux_source_directory(. source)
 aux_source_directory(../common source)
 add_executable(${PROJECT_NAME} ${source})
