@@ -16,5 +16,5 @@ if args.clean:
 
 cmake(source_dir, build_dir)
 build(build_dir, args.config)
-install(build_dir,install_dir, args.config)
+install(build_dir, install_dir, args.config)
 execute(str(install_dir.joinpath("bin/server")))
