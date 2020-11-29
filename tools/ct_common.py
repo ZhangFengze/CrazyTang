@@ -23,7 +23,7 @@ def print_colored(str):
 
 def rmdir(dir):
     print_colored(f"executing: rmdir {dir}")
-    shutil.rmtree(dir)
+    shutil.rmtree(dir, ignore_errors=True)
 
 
 def cmake(source_dir, build_dir):
