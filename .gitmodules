@@ -7,3 +7,6 @@
 [submodule "submodules/eigen"]
 	path = submodules/eigen
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "submodules/ZSerializer"]
+	path = submodules/ZSerializer
+	url = https://github.com/ZhangFengze/ZSerializer.git
