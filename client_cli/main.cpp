@@ -79,16 +79,16 @@ namespace
             [](std::string&& rawWorld)
             {
                 printf("net agent on world,");
-                InputStringArchive worldArchive{ std::move(rawWorld) };
+                zs::StringReader worldIn{ std::move(rawWorld) };
                 while (true)
                 {
-                    auto id = worldArchive.Read<uint64_t>();
-                    if (!id)                   break;
-                    InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
+                    auto id = zs::Read<uint64_t>(worldIn);
+                    if(std::holds_alternative<zs::Error>(id)) break;
+                    zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldIn))};
                     EntityContainer entities;
                     auto e = entities.Create();
                     LoadPlayer(entityArchive, e);
-                    printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", id.value(),
+                    printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", std::get<0>(id),
                         e.Get<Position>()->data.x(),
                         e.Get<Position>()->data.y(),
                         e.Get<Position>()->data.z(),

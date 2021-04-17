@@ -7,8 +7,11 @@ namespace ct
     {
         Eigen::Vector3f data=Eigen::Vector3f::Zero();
     };
+}
 
+namespace zs
+{
     template<>
-    struct ComponentTraits<Velocity>: public BitwiseComponentTraits<Velocity>
+    struct Trait<ct::Velocity> : public WriteBitwise<ct::Velocity>, public ReadBitwise<ct::Velocity>
     {};
 }

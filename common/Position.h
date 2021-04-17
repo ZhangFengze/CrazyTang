@@ -1,5 +1,6 @@
 #pragma once
 #include <Eigen/Eigen>
+#include <ZSerializer.hpp>
 #include "ComponentTraits.h"
 namespace ct
 {
@@ -7,8 +8,11 @@ namespace ct
     {
         Eigen::Vector3f data=Eigen::Vector3f::Zero();
     };
+}
 
+namespace zs
+{
     template<>
-    struct ComponentTraits<Position>: public BitwiseComponentTraits<Position>
+    struct Trait<ct::Position> : public WriteBitwise<ct::Position>, public ReadBitwise<ct::Position>
     {};
 }

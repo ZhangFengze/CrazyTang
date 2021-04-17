@@ -5,6 +5,7 @@
 #include "../common/MoveSystem.h"
 #include "../common/Archive.h"
 #include <Eigen/Eigen>
+#include <ZSerializer.hpp>
 #include <thread>
 #include <chrono>
 
@@ -33,19 +34,19 @@ namespace ct
 			io_.poll();
 			move_system::Process(entities_, interval.count() / 1000.f);
 
-			OutputStringArchive worldArchive;
+			zs::StringWriter worldOut;
 			entities_.ForEach([&](EntityHandle e)
 				{
 					auto info=e.Get<ConnectionInfo>();
 					if(!info)
 						return;
-					worldArchive.Write(info->connectionID);
+					zs::Write(worldOut, info->connectionID);
 
-					OutputStringArchive ar;
-					ArchivePlayer(ar, e);
-					worldArchive.Write(ar.String());
+					zs::StringWriter out;
+					ArchivePlayer(out, e);
+					zs::Write(worldOut, out.Str());
 				});
-			auto world = worldArchive.String();
+			auto world = worldOut.Str();
 			for (auto& [_, agent] : agents_)
 				agent->Send("world", world);
 
