@@ -44,9 +44,9 @@ namespace ct
 
 					zs::StringWriter out;
 					ArchivePlayer(out, e);
-					zs::Write(worldOut, out.Str());
+					zs::Write(worldOut, out.String());
 				});
-			auto world = worldOut.Str();
+			auto world = worldOut.String();
 			for (auto& [_, agent] : agents_)
 				agent->Send("world", world);
 
