@@ -1,6 +1,5 @@
 #pragma once
 #include <Eigen/Eigen>
-#include "ComponentTraits.h"
 namespace ct
 {
     struct Velocity

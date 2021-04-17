@@ -1,7 +1,6 @@
 #pragma once
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
-#include "ComponentTraits.h"
 namespace ct
 {
     struct Position
