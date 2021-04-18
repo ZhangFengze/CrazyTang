@@ -6,6 +6,7 @@
 #include "../common/AsyncConnect.h"
 #include "../common/Entity.h"
 #include "../common/Player.h"
+#include "../common/Voxel.h"
 #include "../common/Math.h"
 
 using namespace ct;
@@ -83,21 +84,32 @@ namespace
                 zs::StringReader worldIn{ std::move(rawWorld) };
                 while (true)
                 {
-                    auto id = zs::Read<uint64_t>(worldIn);
-                    if(std::holds_alternative<zs::Error>(id)) break;
-                    zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldIn))};
-                    EntityContainer entities;
-                    auto e = entities.Create();
-                    LoadPlayer(entityArchive, e);
-                    printf(" [id:%llu, position:%f %f %f, velocity:%f %f %f],", std::get<0>(id),
-                        e.Get<Position>()->data.x(),
-                        e.Get<Position>()->data.y(),
-                        e.Get<Position>()->data.z(),
-                        e.Get<Velocity>()->data.x(),
-                        e.Get<Velocity>()->data.y(),
-                        e.Get<Velocity>()->data.z());
+                    auto type = zs::Read<std::string>(worldIn);
+                    if (std::holds_alternative<zs::Error>(type)) break;
+
+                    if (std::get<0>(type) == "player")
+                    {
+                        auto id = zs::Read<uint64_t>(worldIn);
+                        zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldIn)) };
+                        EntityContainer entities;
+                        auto e = entities.Create();
+                        LoadPlayer(entityArchive, e);
+                        printf("player [id:%llu, position:%f %f %f, velocity:%f %f %f],", std::get<0>(id),
+                            e.Get<Position>()->data.x(),
+                            e.Get<Position>()->data.y(),
+                            e.Get<Position>()->data.z(),
+                            e.Get<Velocity>()->data.x(),
+                            e.Get<Velocity>()->data.y(),
+                            e.Get<Velocity>()->data.z());
+                    }
+                    else if (std::get<0>(type) == "voxel")
+                    {
+                        auto voxel = std::get<0>(zs::Read<Voxel>(worldIn));
+                        printf("voxel [index:(%d,%d), type:%d],", voxel.index.x(), voxel.index.y(), voxel.type);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
+                printf("-------\n");
             });
     }
 

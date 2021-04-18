@@ -3,6 +3,8 @@
 #include "../common/Player.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
+#include "../common/Voxel.h"
+#include "../common/VoxelSystem.h"
 #include "../common/Math.h"
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
@@ -27,24 +29,33 @@ namespace ct
 		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::tcp::v4(),33773 };
 		ct::Acceptor acceptor{ io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2) };
 
+		voxel_system::GenerateVoxels(entities_);
+
 		auto interval = std::chrono::milliseconds{ 33 };
 		auto shouldTick = std::chrono::steady_clock::now();
 		while (true)
 		{
 			io_.poll();
 			move_system::Process(entities_, interval.count() / 1000.f);
+			voxel_system::Process(entities_, interval.count() / 1000.f);
 
 			zs::StringWriter worldOut;
 			entities_.ForEach([&](EntityHandle e)
 				{
-					auto info=e.Get<ConnectionInfo>();
-					if(!info)
-						return;
-					zs::Write(worldOut, info->connectionID);
+					if(auto info=e.Get<ConnectionInfo>())
+					{
+						zs::Write(worldOut,"player");
+						zs::Write(worldOut, info->connectionID);
 
-					zs::StringWriter out;
-					ArchivePlayer(out, e);
-					zs::Write(worldOut, out.String());
+						zs::StringWriter out;
+						ArchivePlayer(out, e);
+						zs::Write(worldOut, out.String());
+					}
+					else if(auto voxel=e.Get<Voxel>())
+					{
+						zs::Write(worldOut,"voxel");
+						zs::Write(worldOut, *e.Get<Voxel>());
+					}
 				});
 			auto world = worldOut.String();
 			for (auto& [_, agent] : agents_)
