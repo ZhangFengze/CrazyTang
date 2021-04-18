@@ -100,34 +100,6 @@ namespace
                 printf("net agent on error\n");
             });
 
-        agent->Listen("echo",
-            [agent](std::string&& data) {
-                printf("net agent on echo:%s\n", data.c_str());
-            });
-        agent->Send("echo", "hello?");
-
-        agent->Listen("broadcast",
-            [agent](std::string&& data) {
-                zs::StringReader in( std::move(data) );
-                auto from = zs::Read<uint64_t>(in);
-                auto content = zs::Read<std::string>(in);
-                printf("net agent on broadcast, from %llu, content:%s\n", std::get<0>(from), std::get<0>(content).c_str());
-            });
-        agent->Send("broadcast", "hello everyone?");
-
-        agent->Listen("list online",
-            [agent](std::string&& data) {
-                zs::StringReader in( std::move(data) );
-                auto size = zs::Read<size_t>(in);
-                printf("net agent on list online: %llu online\n", std::get<0>(size));
-                for (size_t i = 0; i < std::get<0>(size); ++i)
-                {
-                    auto id = zs::Read<uint64_t>(in);
-                    printf("%llu\n", std::get<0>(id));
-                }
-            });
-        agent->Send("list online", "");
-
         {
             zs::StringWriter out;
             zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });

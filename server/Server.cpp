@@ -123,30 +123,6 @@ namespace ct
 		info->connectionID = connectionID;
 		info->agent = agent;
 
-		agent->Listen("echo",
-			[agent](std::string&& data) {
-				agent->Send("echo", std::move(data));
-			});
-
-		agent->Listen("broadcast",
-			[this, connectionID](std::string&& data) {
-				zs::StringWriter out;
-				zs::Write(out, connectionID);
-				zs::Write(out, std::move(data));
-				auto reply = out.String();
-				for (auto& [_, other] : agents_)
-					other->Send("broadcast", reply);
-			});
-
-		agent->Listen("list online",
-			[this, agent](std::string&& data) {
-				zs::StringWriter out;
-				zs::Write(out, agents_.size());
-				for (auto& [id, _] : agents_)
-					zs::Write(out, id);
-				agent->Send("list online", out.String());
-			});
-
 		agent->Listen("set position",
 			[this, agent, e](std::string&& data) mutable {
 				zs::StringReader in{std::move(data)}; 
