@@ -206,6 +206,7 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
 				if (entity.Has<ConnectionID>() && entity.Get<ConnectionID>()->id == clientID)
 					actor->SetupNetAgent(agent.get());
+				actor->SetUUID(uuid);
 				auto info = entity.Add<ActorInfo>();
 				info->pawn = actor;
 			}
@@ -219,4 +220,17 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 
 		m_Entities = newEntities;
 	});
+}
+
+ct::EntityHandle ACrazyTangGameModeBase::GetEntity(uint64_t id)
+{
+	ct::EntityHandle entity;
+	m_Entities.ForEach([&entity, id](ct::EntityHandle e)
+	{
+		if (entity.Valid())
+			return;
+		if(e.Get<UUID>()->id == id)
+			entity = e;
+	});
+	return entity;
 }

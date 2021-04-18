@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 
@@ -39,12 +41,15 @@ public:
 public:
 	void SetupNetAgent(ct::NetAgent<>*);
 
+	void SetUUID(uint64_t);
+
 	void MoveX(float axis);
 	void MoveY(float axis);
 
 	void SendInput();
 
 private:
+	uint64_t m_UUID = 0;
 	ct::NetAgent<>* m_NetAgent = nullptr;
 	Eigen::Vector3f m_Input;
 };

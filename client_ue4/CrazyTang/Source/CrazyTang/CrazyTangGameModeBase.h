@@ -40,6 +40,8 @@ public:
 	void OnConnected(asio::io_context& io, std::shared_ptr<ct::Pipe<>> pipe);
 	void OnLoginSuccess(asio::io_context& io, uint64_t id, std::shared_ptr<ct::Pipe<>> pipe);
 
+	ct::EntityHandle GetEntity(uint64_t);
+
 private:
 	asio::io_context io_;
 

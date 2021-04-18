@@ -5,7 +5,9 @@
 THIRD_PARTY_INCLUDES_START
 #include "ZSerializer.hpp"
 #include "common/Math.h"
+#include "common/Position.h"
 THIRD_PARTY_INCLUDES_END
+#include "CrazyTangGameModeBase.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -33,6 +35,13 @@ void ACrazyTangPawnBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	auto gm = GetWorld()->GetAuthGameMode<ACrazyTangGameModeBase>();
+	auto entity = gm->GetEntity(m_UUID);
+	assert(entity.Valid());
+
+	if (auto pos = entity.Get<ct::Position>())
+		SetActorLocation(FVector{ pos->data.x(), pos->data.y(), pos->data.z() });
+
 	SendInput();
 }
 
@@ -50,6 +59,11 @@ void ACrazyTangPawnBase::SetupNetAgent(ct::NetAgent<>* agent)
 	m_NetAgent = agent;
 	auto controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	controller->Possess(this);
+}
+
+void ACrazyTangPawnBase::SetUUID(uint64_t id)
+{
+	m_UUID = id;
 }
 
 void ACrazyTangPawnBase::MoveX(float axis)
