@@ -98,13 +98,13 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 	{
 		zs::StringWriter out;
 		zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
-		agent->Send("set position", ar.String());
+		agent->Send("set position", out.String());
 	}
 
 	{
 		zs::StringWriter out;
 		zs::Write(out, Eigen::Vector3f{ 0,50.f,0 });
-		agent->Send("set velocity", ar.String());
+		agent->Send("set velocity", out.String());
 	}
 
 	agent->Listen("world",
@@ -114,9 +114,9 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 		oldEntities.swap(m_EntitiesID);
 
 		zs::StringReader worldArchive{ std::move(rawWorld) };
-		while (auto id = std::get<0>(worldArchive.Read<uint64_t>()))
+		while (auto id = std::get<0>(zs::Read<uint64_t>(worldArchive)))
 		{
-			zs::StringReader entityArchive{ std::get<0>(worldArchive.Read<std::string>()) };
+			zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldArchive)) };
 			if (auto iter = oldEntities.find(id); iter != oldEntities.end())
 			{
 				auto e = iter->second;

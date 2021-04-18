@@ -41,6 +41,14 @@ public class CrazyTang : ModuleRules
         }
     }
 
+	string ZSerializer
+    {
+        get
+        {
+			return Path.Combine(RepositoryRoot, "submodules/ZSerializer");
+        }
+    }
+
 	bool BuildCore()
 	{
 		return ExecuteCommandSync("python tools/client_core.py --config release") == 0;
@@ -60,11 +68,12 @@ public class CrazyTang : ModuleRules
 		PublicIncludePaths.Add(RepositoryRoot);
 		PublicIncludePaths.Add(Asio);
 		PublicIncludePaths.Add(Eigen);
+		PublicIncludePaths.Add(ZSerializer);
 
 		bUseRTTI = true;
 		bEnableExceptions = true;
 
-		CppStandard = CppStandardVersion.Cpp17;
+		CppStandard = CppStandardVersion.Latest;
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

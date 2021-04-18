@@ -68,6 +68,6 @@ void ACrazyTangPawnBase::SendInput()
 	{
 		zs::StringWriter out;
 		zs::Write(out, m_Input);
-		m_NetAgent->Send("set velocity", ar.String());
+		m_NetAgent->Send("set velocity", out.String());
 	}
 }
