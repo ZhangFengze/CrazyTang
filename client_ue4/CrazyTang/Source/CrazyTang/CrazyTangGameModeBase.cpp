@@ -181,7 +181,13 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 			newIDToEntities[e.Get<UUID>()->id] = e;
 		}
 
-		for (auto [uuid, entity] : m_IDToEntities)
+		std::unordered_map<uint64_t, ct::EntityHandle> oldIDToEntities;
+		m_Entities.ForEach([&oldIDToEntities](ct::EntityHandle e)
+		{
+			oldIDToEntities[e.Get<UUID>()->id] = e;
+		});
+
+		for (auto [uuid, entity] : oldIDToEntities)
 		{
 			if (newIDToEntities.find(uuid) == newIDToEntities.end())
 			{
@@ -193,8 +199,8 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 
 		for (auto [uuid, entity] : newIDToEntities)
 		{
-			auto old = m_IDToEntities.find(uuid);
-			if (old == m_IDToEntities.end())
+			auto old = oldIDToEntities.find(uuid);
+			if (old == oldIDToEntities.end())
 			{
 				// add
 				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
@@ -212,6 +218,5 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 		}
 
 		m_Entities = newEntities;
-		m_IDToEntities = newIDToEntities;
 	});
 }
