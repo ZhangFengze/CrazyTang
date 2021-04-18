@@ -14,6 +14,7 @@
 #include "asio.hpp"
 #include "common/Pipe.h"
 #include "common/Entity.h"
+#include "common/UUID.h"
 #if PLATFORM_WINDOWS
 #include "Windows/PostWindowsApi.h"
 #endif
@@ -46,5 +47,5 @@ private:
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;
 
 	ct::EntityContainer m_Entities;
-	std::map<uint64_t, ct::EntityHandle> m_EntitiesID;
+	std::unordered_map<uint64_t, ct::EntityHandle> m_IDToEntities;
 };

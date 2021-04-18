@@ -11,6 +11,9 @@ THIRD_PARTY_INCLUDES_START
 #include "common/AsyncConnect.h"
 #include "common/NetAgent.h"
 #include "common/Entity.h"
+#include "common/Position.h"
+#include "common/Velocity.h"
+#include "common/Voxel.h"
 #include "common/Math.h"
 #include "client_core/Login.h"
 THIRD_PARTY_INCLUDES_END
@@ -33,6 +36,60 @@ namespace
 	tcp::endpoint ServerEndpoint()
 	{
 		return StringToEndpoint("127.0.0.1:3377");
+	}
+
+	struct ConnectionID
+	{
+		uint64_t id;
+	};
+
+	template<typename In>
+	bool ReadEntity(In& in, ct::EntityHandle e)
+	{
+		auto uuid = zs::Read<UUID>(in);
+		if (std::holds_alternative<zs::Error>(uuid))
+			return false;
+		*e.Add<UUID>() = std::get<0>(uuid);
+
+		zs::StringReader components(std::get<0>(zs::Read<std::string>(in)));
+		while (true)
+		{
+			auto _tag = zs::Read<std::string>(components);
+			if (std::holds_alternative<zs::Error>(_tag))
+				break;
+
+			auto tag = std::get<0>(_tag);
+			if (tag == "connection")
+			{
+				if (!e.Has<ConnectionID>())
+					e.Add<ConnectionID>();
+				*e.Get<ConnectionID>() = std::get<0>(zs::Read<ConnectionID>(components));
+			}
+			else if (tag == "position")
+			{
+				if (!e.Has<Position>())
+					e.Add<Position>();
+				*e.Get<Position>() = std::get<0>(zs::Read<Position>(components));
+			}
+			else if (tag == "velocity")
+			{
+				if (!e.Has<Velocity>())
+					e.Add<Velocity>();
+				*e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(components));
+			}
+			else if (tag == "voxel")
+			{
+				if (!e.Has<Voxel>())
+					e.Add<Voxel>();
+				auto voxel = e.Get<Voxel>();
+				*voxel = std::get<0>(zs::Read<Voxel>(components));
+			}
+			else
+			{
+				assert(false);
+			}
+		}
+		return true;
 	}
 
 	struct ActorInfo
@@ -109,47 +166,52 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 	agent->Listen("world",
 		[this, clientID, agent](std::string&& rawWorld)
 	{
-		std::map<uint64_t, ct::EntityHandle> oldEntities;
-		oldEntities.swap(m_EntitiesID);
-
 		zs::StringReader worldArchive{ std::move(rawWorld) };
-		while (auto id = std::get<0>(zs::Read<uint64_t>(worldArchive)))
+
+		ct::EntityContainer newEntities;
+		std::unordered_map<uint64_t, ct::EntityHandle> newIDToEntities;
+		while (true)
 		{
-			zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldArchive)) };
-			if (auto iter = oldEntities.find(id); iter != oldEntities.end())
+			auto e = newEntities.Create();
+			if (!ReadEntity(worldArchive, e))
 			{
-				auto e = iter->second;
-				LoadPlayer(entityArchive, e);
-				m_EntitiesID[id] = e;
+				e.Destroy();
+				break;
+			}
+			newIDToEntities[e.Get<UUID>()->id] = e;
+		}
 
-				oldEntities.erase(iter);
+		for (auto [uuid, entity] : m_IDToEntities)
+		{
+			if (newIDToEntities.find(uuid) == newIDToEntities.end())
+			{
+				// remove
+				entity.Get<ActorInfo>()->pawn->Destroy();
+				entity.Destroy();
+			}
+		}
 
-				FVector pos
-				{
-					e.Get<Position>()->data.x(),
-					e.Get<Position>()->data.y(),
-					e.Get<Position>()->data.z(),
-				};
-				e.Get<ActorInfo>()->pawn->SetActorLocation(pos);
+		for (auto [uuid, entity] : newIDToEntities)
+		{
+			auto old = m_IDToEntities.find(uuid);
+			if (old == m_IDToEntities.end())
+			{
+				// add
+				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
+				if (entity.Has<ConnectionID>() && entity.Get<ConnectionID>()->id == clientID)
+					actor->SetupNetAgent(agent.get());
+				auto info = entity.Add<ActorInfo>();
+				info->pawn = actor;
 			}
 			else
 			{
-				auto e = m_Entities.Create();
-				LoadPlayer(entityArchive, e);
-				m_EntitiesID[id] = e;
-
-				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
-				if (id == clientID)
-					actor->SetupNetAgent(agent.get());
-				auto info = e.Add<ActorInfo>();
-				info->pawn = actor;
+				// refresh
+				auto info = entity.Add<ActorInfo>();
+				*info = *(old->second.Get<ActorInfo>());
 			}
 		}
 
-		for (auto [_, e] : oldEntities)
-		{
-			e.Get<ActorInfo>()->pawn->Destroy();
-			e.Destroy();
-		}
+		m_Entities = newEntities;
+		m_IDToEntities = newIDToEntities;
 	});
 }
