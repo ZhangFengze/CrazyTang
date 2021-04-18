@@ -7,6 +7,7 @@
 #include "../common/Voxel.h"
 #include "../common/VoxelSystem.h"
 #include "../common/Math.h"
+#include "../common/UUID.h"
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
 #include <thread>
@@ -32,29 +33,35 @@ namespace zs
 		template<typename Out>
 		static void Write(Out& out, const ct::EntityHandle& e)
 		{
+			assert(e.Has<UUID>());
+			zs::Write(out, *e.Get<UUID>());
+
+			zs::StringWriter components;
 			if (auto connection = e.Get<ConnectionInfo>())
 			{
-				zs::Write(out, "connection");
-				zs::Write(out, connection->connectionID);
+				zs::Write(components, "connection");
+				zs::Write(components, connection->connectionID);
 			}
 
 			if (auto position = e.Get<Position>())
 			{
-				zs::Write(out, "position");
-				zs::Write(out, *position);
+				zs::Write(components, "position");
+				zs::Write(components, *position);
 			}
 
 			if (auto velocity = e.Get<Velocity>())
 			{
-				zs::Write(out, "velocity");
-				zs::Write(out, *velocity);
+				zs::Write(components, "velocity");
+				zs::Write(components, *velocity);
 			}
 
 			if (auto voxel = e.Get<Voxel>())
 			{
-				zs::Write(out, "voxel");
-				zs::Write(out, *voxel);
+				zs::Write(components, "voxel");
+				zs::Write(components, *voxel);
 			}
+
+			zs::Write(out, components.String());
 		}
 	};
 }
@@ -108,6 +115,9 @@ namespace ct
 		agents_[connectionID] = agent;
 
 		auto e = entities_.Create();
+
+		auto uuid = e.Add<UUID>();
+		uuid->id = GenerateUUID();
 
 		auto position = e.Add<Position>();
 		position->data.x() = 0;
