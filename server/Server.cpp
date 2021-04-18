@@ -1,8 +1,9 @@
 #include "Server.h"
 #include "Login.h"
-#include "../common/Player.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
+#include "../common/Position.h"
+#include "../common/Velocity.h"
 #include "../common/Voxel.h"
 #include "../common/VoxelSystem.h"
 #include "../common/Math.h"
@@ -12,6 +13,7 @@
 #include <chrono>
 
 using namespace std::placeholders;
+using namespace ct;
 
 namespace
 {
@@ -21,6 +23,41 @@ namespace
 		std::weak_ptr<ct::NetAgent<>> agent;
 	};
 } // namespace
+
+namespace zs
+{
+	template<>
+	struct Trait<ct::EntityHandle>
+	{
+		template<typename Out>
+		static void Write(Out& out, const ct::EntityHandle& e)
+		{
+			if (auto connection = e.Get<ConnectionInfo>())
+			{
+				zs::Write(out, "connection");
+				zs::Write(out, connection->connectionID);
+			}
+
+			if (auto position = e.Get<Position>())
+			{
+				zs::Write(out, "position");
+				zs::Write(out, *position);
+			}
+
+			if (auto velocity = e.Get<Velocity>())
+			{
+				zs::Write(out, "velocity");
+				zs::Write(out, *velocity);
+			}
+
+			if (auto voxel = e.Get<Voxel>())
+			{
+				zs::Write(out, "voxel");
+				zs::Write(out, *voxel);
+			}
+		}
+	};
+}
 
 namespace ct
 {
@@ -40,23 +77,7 @@ namespace ct
 			voxel_system::Process(entities_, interval.count() / 1000.f);
 
 			zs::StringWriter worldOut;
-			entities_.ForEach([&](EntityHandle e)
-				{
-					if(auto info=e.Get<ConnectionInfo>())
-					{
-						zs::Write(worldOut,"player");
-						zs::Write(worldOut, info->connectionID);
-
-						zs::StringWriter out;
-						ArchivePlayer(out, e);
-						zs::Write(worldOut, out.String());
-					}
-					else if(auto voxel=e.Get<Voxel>())
-					{
-						zs::Write(worldOut,"voxel");
-						zs::Write(worldOut, *e.Get<Voxel>());
-					}
-				});
+			entities_.ForEach([&](EntityHandle e) {zs::Write(worldOut, e);});
 			auto world = worldOut.String();
 			for (auto& [_, agent] : agents_)
 				agent->Send("world", world);
@@ -88,7 +109,15 @@ namespace ct
 
 		auto e = entities_.Create();
 
-		InitPlayer(e);
+		auto position = e.Add<Position>();
+		position->data.x() = 0;
+		position->data.y() = 0;
+		position->data.z() = 0;
+
+		auto velocity = e.Add<Velocity>();
+		velocity->data.x() = 0;
+		velocity->data.y() = 0;
+		velocity->data.z() = 0;
 
 		auto info = e.Add<ConnectionInfo>();
 		info->connectionID = connectionID;

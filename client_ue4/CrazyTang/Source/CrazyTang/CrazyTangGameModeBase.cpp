@@ -11,7 +11,6 @@ THIRD_PARTY_INCLUDES_START
 #include "common/AsyncConnect.h"
 #include "common/NetAgent.h"
 #include "common/Entity.h"
-#include "common/Player.h"
 #include "common/Math.h"
 #include "client_core/Login.h"
 THIRD_PARTY_INCLUDES_END

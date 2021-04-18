@@ -5,7 +5,8 @@
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
 #include "../common/Entity.h"
-#include "../common/Player.h"
+#include "../common/Position.h"
+#include "../common/Velocity.h"
 #include "../common/Voxel.h"
 #include "../common/Math.h"
 
@@ -14,6 +15,68 @@ using asio::ip::tcp;
 
 namespace
 {
+    struct ConnectionID
+    {
+        uint64_t id;
+    };
+
+    template<typename In>
+    void ReadEntity(In& in, ct::EntityHandle e)
+    {
+        while (true)
+        {
+            auto _tag = zs::Read<std::string>(in);
+            if (std::holds_alternative<zs::Error>(_tag))
+                break;
+
+            auto tag = std::get<0>(_tag);
+            if (tag == "connection")
+            {
+                if (!e.Has<ConnectionID>())
+                    e.Add<ConnectionID>();
+                e.Get<ConnectionID>()->id = std::get<0>(zs::Read<uint64_t>(in));
+                printf("id:%llu", e.Get<ConnectionID>()->id);
+            }
+            else if (tag == "position")
+            {
+                if (!e.Has<Position>())
+                    e.Add<Position>();
+                *e.Get<Position>() = std::get<0>(zs::Read<Position>(in));
+                printf("position:%f %f %f",
+                    e.Get<Position>()->data.x(),
+                    e.Get<Position>()->data.y(),
+                    e.Get<Position>()->data.z());
+            }
+            else if (tag == "velocity")
+            {
+                if (!e.Has<Velocity>())
+                    e.Add<Velocity>();
+                *e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(in));
+                printf("velocity:%f %f %f",
+                    e.Get<Velocity>()->data.x(),
+                    e.Get<Velocity>()->data.y(),
+                    e.Get<Velocity>()->data.z());
+            }
+            else if (tag == "voxel")
+            {
+                if (!e.Has<Voxel>())
+                    e.Add<Voxel>();
+                auto voxel = e.Get<Voxel>();
+                *voxel = std::get<0>(zs::Read<Voxel>(in));
+                printf("voxel index:(%d,%d), voxel type:%d],",
+                    voxel->index.x(),
+                    voxel->index.y(),
+                    voxel->type);
+            }
+            else
+            {
+                assert(false);
+            }
+            printf("\n");
+        }
+        printf("-------\n");
+    }
+
     tcp::endpoint StringToEndpoint(const std::string& str)
     {
         auto pos = str.find(':');
@@ -82,34 +145,10 @@ namespace
             {
                 printf("net agent on world,");
                 zs::StringReader worldIn{ std::move(rawWorld) };
-                while (true)
-                {
-                    auto type = zs::Read<std::string>(worldIn);
-                    if (std::holds_alternative<zs::Error>(type)) break;
 
-                    if (std::get<0>(type) == "player")
-                    {
-                        auto id = zs::Read<uint64_t>(worldIn);
-                        zs::StringReader entityArchive{ std::get<0>(zs::Read<std::string>(worldIn)) };
-                        EntityContainer entities;
-                        auto e = entities.Create();
-                        LoadPlayer(entityArchive, e);
-                        printf("player [id:%llu, position:%f %f %f, velocity:%f %f %f],", std::get<0>(id),
-                            e.Get<Position>()->data.x(),
-                            e.Get<Position>()->data.y(),
-                            e.Get<Position>()->data.z(),
-                            e.Get<Velocity>()->data.x(),
-                            e.Get<Velocity>()->data.y(),
-                            e.Get<Velocity>()->data.z());
-                    }
-                    else if (std::get<0>(type) == "voxel")
-                    {
-                        auto voxel = std::get<0>(zs::Read<Voxel>(worldIn));
-                        printf("voxel [index:(%d,%d), type:%d],", voxel.index.x(), voxel.index.y(), voxel.type);
-                    }
-                    printf("\n");
-                }
-                printf("-------\n");
+                EntityContainer entities;
+                auto e = entities.Create();
+                ReadEntity(worldIn, e);
             });
     }
 
