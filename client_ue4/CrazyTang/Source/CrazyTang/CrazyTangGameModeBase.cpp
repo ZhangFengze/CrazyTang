@@ -35,7 +35,7 @@ namespace
 
 	tcp::endpoint ServerEndpoint()
 	{
-		return StringToEndpoint("127.0.0.1:3377");
+		return StringToEndpoint("127.0.0.1:33773");
 	}
 
 	struct ConnectionID
