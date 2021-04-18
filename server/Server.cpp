@@ -125,20 +125,20 @@ namespace ct
 
 		agent->Listen("set position",
 			[this, agent, e](std::string&& data) mutable {
-				zs::StringReader in{std::move(data)}; 
-				auto pos=zs::Read<Eigen::Vector3f>(in);
-				if(std::holds_alternative<zs::Error>(pos))
+				zs::StringReader in{ std::move(data) };
+				auto pos = zs::Read<Eigen::Vector3f>(in);
+				if (std::holds_alternative<zs::Error>(pos))
 					return;
-				e.Get<Position>()->data=std::get<0>(pos);
+				e.Get<Position>()->data = std::get<0>(pos);
 			});
 
 		agent->Listen("set velocity",
 			[this, agent, e](std::string&& data) mutable {
-				zs::StringReader in{std::move(data)}; 
-				auto vel=zs::Read<Eigen::Vector3f>(in);
-				if(std::holds_alternative<zs::Error>(vel))
+				zs::StringReader in{ std::move(data) };
+				auto vel = zs::Read<Eigen::Vector3f>(in);
+				if (std::holds_alternative<zs::Error>(vel))
 					return;
-				e.Get<Velocity>()->data=std::get<0>(vel);
+				e.Get<Velocity>()->data = std::get<0>(vel);
 			});
 
 		agent->OnError([e, connectionID, this]() mutable {
