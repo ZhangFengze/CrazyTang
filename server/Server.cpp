@@ -3,7 +3,7 @@
 #include "../common/Player.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
-#include "../common/Archive.h"
+#include "../common/Math.h"
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
 #include <thread>
@@ -90,9 +90,9 @@ namespace ct
 
 		agent->Listen("broadcast",
 			[this, connectionID](std::string&& data) {
-				OutputStringArchive out;
-				out.Write(connectionID);
-				out.Write(std::move(data));
+				zs::StringWriter out;
+				zs::Write(out, connectionID);
+				zs::Write(out, std::move(data));
 				auto reply = out.String();
 				for (auto& [_, other] : agents_)
 					other->Send("broadcast", reply);
@@ -100,29 +100,29 @@ namespace ct
 
 		agent->Listen("list online",
 			[this, agent](std::string&& data) {
-				OutputStringArchive out;
-				out.Write(agents_.size());
+				zs::StringWriter out;
+				zs::Write(out, agents_.size());
 				for (auto& [id, _] : agents_)
-					out.Write(id);
+					zs::Write(out, id);
 				agent->Send("list online", out.String());
 			});
 
 		agent->Listen("set position",
 			[this, agent, e](std::string&& data) mutable {
-				InputStringArchive in{std::move(data)}; 
-				auto pos=in.Read<Eigen::Vector3f>();
-				if(!pos)
+				zs::StringReader in{std::move(data)}; 
+				auto pos=zs::Read<Eigen::Vector3f>(in);
+				if(std::holds_alternative<zs::Error>(pos))
 					return;
-				e.Get<Position>()->data=*pos;
+				e.Get<Position>()->data=std::get<0>(pos);
 			});
 
 		agent->Listen("set velocity",
 			[this, agent, e](std::string&& data) mutable {
-				InputStringArchive in{std::move(data)}; 
-				auto vel=in.Read<Eigen::Vector3f>();
-				if(!vel)
+				zs::StringReader in{std::move(data)}; 
+				auto vel=zs::Read<Eigen::Vector3f>(in);
+				if(std::holds_alternative<zs::Error>(vel))
 					return;
-				e.Get<Velocity>()->data=*vel;
+				e.Get<Velocity>()->data=std::get<0>(vel);
 			});
 
 		agent->OnError([e, connectionID, this]() mutable {

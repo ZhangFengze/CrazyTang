@@ -1,7 +1,7 @@
 #pragma once
 #include "Packet.h"
 #include "Pipe.h"
-#include "Archive.h"
+#include <ZSerializer.hpp>
 #include <string>
 #include <functional>
 #include <cassert>
@@ -63,29 +63,29 @@ namespace ct
 	template<typename Pipe>
 	void NetAgent<Pipe>::Send(const std::string& tag, const std::string& content)
 	{
-		OutputStringArchive ar;
-		ar.Write(tag);
-		ar.Write(content);
-		pipe_->SendPacket(Packet{ ar.String() });
+		zs::StringWriter out;
+		zs::Write(out, tag);
+		zs::Write(out, content);
+		pipe_->SendPacket(Packet{ out.String() });
 	}
 
 	template<typename Pipe>
 	void NetAgent<Pipe>::OnPacket(Packet&& packet)
 	{
-		InputStringArchive ar(std::string{ packet.Data(),packet.Size() });
-		auto tag = ar.Read<std::string>();
-		if (!tag)
+		zs::StringReader ar(std::string{ packet.Data(),packet.Size() });
+		auto tag = zs::Read<std::string>(ar);
+		if (std::holds_alternative<zs::Error>(tag))
 			return;
 
-		auto iter = listeners_.find(*tag);
+		auto iter = listeners_.find(std::get<0>(tag));
 		if (iter == listeners_.end())
 			return;
 
-		auto content = ar.Read<std::string>();
-		if (!content)
+		auto content = zs::Read<std::string>(ar);
+		if (std::holds_alternative<zs::Error>(content))
 			return;
 
-		iter->second(std::move(*content));
+		iter->second(std::move(std::get<0>(content)));
 	}
 
 	template<typename Pipe>

@@ -3,7 +3,8 @@
 
 #include "CrazyTangPawnBase.h"
 THIRD_PARTY_INCLUDES_START
-#include "common/Archive.h"
+#include "ZSerializer.hpp"
+#include "common/Math.h"
 THIRD_PARTY_INCLUDES_END
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -65,8 +66,8 @@ void ACrazyTangPawnBase::SendInput()
 {
 	if (m_NetAgent)
 	{
-		ct::OutputStringArchive ar;
-		ar.Write(m_Input);
+		zs::StringWriter out;
+		zs::Write(out, m_Input);
 		m_NetAgent->Send("set velocity", ar.String());
 	}
 }

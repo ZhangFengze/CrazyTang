@@ -1,11 +1,12 @@
 #include <memory>
+#include "ZSerializer.hpp"
 #include "../client_core/Login.h"
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
-#include "../common/Archive.h"
 #include "../common/Entity.h"
 #include "../common/Player.h"
+#include "../common/Math.h"
 
 using namespace ct;
 using asio::ip::tcp;
@@ -43,36 +44,36 @@ namespace
 
         agent->Listen("broadcast",
             [agent](std::string&& data) {
-                InputStringArchive in{ std::move(data) };
-                auto from = in.Read<uint64_t>();
-                auto content = in.Read<std::string>();
-                printf("net agent on broadcast, from %llu, content:%s\n", *from, content->c_str());
+                zs::StringReader in( std::move(data) );
+                auto from = zs::Read<uint64_t>(in);
+                auto content = zs::Read<std::string>(in);
+                printf("net agent on broadcast, from %llu, content:%s\n", std::get<0>(from), std::get<0>(content).c_str());
             });
         agent->Send("broadcast", "hello everyone?");
 
         agent->Listen("list online",
             [agent](std::string&& data) {
-                InputStringArchive in{ std::move(data) };
-                auto size = in.Read<size_t>();
-                printf("net agent on list online: %llu online\n", *size);
-                for (size_t i = 0; i < size; ++i)
+                zs::StringReader in( std::move(data) );
+                auto size = zs::Read<size_t>(in);
+                printf("net agent on list online: %llu online\n", std::get<0>(size));
+                for (size_t i = 0; i < std::get<0>(size); ++i)
                 {
-                    auto id = in.Read<uint64_t>();
-                    printf("%llu\n", *id);
+                    auto id = zs::Read<uint64_t>(in);
+                    printf("%llu\n", std::get<0>(id));
                 }
             });
         agent->Send("list online", "");
 
         {
-            OutputStringArchive ar;
-            ar.Write(Eigen::Vector3f{ 1.f,0,0 });
-            agent->Send("set position", ar.String());
+            zs::StringWriter out;
+            zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
+            agent->Send("set position", out.String());
         }
 
         {
-            OutputStringArchive ar;
-            ar.Write(Eigen::Vector3f{ 0,1.f,0 });
-            agent->Send("set velocity", ar.String());
+            zs::StringWriter out;
+            zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
+            agent->Send("set velocity", out.String());
         }
 
         agent->Listen("world",

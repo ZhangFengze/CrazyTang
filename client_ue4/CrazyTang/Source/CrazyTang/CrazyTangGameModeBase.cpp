@@ -7,10 +7,12 @@
 
 THIRD_PARTY_INCLUDES_START
 #include "Eigen/Eigen"
+#include "ZSerializer.hpp"
 #include "common/AsyncConnect.h"
 #include "common/NetAgent.h"
 #include "common/Entity.h"
 #include "common/Player.h"
+#include "common/Math.h"
 #include "client_core/Login.h"
 THIRD_PARTY_INCLUDES_END
 
@@ -94,14 +96,14 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 	});
 
 	{
-		OutputStringArchive ar;
-		ar.Write(Eigen::Vector3f{ 1.f,0,0 });
+		zs::StringWriter out;
+		zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
 		agent->Send("set position", ar.String());
 	}
 
 	{
-		OutputStringArchive ar;
-		ar.Write(Eigen::Vector3f{ 0,50.f,0 });
+		zs::StringWriter out;
+		zs::Write(out, Eigen::Vector3f{ 0,50.f,0 });
 		agent->Send("set velocity", ar.String());
 	}
 
@@ -111,15 +113,15 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 		std::map<uint64_t, ct::EntityHandle> oldEntities;
 		oldEntities.swap(m_EntitiesID);
 
-		InputStringArchive worldArchive{ std::move(rawWorld) };
-		while (auto id = worldArchive.Read<uint64_t>())
+		zs::StringReader worldArchive{ std::move(rawWorld) };
+		while (auto id = std::get<0>(worldArchive.Read<uint64_t>()))
 		{
-			InputStringArchive entityArchive{ worldArchive.Read<std::string>().value() };
-			if (auto iter = oldEntities.find(*id); iter != oldEntities.end())
+			zs::StringReader entityArchive{ std::get<0>(worldArchive.Read<std::string>()) };
+			if (auto iter = oldEntities.find(id); iter != oldEntities.end())
 			{
 				auto e = iter->second;
 				LoadPlayer(entityArchive, e);
-				m_EntitiesID[*id] = e;
+				m_EntitiesID[id] = e;
 
 				oldEntities.erase(iter);
 
@@ -135,10 +137,10 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 			{
 				auto e = m_Entities.Create();
 				LoadPlayer(entityArchive, e);
-				m_EntitiesID[*id] = e;
+				m_EntitiesID[id] = e;
 
 				auto actor = GetWorld()->SpawnActor<ACrazyTangPawnBase>(MyPawn);
-				if (*id == clientID)
+				if (id == clientID)
 					actor->SetupNetAgent(agent.get());
 				auto info = e.Add<ActorInfo>();
 				info->pawn = actor;
