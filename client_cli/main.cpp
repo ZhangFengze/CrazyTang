@@ -34,7 +34,7 @@ namespace
             {
                 if (!e.Has<ConnectionID>())
                     e.Add<ConnectionID>();
-                e.Get<ConnectionID>()->id = std::get<0>(zs::Read<uint64_t>(in));
+                *e.Get<ConnectionID>() = std::get<0>(zs::Read<ConnectionID>(in));
                 printf("id:%llu", e.Get<ConnectionID>()->id);
             }
             else if (tag == "position")
