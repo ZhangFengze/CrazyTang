@@ -47,5 +47,4 @@ private:
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;
 
 	ct::EntityContainer m_Entities;
-	std::unordered_map<uint64_t, ct::EntityHandle> m_IDToEntities;
 };
