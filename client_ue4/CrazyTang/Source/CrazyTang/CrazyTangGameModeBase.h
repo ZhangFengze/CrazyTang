@@ -15,6 +15,7 @@
 #include "common/Pipe.h"
 #include "common/Entity.h"
 #include "common/UUID.h"
+#include "common/Voxel.h"
 #if PLATFORM_WINDOWS
 #include "Windows/PostWindowsApi.h"
 #endif
@@ -42,11 +43,20 @@ public:
 
 	ct::EntityHandle GetEntity(uint64_t);
 
+	void TickVoxels(float dt);
+
 private:
 	asio::io_context io_;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> MyVoxel;
+
 	ct::EntityContainer m_Entities;
+	ct::voxel::Container m_Voxels;
+
+	UPROPERTY()
+	TArray<AActor*> m_VoxelActors;
 };

@@ -77,13 +77,6 @@ namespace
 					e.Add<Velocity>();
 				*e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(components));
 			}
-			else if (tag == "voxel")
-			{
-				if (!e.Has<Voxel>())
-					e.Add<Voxel>();
-				auto voxel = e.Get<Voxel>();
-				*voxel = std::get<0>(zs::Read<Voxel>(components));
-			}
 			else
 			{
 				assert(false);
@@ -121,11 +114,26 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 		auto pipe = std::make_shared<ct::Pipe<>>(std::move(*socket));
 		OnConnected(io_, pipe);
 	});
+
+	if (m_VoxelActors.Num() != m_Voxels.x * m_Voxels.y * m_Voxels.z)
+	{
+		m_VoxelActors.SetNum(m_Voxels.x * m_Voxels.y * m_Voxels.z, true);
+	}
+
+	for (int i = 0; i < m_VoxelActors.Num(); ++i)
+	{
+		io_.post(
+			[this, i]()
+		{
+			m_VoxelActors[i] = GetWorld()->SpawnActor<AActor>(MyVoxel);
+		});
+	}
 }
 
 void ACrazyTangGameModeBase::Tick(float DeltaSeconds)
 {
-	io_.poll();
+	io_.run_for(std::chrono::milliseconds{1});
+	TickVoxels(DeltaSeconds);
 	return Super::Tick(DeltaSeconds);
 }
 
@@ -163,7 +171,7 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 		agent->Send("set velocity", out.String());
 	}
 
-	agent->Listen("world",
+	agent->Listen("entities",
 		[this, clientID, agent](std::string&& rawWorld)
 	{
 		zs::StringReader worldArchive{ std::move(rawWorld) };
@@ -220,6 +228,14 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 
 		m_Entities = newEntities;
 	});
+
+	agent->Listen("voxels",
+		[this, agent](std::string&& rawVoxels)
+	{
+		zs::StringReader in(std::move(rawVoxels));
+		auto voxels = zs::Read<ct::voxel::Container>(in);
+		m_Voxels = std::get<0>(voxels);
+	});
 }
 
 ct::EntityHandle ACrazyTangGameModeBase::GetEntity(uint64_t id)
@@ -233,4 +249,33 @@ ct::EntityHandle ACrazyTangGameModeBase::GetEntity(uint64_t id)
 			entity = e;
 	});
 	return entity;
+}
+
+void ACrazyTangGameModeBase::TickVoxels(float dt)
+{
+	int index = 0;
+	for (size_t x = 0;x < m_Voxels.x;++x)
+	{
+		for (size_t y = 0;y < m_Voxels.y;++y)
+		{
+			for (size_t z = 0;z < m_Voxels.z;++z)
+			{
+				if (m_VoxelActors[index] == nullptr)
+					continue;
+
+				auto actor = m_VoxelActors[index];
+				if (m_Voxels.Get(x, y, z).type == 1)
+				{
+					actor->SetActorLocation(FVector{ x * 100.f,y * 100.f,z * 100.f });
+					actor->SetActorHiddenInGame(false);
+				}
+				else
+				{
+					actor->SetActorHiddenInGame(true);
+				}
+
+				index++;
+			}
+		}
+	}
 }

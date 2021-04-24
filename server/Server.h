@@ -3,6 +3,7 @@
 #include "../common/Acceptor.h"
 #include "../common/Entity.h"
 #include "../common/Pipe.h"
+#include "../common/Voxel.h"
 #include <asio.hpp>
 #include <cstdint>
 #include <memory>
@@ -24,5 +25,6 @@ namespace ct
 		uint64_t connectionID_ = 0;
 		std::unordered_map<uint64_t, std::shared_ptr<NetAgent<>>> agents_;
 		EntityContainer entities_;
+		voxel::Container voxels_;
 	};
 }

@@ -5,7 +5,6 @@
 #include "../common/Position.h"
 #include "../common/Velocity.h"
 #include "../common/Voxel.h"
-#include "../common/VoxelSystem.h"
 #include "../common/Math.h"
 #include "../common/UUID.h"
 #include <Eigen/Eigen>
@@ -55,12 +54,6 @@ namespace zs
 				zs::Write(components, *velocity);
 			}
 
-			if (auto voxel = e.Get<Voxel>())
-			{
-				zs::Write(components, "voxel");
-				zs::Write(components, *voxel);
-			}
-
 			zs::Write(out, components.String());
 		}
 	};
@@ -73,7 +66,7 @@ namespace ct
 		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::tcp::v4(),33773 };
 		ct::Acceptor acceptor{ io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2) };
 
-		voxel_system::GenerateVoxels(entities_);
+		voxel::GenerateVoxels(voxels_);
 
 		auto interval = std::chrono::milliseconds{ 33 };
 		auto shouldTick = std::chrono::steady_clock::now();
@@ -81,13 +74,21 @@ namespace ct
 		{
 			io_.poll();
 			move_system::Process(entities_, interval.count() / 1000.f);
-			voxel_system::Process(entities_, interval.count() / 1000.f);
+			voxel::Process(voxels_, interval.count() / 1000.f);
 
 			zs::StringWriter worldOut;
 			entities_.ForEach([&](EntityHandle e) {zs::Write(worldOut, e);});
 			auto world = worldOut.String();
+
+			zs::StringWriter voxelOut;
+			zs::Write(voxelOut, voxels_);
+			auto voxel=voxelOut.String();
+
 			for (auto& [_, agent] : agents_)
-				agent->Send("world", world);
+			{
+				agent->Send("entities", world);
+				agent->Send("voxels", voxel);
+			}
 
 			shouldTick += interval;
 			io_.run_until(shouldTick);
