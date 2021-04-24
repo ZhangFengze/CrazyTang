@@ -270,7 +270,9 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 				{
 					if (!actor)
 						actor = GetWorld()->SpawnActor<AActor>(MyVoxel);
-					actor->SetActorLocation(FVector{ x * 100.f,y * 100.f,z * 100.f });
+					actor->SetActorLocation(FVector{ x * ct::voxel::sideLength,
+						y * ct::voxel::sideLength,
+						z * ct::voxel::sideLength });
 					actor->SetActorHiddenInGame(false);
 				}
 				else if (type == ct::voxel::Type::Empty)
