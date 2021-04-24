@@ -8,7 +8,7 @@ namespace ct
 {
     namespace voxel
     {
-        constexpr float sideLength = 100.f;
+        constexpr float sideLength = 10.f;
 
         enum class Type
         {
