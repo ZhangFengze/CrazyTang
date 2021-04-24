@@ -40,9 +40,9 @@ namespace ct
                     {
                         float altitude = std::sin(accumulated + x + y) * 2.f + 2.f;
                         if (z < altitude)
-                            container.Get(x, y, z)->type = 1;
+                            container.Get(x, y, z)->type = Type::Block;
                         else
-                            container.Get(x, y, z)->type = 0;
+                            container.Get(x, y, z)->type = Type::Empty;
                     }
                 }
             }

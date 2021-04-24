@@ -8,9 +8,16 @@ namespace ct
 {
     namespace voxel
     {
+        enum class Type
+        {
+            Unknown,
+            Empty,
+            Block
+        };
+
         struct Voxel
         {
-            int type;
+            Type type;
         };
 
         struct Container
