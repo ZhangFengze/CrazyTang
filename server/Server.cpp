@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "Login.h"
+#include "ConnectionInfo.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
 #include "../common/Position.h"
@@ -14,15 +15,6 @@
 
 using namespace std::placeholders;
 using namespace ct;
-
-namespace
-{
-	struct ConnectionInfo
-	{
-		uint64_t connectionID;
-		std::weak_ptr<ct::NetAgent<>> agent;
-	};
-} // namespace
 
 namespace zs
 {
