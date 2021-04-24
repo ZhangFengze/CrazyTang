@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "Login.h"
 #include "ConnectionInfo.h"
+#include "VoxelWatcher.h"
 #include "../common/Pipe.h"
 #include "../common/MoveSystem.h"
 #include "../common/Position.h"
@@ -72,15 +73,12 @@ namespace ct
 			entities_.ForEach([&](EntityHandle e) {zs::Write(worldOut, e);});
 			auto world = worldOut.String();
 
-			zs::StringWriter voxelOut;
-			zs::Write(voxelOut, voxels_);
-			auto voxel=voxelOut.String();
-
 			for (auto& [_, agent] : agents_)
 			{
 				agent->Send("entities", world);
-				agent->Send("voxels", voxel);
 			}
+
+			voxel_watcher::Process(entities_, voxels_, interval.count() / 1000.f);
 
 			shouldTick += interval;
 			io_.run_until(shouldTick);

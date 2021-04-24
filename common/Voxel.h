@@ -1,6 +1,8 @@
 #pragma once
+#include "../common/Position.h"
 #include <ZSerializer.hpp>
 #include <Eigen/Eigen>
+#include <tuple>
 
 namespace ct
 {
@@ -23,6 +25,7 @@ namespace ct
 
         void GenerateVoxels(Container&);
         void Process(Container&, float step);
+        std::tuple<int, int, int> DecodeIndex(const Position&);
     }
 }
 

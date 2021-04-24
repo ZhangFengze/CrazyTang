@@ -119,15 +119,6 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 	{
 		m_VoxelActors.SetNum(m_Voxels.x * m_Voxels.y * m_Voxels.z, true);
 	}
-
-	for (int i = 0; i < m_VoxelActors.Num(); ++i)
-	{
-		m_LowPriorityIO.post(
-			[this, i]()
-		{
-			m_VoxelActors[i] = GetWorld()->SpawnActor<AActor>(MyVoxel);
-		});
-	}
 }
 
 void ACrazyTangGameModeBase::Tick(float DeltaSeconds)
@@ -233,9 +224,21 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 	agent->Listen("voxels",
 		[this, agent](std::string&& rawVoxels)
 	{
+		m_Voxels = ct::voxel::Container{};
+
 		zs::StringReader in(std::move(rawVoxels));
-		auto voxels = zs::Read<ct::voxel::Container>(in);
-		m_Voxels = std::get<0>(voxels);
+		while (true)
+		{
+			auto rawX = zs::Read<int>(in);
+			if (std::holds_alternative<zs::Error>(rawX))
+				break;
+			auto x = std::get<0>(rawX);
+			auto y = std::get<0>(zs::Read<int>(in));
+			auto z = std::get<0>(zs::Read<int>(in));
+			auto newVoxel = std::get<0>(zs::Read<ct::voxel::Voxel>(in));
+			auto nowVoxel = m_Voxels.Get(x, y, z);
+			*nowVoxel = newVoxel;
+		}
 	});
 }
 
@@ -261,18 +264,22 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 		{
 			for (size_t z = 0;z < m_Voxels.z;++z)
 			{
-				if (m_VoxelActors[index] == nullptr)
-					continue;
-
-				auto actor = m_VoxelActors[index];
-				if (m_Voxels.Get(x, y, z)->type == 1)
+				int type = m_Voxels.Get(x, y, z)->type;
+				auto& actor = m_VoxelActors[index];
+				if (type == 1)
 				{
+					if (!actor)
+						actor = GetWorld()->SpawnActor<AActor>(MyVoxel);
 					actor->SetActorLocation(FVector{ x * 100.f,y * 100.f,z * 100.f });
 					actor->SetActorHiddenInGame(false);
 				}
 				else
 				{
-					actor->SetActorHiddenInGame(true);
+					if (actor)
+					{
+						actor->Destroy();
+						actor = nullptr;
+					}
 				}
 
 				index++;

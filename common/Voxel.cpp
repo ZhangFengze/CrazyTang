@@ -47,5 +47,14 @@ namespace ct
                 }
             }
         }
+
+        std::tuple<int, int, int> DecodeIndex(const Position& pos)
+        {
+            float side = 100.f;
+            int x = pos.data.x() / side;
+            int y = pos.data.y() / side;
+            int z = pos.data.z() / side;
+            return { x,y,z };
+        }
     }
 }
