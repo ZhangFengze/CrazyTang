@@ -265,7 +265,7 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 					continue;
 
 				auto actor = m_VoxelActors[index];
-				if (m_Voxels.Get(x, y, z).type == 1)
+				if (m_Voxels.Get(x, y, z)->type == 1)
 				{
 					actor->SetActorLocation(FVector{ x * 100.f,y * 100.f,z * 100.f });
 					actor->SetActorHiddenInGame(false);

@@ -18,11 +18,7 @@ namespace ct
             static constexpr size_t z=4;
             std::vector<Voxel> voxels{x*y*z};
 
-            Voxel& Get(size_t _x, size_t _y, size_t _z)
-            {
-                size_t index= _x + _y*x + _z*x*y;
-                return voxels[index];
-            }
+            Voxel* Get(int _x, int _y, int _z);
         };
 
         void GenerateVoxels(Container&);
