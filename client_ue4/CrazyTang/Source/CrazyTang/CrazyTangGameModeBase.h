@@ -46,7 +46,8 @@ public:
 	void TickVoxels(float dt);
 
 private:
-	asio::io_context io_;
+	asio::io_context m_HighPriorityIO;
+	asio::io_context m_LowPriorityIO;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;

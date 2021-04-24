@@ -101,7 +101,7 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 	Super::InitGame(MapName, Options, ErrorMessage);
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("InitGame"));
-	ct::AsyncConnect(io_, ServerEndpoint(),
+	ct::AsyncConnect(m_HighPriorityIO, ServerEndpoint(),
 		[&](const std::error_code& ec, std::shared_ptr<ct::Socket> socket)
 	{
 		if (ec)
@@ -112,7 +112,7 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Connection Succeed"));
 
 		auto pipe = std::make_shared<ct::Pipe<>>(std::move(*socket));
-		OnConnected(io_, pipe);
+		OnConnected(m_HighPriorityIO, pipe);
 	});
 
 	if (m_VoxelActors.Num() != m_Voxels.x * m_Voxels.y * m_Voxels.z)
@@ -122,7 +122,7 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 
 	for (int i = 0; i < m_VoxelActors.Num(); ++i)
 	{
-		io_.post(
+		m_LowPriorityIO.post(
 			[this, i]()
 		{
 			m_VoxelActors[i] = GetWorld()->SpawnActor<AActor>(MyVoxel);
@@ -132,7 +132,8 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 
 void ACrazyTangGameModeBase::Tick(float DeltaSeconds)
 {
-	io_.run_for(std::chrono::milliseconds{1});
+	m_HighPriorityIO.poll();
+	m_LowPriorityIO.run_for(std::chrono::milliseconds{ 1 });
 	TickVoxels(DeltaSeconds);
 	return Super::Tick(DeltaSeconds);
 }
