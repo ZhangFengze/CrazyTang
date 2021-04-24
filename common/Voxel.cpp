@@ -38,7 +38,7 @@ namespace ct
                 {
                     for (size_t z = 0;z < container.z;++z)
                     {
-                        float altitude = std::sin(accumulated + x + y) * 2.f + 2.f;
+                        float altitude = std::sin(accumulated + x + y) * 8.f + 8.f;
                         if (z < altitude)
                             container.Get(x, y, z)->type = Type::Block;
                         else

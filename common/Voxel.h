@@ -24,9 +24,9 @@ namespace ct
 
         struct Container
         {
-            static constexpr size_t x = 32;
-            static constexpr size_t y = 32;
-            static constexpr size_t z = 4;
+            static constexpr size_t x = 128;
+            static constexpr size_t y = 128;
+            static constexpr size_t z = 16;
             std::vector<Voxel> voxels{ x * y * z };
 
             Voxel* Get(int _x, int _y, int _z);
