@@ -6,11 +6,10 @@
 using namespace ct;
 namespace
 {
-    std::string ArchiveVoxels(voxel::Container& voxels, const Position& pos)
+    template<typename Func>
+    void TraverseVoxels(voxel::Container& voxels, const Position& pos, int side, Func&& func)
     {
-        zs::StringWriter out;
         auto [x, y, z] = voxel::DecodeIndex(pos);
-        int side = 10;
         for (int nowX = x - side;nowX < x + side;++nowX)
         {
             for (int nowY = y - side;nowY < y + side;++nowY)
@@ -20,14 +19,38 @@ namespace
                     auto voxel = voxels.Get(nowX, nowY, nowZ);
                     if (!voxel)
                         continue;
-                    zs::Write(out, nowX);
-                    zs::Write(out, nowY);
-                    zs::Write(out, nowZ);
-                    zs::Write(out, *voxel);
+                    func(nowX, nowY, nowZ, *voxel);
                 }
             }
         }
-        return out.String();
+    }
+
+    std::vector<std::string> ArchiveVoxels(voxel::Container& voxels, const Position& pos,
+        int side, int voxelPerMessage)
+    {
+        std::vector<std::string> messages;
+        zs::StringWriter out;
+        int count = 0;
+
+        TraverseVoxels(voxels, pos, side,
+            [&](int x, int y, int z, const voxel::Voxel& voxel)
+            {
+                if (count >= voxelPerMessage)
+                {
+                    messages.emplace_back(out.String());
+                    out = zs::StringWriter{};
+                    count = 0;
+                }
+                zs::Write(out, x);
+                zs::Write(out, y);
+                zs::Write(out, z);
+                zs::Write(out, voxel);
+                ++count;
+            });
+
+        if (count != 0)
+            messages.emplace_back(out.String());
+        return messages;
     }
 }
 
@@ -47,7 +70,9 @@ namespace ct
                         return;
                     auto agent = connection->agent.lock();
                     assert(agent);
-                    agent->Send("voxels", ArchiveVoxels(voxels, *pos));
+                    auto messages = ArchiveVoxels(voxels, *pos, 10, 100);
+                    for (const auto& message : messages)
+                        agent->Send("voxels", message);
                 });
         }
     }
