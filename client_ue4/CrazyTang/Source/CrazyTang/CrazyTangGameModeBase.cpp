@@ -224,8 +224,6 @@ void ACrazyTangGameModeBase::OnLoginSuccess(asio::io_context& io, uint64_t clien
 	agent->Listen("voxels",
 		[this, agent](std::string&& rawVoxels)
 	{
-		m_Voxels = ct::voxel::Container{};
-
 		zs::StringReader in(std::move(rawVoxels));
 		while (true)
 		{
