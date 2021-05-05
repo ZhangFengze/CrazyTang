@@ -6,6 +6,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "VoxelWorld.h"
 #include "CrazyTangPawnBase.h"
 
 #if PLATFORM_WINDOWS
@@ -44,6 +45,8 @@ public:
 	ct::EntityHandle GetEntity(uint64_t);
 
 	void TickVoxels(float dt);
+
+	AVoxelWorld* GetVoxelWorld();
 
 private:
 	asio::io_context m_HighPriorityIO;
