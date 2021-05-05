@@ -119,11 +119,6 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 		OnConnected(m_HighPriorityIO, pipe);
 	});
 
-	if (m_VoxelActors.Num() != m_Voxels.x * m_Voxels.y * m_Voxels.z)
-	{
-		m_VoxelActors.SetNum(m_Voxels.x * m_Voxels.y * m_Voxels.z, true);
-	}
-
 	TArray<AActor*> worlds;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AVoxelWorld::StaticClass(), worlds);
 	auto world = Cast<AVoxelWorld>(worlds[0]);
@@ -278,32 +273,16 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 			for (size_t z = 0;z < m_Voxels.z;++z)
 			{
 				auto type = m_Voxels.Get(x, y, z)->type;
-				auto& actor = m_VoxelActors[index];
 				if (type == ct::voxel::Type::Block)
 				{
-					if (!actor)
-						actor = GetWorld()->SpawnActor<AActor>(MyVoxel);
-					actor->SetActorLocation(FVector{ x * ct::voxel::sideLength,
-						y * ct::voxel::sideLength,
-						z * ct::voxel::sideLength });
-					actor->SetActorHiddenInGame(false);
 					world->GetData().SetValue(x, y, z, FVoxelValue(-1.f));
 				}
 				else if (type == ct::voxel::Type::Empty)
 				{
-					if (actor)
-					{
-						actor->SetActorHiddenInGame(true);
-					}
 					world->GetData().SetValue(x, y, z, FVoxelValue(1.f));
 				}
 				else
 				{
-					if (actor)
-					{
-						actor->Destroy();
-						actor = nullptr;
-					}
 					world->GetData().SetValue(x, y, z, FVoxelValue(1.f));
 				}
 

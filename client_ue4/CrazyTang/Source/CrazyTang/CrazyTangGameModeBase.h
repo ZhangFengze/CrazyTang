@@ -52,12 +52,6 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACrazyTangPawnBase> MyPawn;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AActor> MyVoxel;
-
 	ct::EntityContainer m_Entities;
 	ct::voxel::Container m_Voxels;
-
-	UPROPERTY()
-	TArray<AActor*> m_VoxelActors;
 };
