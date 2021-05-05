@@ -58,7 +58,7 @@ public class CrazyTang : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.NoSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Voxel" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

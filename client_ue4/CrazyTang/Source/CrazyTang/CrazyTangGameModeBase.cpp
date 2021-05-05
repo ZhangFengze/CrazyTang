@@ -4,6 +4,10 @@
 #include "CrazyTangGameModeBase.h"
 
 #include "Engine.h"
+#include "VoxelWorld.h"
+#include "VoxelValue.h"
+#include "VoxelData/VoxelDataIncludes.h"
+#include "VoxelTools/VoxelToolHelpers.h"
 
 THIRD_PARTY_INCLUDES_START
 #include "Eigen/Eigen"
@@ -119,6 +123,13 @@ void ACrazyTangGameModeBase::InitGame(const FString& MapName, const FString& Opt
 	{
 		m_VoxelActors.SetNum(m_Voxels.x * m_Voxels.y * m_Voxels.z, true);
 	}
+
+	TArray<AActor*> worlds;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AVoxelWorld::StaticClass(), worlds);
+	auto world = Cast<AVoxelWorld>(worlds[0]);
+	world->VoxelSize = 10.f;
+	world->SetWorldSize(std::max((int)m_Voxels.x, (int)m_Voxels.y));
+	world->CreateWorld();
 }
 
 void ACrazyTangGameModeBase::Tick(float DeltaSeconds)
@@ -255,6 +266,10 @@ ct::EntityHandle ACrazyTangGameModeBase::GetEntity(uint64_t id)
 
 void ACrazyTangGameModeBase::TickVoxels(float dt)
 {
+	TArray<AActor*> worlds;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AVoxelWorld::StaticClass(), worlds);
+	auto world = Cast<AVoxelWorld>(worlds[0]);
+	
 	int index = 0;
 	for (size_t x = 0;x < m_Voxels.x;++x)
 	{
@@ -272,6 +287,7 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 						y * ct::voxel::sideLength,
 						z * ct::voxel::sideLength });
 					actor->SetActorHiddenInGame(false);
+					world->GetData().SetValue(x, y, z, FVoxelValue(-1.f));
 				}
 				else if (type == ct::voxel::Type::Empty)
 				{
@@ -279,6 +295,7 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 					{
 						actor->SetActorHiddenInGame(true);
 					}
+					world->GetData().SetValue(x, y, z, FVoxelValue(1.f));
 				}
 				else
 				{
@@ -287,10 +304,13 @@ void ACrazyTangGameModeBase::TickVoxels(float dt)
 						actor->Destroy();
 						actor = nullptr;
 					}
+					world->GetData().SetValue(x, y, z, FVoxelValue(1.f));
 				}
 
 				index++;
 			}
 		}
 	}
+	FVoxelToolHelpers::UpdateWorld(world,
+		FVoxelIntBox{ FIntVector{-100,-100,-100},FIntVector{100,100,100} });
 }
