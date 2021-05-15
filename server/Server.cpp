@@ -54,10 +54,20 @@ namespace zs
 
 namespace ct
 {
-	void Server::Run()
+	asio::awaitable<void> Server::Listen()
 	{
 		auto endpoint = asio::ip::tcp::endpoint{ asio::ip::tcp::v4(),33773 };
-		ct::Acceptor acceptor{ io_,endpoint,std::bind(&Server::OnConnection, this, _1, _2) };
+		asio::ip::tcp::acceptor acceptor{ io_, endpoint };
+		for (;;)
+		{
+			auto socket = co_await acceptor.async_accept(asio::use_awaitable);
+			OnConnection({}, std::move(socket));
+		}
+	}
+
+	void Server::Run()
+	{
+		asio::co_spawn(io_, Listen(), asio::detached);
 
 		voxel::GenerateVoxels(voxels_);
 
