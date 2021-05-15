@@ -61,7 +61,7 @@ namespace ct
 		for (;;)
 		{
 			auto socket = co_await acceptor.async_accept(asio::use_awaitable);
-			OnConnection({}, std::move(socket));
+			OnConnection(std::move(socket));
 		}
 	}
 
@@ -95,10 +95,8 @@ namespace ct
 		}
 	}
 
-	void Server::OnConnection(const std::error_code& error, asio::ip::tcp::socket&& socket)
+	void Server::OnConnection(asio::ip::tcp::socket&& socket)
 	{
-		if (error)
-			return;
 		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
 		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{ 3 });
 		login->OnSuccess(

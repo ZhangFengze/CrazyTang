@@ -18,7 +18,7 @@ namespace ct
 
 	private:
 		asio::awaitable<void> Listen();
-		void OnConnection(const std::error_code&, asio::ip::tcp::socket&&);
+		void OnConnection(asio::ip::tcp::socket&&);
 		void OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID);
 
 	private:
