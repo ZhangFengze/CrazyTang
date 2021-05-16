@@ -44,9 +44,7 @@ asio::awaitable<void> client(asio::io_context& io)
     if (!id)
         co_return;
     printf("login success %llu\n", *id);
-    auto pipe = std::make_shared<Pipe>(std::move(s));
-    pipe->Go();
-    auto agent = std::make_shared<NetAgent<Pipe>>(pipe);
+    auto agent = std::make_shared<NetAgent2>(std::move(s));
     agent->OnError(
         [agent]() {
             printf("net agent on error\n");
@@ -63,6 +61,16 @@ asio::awaitable<void> client(asio::io_context& io)
         zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
         agent->Send("set velocity", out.String());
     }
+
+    co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+        {
+            co_await agent->ReadRoutine();
+        }, asio::detached);
+
+    co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+        {
+            co_await agent->WriteRoutine();
+        }, asio::detached);
 }
 
 int main()

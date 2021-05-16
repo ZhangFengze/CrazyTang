@@ -8,12 +8,12 @@ namespace ct
 	struct ConnectionInfo
 	{
 		uint64_t connectionID;
-		std::weak_ptr<ct::NetAgent<Pipe>> agent;
+		std::weak_ptr<ct::NetAgent2> agent;
 	};
 
 	struct Connection
 	{
 		uint64_t connectionID;
-		std::shared_ptr<ct::NetAgent<Pipe>> agent;
+		std::shared_ptr<ct::NetAgent2> agent;
 	};
 } // namespace

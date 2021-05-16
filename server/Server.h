@@ -19,7 +19,7 @@ namespace ct
 	private:
 		asio::awaitable<void> Listen();
 		asio::awaitable<void> OnConnection(asio::ip::tcp::socket);
-		void OnLoginSuccess(std::shared_ptr<Pipe> pipe, uint64_t connectionID);
+		void OnLoginSuccess(std::shared_ptr<NetAgent2> agent, uint64_t connectionID);
 
 	private:
 		asio::io_context io_;

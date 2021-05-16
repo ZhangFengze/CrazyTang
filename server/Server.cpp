@@ -68,12 +68,19 @@ namespace ct
 	asio::awaitable<void> Server::OnConnection(asio::ip::tcp::socket socket)
 	{
 		auto id = ++connectionID_;
-		if (co_await ServerLogin(socket, id, std::chrono::seconds{ 3 }))
-		{
-			auto pipe = std::make_shared<Pipe>(std::move(socket));
-			pipe->Go();
-			OnLoginSuccess(pipe, id);
-		}
+		if (!co_await ServerLogin(socket, id, std::chrono::seconds{ 3 }))
+			co_return;
+		auto agent = std::make_shared<NetAgent2>(std::move(socket));
+		OnLoginSuccess(agent, id);
+		co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+			{
+				co_await agent->ReadRoutine();
+			}, asio::detached);
+
+		co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+			{
+				co_await agent->WriteRoutine();
+			}, asio::detached);
 	}
 
 	void Server::Run()
@@ -106,10 +113,8 @@ namespace ct
 		}
 	}
 
-	void Server::OnLoginSuccess(std::shared_ptr<Pipe> pipe, uint64_t connectionID)
+	void Server::OnLoginSuccess(std::shared_ptr<NetAgent2> agent, uint64_t connectionID)
 	{
-		auto agent = std::make_shared<NetAgent<Pipe>>(pipe);
-
 		Connection connection;
 		connection.connectionID = connectionID;
 		connection.agent = agent;
