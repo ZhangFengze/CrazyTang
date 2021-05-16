@@ -4,7 +4,6 @@
 #include "../common/Socket.h"
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
-#include "../common/AsyncConnect.h"
 #include "../common/Entity.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
