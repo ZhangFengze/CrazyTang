@@ -1,7 +1,6 @@
 #pragma once
 #include "ConnectionInfo.h"
 #include "../common/NetAgent.h"
-#include "../common/Acceptor.h"
 #include "../common/Entity.h"
 #include "../common/Pipe.h"
 #include "../common/Voxel.h"
