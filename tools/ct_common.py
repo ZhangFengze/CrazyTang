@@ -26,8 +26,8 @@ def rmdir(dir):
     shutil.rmtree(dir, ignore_errors=True)
 
 
-def cmake(source_dir, build_dir):
-    execute(f"cmake -S {source_dir} -B {build_dir}")
+def cmake(source_dir, build_dir, ninja):
+    execute(f"cmake -S {source_dir} -B {build_dir} {'-G Ninja' if ninja else ''}")
 
 
 def build(build_dir, config):
