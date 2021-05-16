@@ -36,49 +36,35 @@ namespace
     {
         return StringToEndpoint("127.0.0.1:33773");
     }
-
-    void OnLoginSuccess(asio::io_context& io, std::shared_ptr<Pipe<>> pipe)
-    {
-        auto agent = std::make_shared<NetAgent<>>(pipe);
-        agent->OnError(
-            [agent]() {
-                printf("net agent on error\n");
-            });
-
-        {
-            zs::StringWriter out;
-            zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
-            agent->Send("set position", out.String());
-        }
-
-        {
-            zs::StringWriter out;
-            zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
-            agent->Send("set velocity", out.String());
-        }
-    }
-
-    void OnConnected(asio::io_context& io, std::shared_ptr<Pipe<>> pipe)
-    {
-        auto login = std::make_shared<Login<>>(pipe, io, std::chrono::seconds{ 3 });
-        login->OnSuccess(
-            [login, &io, pipe](uint64_t id) {
-                printf("login success %llu\n", id);
-                OnLoginSuccess(io, pipe);
-            });
-        login->OnError(
-            [login]() {
-                printf("login error\n");
-            });
-    }
 } // namespace
 
 asio::awaitable<void> client(asio::io_context& io)
 {
     asio::ip::tcp::socket s{ io };
     co_await s.async_connect(ServerEndpoint(), asio::use_awaitable);
-    auto pipe = std::make_shared<Pipe<>>(ct::Socket(std::move(s)));
-    OnConnected(io, pipe);
+    auto id = co_await ClientLogin(s, std::chrono::seconds{ 3 });
+    if (!id)
+        co_return;
+    printf("login success %llu\n", *id);
+    auto pipe = std::make_shared<CoroPipe>(std::move(s));
+    pipe->Go();
+    auto agent = std::make_shared<NetAgent<CoroPipe>>(pipe);
+    agent->OnError(
+        [agent]() {
+            printf("net agent on error\n");
+        });
+
+    {
+        zs::StringWriter out;
+        zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
+        agent->Send("set position", out.String());
+    }
+
+    {
+        zs::StringWriter out;
+        zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
+        agent->Send("set velocity", out.String());
+    }
 }
 
 int main()
