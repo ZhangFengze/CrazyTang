@@ -61,7 +61,17 @@ namespace ct
 		for (;;)
 		{
 			auto socket = co_await acceptor.async_accept(asio::use_awaitable);
-			OnConnection(std::move(socket));
+			co_spawn(io_, OnConnection(std::move(socket)), asio::detached);
+		}
+	}
+
+	asio::awaitable<void> Server::OnConnection(asio::ip::tcp::socket socket)
+	{
+		auto id = ++connectionID_;
+		if (co_await ServerLogin(socket, id, std::chrono::seconds{ 3 }))
+		{
+			auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
+			OnLoginSuccess(pipe, id);
 		}
 	}
 
@@ -93,19 +103,6 @@ namespace ct
 			shouldTick += interval;
 			io_.run_until(shouldTick);
 		}
-	}
-
-	void Server::OnConnection(asio::ip::tcp::socket&& socket)
-	{
-		auto pipe = std::make_shared<Pipe<Socket>>(std::move(socket));
-		auto login = std::make_shared<Login<Pipe<Socket>>>(pipe, ++connectionID_, io_, std::chrono::seconds{ 3 });
-		login->OnSuccess(
-			[login, pipe, this](uint64_t id) {
-				OnLoginSuccess(pipe, id);
-			});
-		login->OnError(
-			[login]() {
-			});
 	}
 
 	void Server::OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID)
