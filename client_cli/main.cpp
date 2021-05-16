@@ -21,70 +21,6 @@ namespace
         uint64_t id;
     };
 
-    template<typename In>
-    bool ReadEntity(In& in, ct::EntityHandle e)
-    {
-        auto uuid = zs::Read<UUID>(in);
-        if (std::holds_alternative<zs::Error>(uuid))
-            return false;
-        printf("uuid:%llu, ", std::get<0>(uuid).id);
-
-        zs::StringReader components(std::get<0>(zs::Read<std::string>(in)));
-        while (true)
-        {
-            auto _tag = zs::Read<std::string>(components);
-            if (std::holds_alternative<zs::Error>(_tag))
-                break;
-
-            auto tag = std::get<0>(_tag);
-            if (tag == "connection")
-            {
-                if (!e.Has<ConnectionID>())
-                    e.Add<ConnectionID>();
-                *e.Get<ConnectionID>() = std::get<0>(zs::Read<ConnectionID>(components));
-                printf("id:%llu, ", e.Get<ConnectionID>()->id);
-            }
-            else if (tag == "position")
-            {
-                if (!e.Has<Position>())
-                    e.Add<Position>();
-                *e.Get<Position>() = std::get<0>(zs::Read<Position>(components));
-                printf("position:%f %f %f, ",
-                    e.Get<Position>()->data.x(),
-                    e.Get<Position>()->data.y(),
-                    e.Get<Position>()->data.z());
-            }
-            else if (tag == "velocity")
-            {
-                if (!e.Has<Velocity>())
-                    e.Add<Velocity>();
-                *e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(components));
-                printf("velocity:%f %f %f, ",
-                    e.Get<Velocity>()->data.x(),
-                    e.Get<Velocity>()->data.y(),
-                    e.Get<Velocity>()->data.z());
-            }
-            else if (tag == "voxel")
-            {
-                if (!e.Has<Voxel>())
-                    e.Add<Voxel>();
-                auto voxel = e.Get<Voxel>();
-                *voxel = std::get<0>(zs::Read<Voxel>(components));
-                printf("voxel index:(%d,%d), voxel type:%d, ",
-                    voxel->index.x(),
-                    voxel->index.y(),
-                    voxel->type);
-            }
-            else
-            {
-                assert(false);
-            }
-            printf("\n");
-        }
-        printf("-------\n");
-        return true;
-    }
-
     tcp::endpoint StringToEndpoint(const std::string& str)
     {
         auto pos = str.find(':');
@@ -119,21 +55,6 @@ namespace
             zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
             agent->Send("set velocity", out.String());
         }
-
-        agent->Listen("world",
-            [](std::string&& rawWorld)
-            {
-                printf("net agent on world,");
-                zs::StringReader worldIn{ std::move(rawWorld) };
-
-                EntityContainer entities;
-                while(true)
-                {
-                    auto e = entities.Create();
-                    if(!ReadEntity(worldIn, e))
-                        break;
-                }
-            });
     }
 
     void OnConnected(asio::io_context& io, std::shared_ptr<Pipe<>> pipe)
