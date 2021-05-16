@@ -27,4 +27,6 @@ foreach(test ${source})
     target_include_directories(${test_name} PUBLIC "../submodules/ZSerializer")
 
     target_link_libraries(${test_name} ${CMAKE_THREAD_LIBS_INIT})
+
+    install(TARGETS ${test_name})
 endforeach()
