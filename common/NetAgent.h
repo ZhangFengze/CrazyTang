@@ -8,7 +8,7 @@
 
 namespace ct
 {
-	template<typename Pipe = ct::Pipe<>>
+	template<typename Pipe>
 	class NetAgent
 	{
 	public:
