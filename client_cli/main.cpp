@@ -1,6 +1,7 @@
 #include <memory>
 #include "ZSerializer.hpp"
 #include "../client_core/Login.h"
+#include "../common/Socket.h"
 #include "../common/Pipe.h"
 #include "../common/NetAgent.h"
 #include "../common/AsyncConnect.h"
@@ -72,20 +73,18 @@ namespace
     }
 } // namespace
 
+asio::awaitable<void> client(asio::io_context& io)
+{
+    asio::ip::tcp::socket s{ io };
+    co_await s.async_connect(ServerEndpoint(), asio::use_awaitable);
+    auto pipe = std::make_shared<Pipe<>>(ct::Socket(std::move(s)));
+    OnConnected(io, pipe);
+}
+
 int main()
 {
     asio::io_context io;
-    AsyncConnect(io, ServerEndpoint(),
-        [&io](const std::error_code& error, std::shared_ptr<Socket> socket) {
-            if (error)
-            {
-                printf("async connect error\n");
-                return;
-            }
-
-            auto pipe = std::make_shared<Pipe<>>(std::move(*socket));
-            OnConnected(io, pipe);
-        });
+    co_spawn(io, client(io), asio::detached);
     io.run();
     return 0;
 }
