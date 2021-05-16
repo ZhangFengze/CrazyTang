@@ -8,10 +8,10 @@
 
 namespace ct
 {
-	class NetAgent2
+	class NetAgent
 	{
 	public:
-		NetAgent2(asio::ip::tcp::socket socket)
+		NetAgent(asio::ip::tcp::socket socket)
 			:socket_(std::move(socket)) {}
 
 		void Listen(const std::string& tag, std::function<void(std::string&&)> handler)
