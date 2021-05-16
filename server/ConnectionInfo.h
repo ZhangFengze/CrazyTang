@@ -10,4 +10,10 @@ namespace ct
 		uint64_t connectionID;
 		std::weak_ptr<ct::NetAgent<>> agent;
 	};
+
+	struct Connection
+	{
+		uint64_t connectionID;
+		std::shared_ptr<ct::NetAgent<>> agent;
+	};
 } // namespace

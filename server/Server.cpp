@@ -93,9 +93,9 @@ namespace ct
 			entities_.ForEach([&](EntityHandle e) {zs::Write(worldOut, e);});
 			auto world = worldOut.String();
 
-			for (auto& [_, agent] : agents_)
+			for (auto& [_, connection] : connections_)
 			{
-				agent->Send("entities", world);
+				connection.agent->Send("entities", world);
 			}
 
 			voxel_watcher::Process(entities_, voxels_, interval.count() / 1000.f);
@@ -108,7 +108,11 @@ namespace ct
 	void Server::OnLoginSuccess(std::shared_ptr<Pipe<>> pipe, uint64_t connectionID)
 	{
 		auto agent = std::make_shared<NetAgent<>>(pipe);
-		agents_[connectionID] = agent;
+
+		Connection connection;
+		connection.connectionID = connectionID;
+		connection.agent = agent;
+		connections_[connectionID] = connection;
 
 		auto e = entities_.Create();
 
@@ -150,7 +154,7 @@ namespace ct
 		agent->OnError([e, connectionID, this]() mutable {
 			if (e.Valid())
 				e.Destroy();
-			agents_.erase(connectionID);
+			connections_.erase(connectionID);
 			});
 	}
 } // namespace ct

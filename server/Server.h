@@ -1,4 +1,5 @@
 #pragma once
+#include "ConnectionInfo.h"
 #include "../common/NetAgent.h"
 #include "../common/Acceptor.h"
 #include "../common/Entity.h"
@@ -24,7 +25,7 @@ namespace ct
 	private:
 		asio::io_context io_;
 		uint64_t connectionID_ = 0;
-		std::unordered_map<uint64_t, std::shared_ptr<NetAgent<>>> agents_;
+		std::unordered_map<uint64_t, Connection> connections_;
 		EntityContainer entities_;
 		voxel::Container voxels_;
 	};
