@@ -38,11 +38,11 @@ namespace ct
 			throw asio::error::make_error_code(asio::error::eof);
 		co_return Packet{ buffer.data(), length };
 	}
-    
-	class CoroPipe
+
+	class Pipe
 	{
 	public:
-		CoroPipe(asio::ip::tcp::socket socket)
+		Pipe(asio::ip::tcp::socket socket)
 			:socket_(std::move(socket)) {}
 
 		void Go()

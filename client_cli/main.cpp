@@ -44,9 +44,9 @@ asio::awaitable<void> client(asio::io_context& io)
     if (!id)
         co_return;
     printf("login success %llu\n", *id);
-    auto pipe = std::make_shared<CoroPipe>(std::move(s));
+    auto pipe = std::make_shared<Pipe>(std::move(s));
     pipe->Go();
-    auto agent = std::make_shared<NetAgent<CoroPipe>>(pipe);
+    auto agent = std::make_shared<NetAgent<Pipe>>(pipe);
     agent->OnError(
         [agent]() {
             printf("net agent on error\n");

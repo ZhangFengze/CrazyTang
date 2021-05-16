@@ -70,7 +70,7 @@ namespace ct
 		auto id = ++connectionID_;
 		if (co_await ServerLogin(socket, id, std::chrono::seconds{ 3 }))
 		{
-			auto pipe = std::make_shared<CoroPipe>(std::move(socket));
+			auto pipe = std::make_shared<Pipe>(std::move(socket));
 			pipe->Go();
 			OnLoginSuccess(pipe, id);
 		}
@@ -106,9 +106,9 @@ namespace ct
 		}
 	}
 
-	void Server::OnLoginSuccess(std::shared_ptr<CoroPipe> pipe, uint64_t connectionID)
+	void Server::OnLoginSuccess(std::shared_ptr<Pipe> pipe, uint64_t connectionID)
 	{
-		auto agent = std::make_shared<NetAgent<CoroPipe>>(pipe);
+		auto agent = std::make_shared<NetAgent<Pipe>>(pipe);
 
 		Connection connection;
 		connection.connectionID = connectionID;
