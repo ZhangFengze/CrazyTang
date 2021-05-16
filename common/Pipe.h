@@ -54,6 +54,7 @@ namespace ct
 					asio::steady_timer t{ co_await asio::this_coro::executor };
 					t.expires_after(std::chrono::milliseconds{ 0 });
 					co_await t.async_wait(asio::use_awaitable);
+					continue;
 				}
 
 				auto packet = out_.front();
