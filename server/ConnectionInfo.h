@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <memory>
-#include "../common/NetAgent.h"
+#include "../common/Net.h"
 
 namespace ct
 {

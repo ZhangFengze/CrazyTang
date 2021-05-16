@@ -2,7 +2,6 @@
 #include "ZSerializer.hpp"
 #include "../client_core/Login.h"
 #include "../common/Net.h"
-#include "../common/NetAgent.h"
 #include "../common/Entity.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
@@ -44,7 +43,7 @@ asio::awaitable<void> client(asio::io_context& io)
     if (!id)
         co_return;
     printf("login success %llu\n", *id);
-    auto agent = std::make_shared<NetAgent2>(std::move(s));
+    auto agent = std::make_shared<NetAgent>(std::move(s));
     agent->OnError(
         [agent]() {
             printf("net agent on error\n");
