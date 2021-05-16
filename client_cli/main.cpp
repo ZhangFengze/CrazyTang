@@ -1,8 +1,7 @@
 #include <memory>
 #include "ZSerializer.hpp"
 #include "../client_core/Login.h"
-#include "../common/Socket.h"
-#include "../common/Pipe.h"
+#include "../common/Net.h"
 #include "../common/NetAgent.h"
 #include "../common/Entity.h"
 #include "../common/Position.h"

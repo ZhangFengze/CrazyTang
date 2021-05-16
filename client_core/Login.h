@@ -4,7 +4,7 @@
 #include <optional>
 #include <asio.hpp>
 #include "../common/Packet.h"
-#include "../common/Pipe.h"
+#include "../common/Net.h"
 
 namespace ct
 {

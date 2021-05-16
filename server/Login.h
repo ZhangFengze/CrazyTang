@@ -5,7 +5,7 @@
 #include <stop_token>
 #include <asio.hpp>
 #include "../common/Packet.h"
-#include "../common/Socket.h"
+#include "../common/Net.h"
 
 namespace ct
 {

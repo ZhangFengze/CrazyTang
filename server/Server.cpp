@@ -2,7 +2,7 @@
 #include "Login.h"
 #include "ConnectionInfo.h"
 #include "VoxelWatcher.h"
-#include "../common/Pipe.h"
+#include "../common/Net.h"
 #include "../common/MoveSystem.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"

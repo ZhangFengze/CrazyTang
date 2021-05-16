@@ -1,6 +1,6 @@
 #pragma once
 #include "Packet.h"
-#include "Pipe.h"
+#include "Net.h"
 #include <ZSerializer.hpp>
 #include <string>
 #include <functional>

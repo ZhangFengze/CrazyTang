@@ -2,7 +2,7 @@
 #include "ConnectionInfo.h"
 #include "../common/NetAgent.h"
 #include "../common/Entity.h"
-#include "../common/Pipe.h"
+#include "../common/Net.h"
 #include "../common/Voxel.h"
 #include <asio.hpp>
 #include <cstdint>
