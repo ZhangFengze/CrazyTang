@@ -174,7 +174,7 @@ namespace zs
                 auto name = "entity " + std::to_string(id);
                 if (ImGui::TreeNode(name.c_str()))
                 {
-                    if(e.Has<Position>())
+                    if (e.Has<Position>())
                     {
                         auto pos = e.Get<Position>()->data;
                         ImGui::Text("pos:%06f %06f %06f", pos.x(), pos.y(), pos.z());
