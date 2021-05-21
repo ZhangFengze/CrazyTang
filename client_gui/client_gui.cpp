@@ -91,13 +91,14 @@ namespace zs
     {
         io.run_for(std::chrono::milliseconds{ 1 });
 
-        ImGui::Begin("hello");
+        ImGui::Begin("CrazyTang");
 
         if(ImGui::Button("login"))
             co_spawn(io, client(io), asio::detached);
 
         for(auto beg=logs.rbegin();beg!=logs.rend();++beg)
             ImGui::Text(beg->c_str());
+
         ImGui::End();
     }
 }
