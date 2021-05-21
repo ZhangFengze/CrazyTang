@@ -46,7 +46,7 @@ namespace
         return StringToEndpoint("127.0.0.1:33773");
     }
 
-    asio::awaitable<void> client(asio::io_context& io)
+    asio::awaitable<void> Login(asio::io_context& io)
     {
         asio::ip::tcp::socket s{ io };
         co_await s.async_connect(ServerEndpoint(), asio::use_awaitable);
@@ -106,7 +106,7 @@ namespace zs
         else
         {
             if (ImGui::Button("login"))
-                co_spawn(io, client(io), asio::detached);
+                co_spawn(io, Login(io), asio::detached);
         }
 
         ImGui::End();
