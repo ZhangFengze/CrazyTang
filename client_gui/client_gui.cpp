@@ -15,6 +15,8 @@ using asio::ip::tcp;
 
 namespace
 {
+    asio::io_context io;
+
     std::vector<std::string> logs;
     void Log(const std::string& str)
     {
@@ -77,8 +79,6 @@ namespace
                 co_await agent->WriteRoutine();
             }, asio::detached);
     }
-
-    asio::io_context io;
 } // namespace
 
 namespace zs
