@@ -17,6 +17,9 @@ namespace
 {
     asio::io_context io;
 
+    std::shared_ptr<ct::NetAgent> curAgent;
+    uint64_t curID = 0;
+
     std::vector<std::string> logs;
     void Log(const std::string& str)
     {
@@ -78,6 +81,9 @@ namespace
             {
                 co_await agent->WriteRoutine();
             }, asio::detached);
+
+        curAgent = agent;
+        curID = *id;
     }
 } // namespace
 
@@ -93,8 +99,15 @@ namespace zs
 
         ImGui::Begin("CrazyTang");
 
-        if(ImGui::Button("login"))
-            co_spawn(io, client(io), asio::detached);
+        if (curAgent)
+        {
+            ImGui::Text("id: %llu", curID);
+        }
+        else
+        {
+            if (ImGui::Button("login"))
+                co_spawn(io, client(io), asio::detached);
+        }
 
         for(auto beg=logs.rbegin();beg!=logs.rend();++beg)
             ImGui::Text(beg->c_str());
