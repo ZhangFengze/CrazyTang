@@ -109,9 +109,11 @@ namespace zs
                 co_spawn(io, client(io), asio::detached);
         }
 
-        for(auto beg=logs.rbegin();beg!=logs.rend();++beg)
-            ImGui::Text(beg->c_str());
+        ImGui::End();
 
+        ImGui::Begin("log");
+        for (auto beg = logs.rbegin();beg != logs.rend();++beg)
+            ImGui::Text(beg->c_str());
         ImGui::End();
     }
 }
