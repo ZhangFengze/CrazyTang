@@ -179,6 +179,11 @@ namespace zs
                         auto pos = e.Get<Position>()->data;
                         ImGui::Text("pos:%06f %06f %06f", pos.x(), pos.y(), pos.z());
                     }
+                    if (e.Has<Velocity>())
+                    {
+                        auto vel = e.Get<Velocity>()->data;
+                        ImGui::Text("vel:%06f %06f %06f", vel.x(), vel.y(), vel.z());
+                    }
                     ImGui::TreePop();
                 }
             });
