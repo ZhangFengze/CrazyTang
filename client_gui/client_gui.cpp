@@ -19,6 +19,7 @@ namespace
 
     std::shared_ptr<ct::NetAgent> curAgent;
     uint64_t curID = 0;
+    ct::EntityContainer curEntities;
 
     std::vector<std::string> logs;
     void Log(const std::string& str)
@@ -46,6 +47,48 @@ namespace
         return StringToEndpoint("127.0.0.1:33773");
     }
 
+    template<typename In>
+    bool ReadEntity(In& in, ct::EntityHandle e)
+    {
+        auto uuid = zs::Read<UUID>(in);
+        if (std::holds_alternative<zs::Error>(uuid))
+            return false;
+        *e.Add<UUID>() = std::get<0>(uuid);
+
+        zs::StringReader components(std::get<0>(zs::Read<std::string>(in)));
+        while (true)
+        {
+            auto _tag = zs::Read<std::string>(components);
+            if (std::holds_alternative<zs::Error>(_tag))
+                break;
+
+            auto tag = std::get<0>(_tag);
+            if (tag == "connection")
+            {
+                if (!e.Has<ConnectionID>())
+                    e.Add<ConnectionID>();
+                *e.Get<ConnectionID>() = std::get<0>(zs::Read<ConnectionID>(components));
+            }
+            else if (tag == "position")
+            {
+                if (!e.Has<Position>())
+                    e.Add<Position>();
+                *e.Get<Position>() = std::get<0>(zs::Read<Position>(components));
+            }
+            else if (tag == "velocity")
+            {
+                if (!e.Has<Velocity>())
+                    e.Add<Velocity>();
+                *e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(components));
+            }
+            else
+            {
+                assert(false);
+            }
+        }
+        return true;
+    }
+
     asio::awaitable<void> Login(asio::io_context& io)
     {
         asio::ip::tcp::socket s{ io };
@@ -58,6 +101,22 @@ namespace
         agent->OnError(
             [agent]() {
                 Log("net agent on error");
+            });
+
+        agent->Listen("entities",
+            [agent](std::string&& rawWorld)
+            {
+                zs::StringReader worldArchive{ std::move(rawWorld) };
+                curEntities = ct::EntityContainer{};
+                while (true)
+                {
+                    auto e = curEntities.Create();
+                    if (!ReadEntity(worldArchive, e))
+                    {
+                        e.Destroy();
+                        break;
+                    }
+                }
             });
 
         {
@@ -108,6 +167,16 @@ namespace zs
             if (ImGui::Button("login"))
                 co_spawn(io, Login(io), asio::detached);
         }
+
+        curEntities.ForEach([](auto e)
+            {
+                auto id = e.Get<ConnectionID>()->id;
+                auto name = "entity " + std::to_string(id);
+                if (ImGui::TreeNode(name.c_str()))
+                {
+                    ImGui::TreePop();
+                }
+            });
 
         ImGui::End();
 
