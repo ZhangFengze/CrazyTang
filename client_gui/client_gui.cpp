@@ -85,7 +85,6 @@ namespace zs
 {
     void client_gui_init()
     {
-        co_spawn(io, client(io), asio::detached);
     }
 
     void client_gui_tick()
@@ -93,6 +92,10 @@ namespace zs
         io.run_for(std::chrono::milliseconds{ 1 });
 
         ImGui::Begin("hello");
+
+        if(ImGui::Button("login"))
+            co_spawn(io, client(io), asio::detached);
+
         for(auto beg=logs.rbegin();beg!=logs.rend();++beg)
             ImGui::Text(beg->c_str());
         ImGui::End();
