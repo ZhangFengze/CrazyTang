@@ -48,8 +48,7 @@ namespace
         auto id = co_await ClientLogin(s, std::chrono::seconds{ 3 });
         if (!id)
             co_return;
-        Log("login success");
-        printf("login success %llu\n", *id);
+        Log("login success "+std::to_string(*id));
         auto agent = std::make_shared<NetAgent>(std::move(s));
         agent->OnError(
             [agent]() {
