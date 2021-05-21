@@ -54,7 +54,7 @@ namespace
         auto agent = std::make_shared<NetAgent>(std::move(s));
         agent->OnError(
             [agent]() {
-                printf("net agent on error\n");
+                Log("net agent on error");
             });
 
         {
