@@ -6,6 +6,7 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../submodules/magnum/modules" ${CMA
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../submodules/magnum-integration/modules" ${CMAKE_MODULE_PATH})
 
 SET(BUILD_STATIC ON CACHE BOOL "")
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../submodules/imgui)
 SET(WITH_IMGUI ON CACHE BOOL "" FORCE)
 add_subdirectory(../submodules/corrade EXCLUDE_FROM_ALL corrade)
 add_subdirectory(../submodules/GLFW EXCLUDE_FROM_ALL glfw)
