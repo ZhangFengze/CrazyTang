@@ -13,3 +13,12 @@
 [submodule "submodules/imgui"]
 	path = submodules/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "submodules/glfw"]
+	path = submodules/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "submodules/magnum"]
+	path = submodules/magnum
+	url = https://github.com/mosra/magnum.git
+[submodule "submodules/corrade"]
+	path = submodules/corrade
+	url = https://github.com/mosra/corrade.git
