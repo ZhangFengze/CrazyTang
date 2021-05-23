@@ -21,7 +21,7 @@ namespace zs
         App(const Vector2i& windowSize);
         void Tick();
 
-private:
+    private:
         GL::Mesh _mesh;
         Shaders::PhongGL _shader;
 
