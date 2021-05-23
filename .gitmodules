@@ -22,3 +22,6 @@
 [submodule "submodules/corrade"]
 	path = submodules/corrade
 	url = https://github.com/mosra/corrade.git
+[submodule "submodules/magnum-integration"]
+	path = submodules/magnum-integration
+	url = git://github.com/mosra/magnum-integration
