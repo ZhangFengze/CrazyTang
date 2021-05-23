@@ -16,6 +16,7 @@
 
 #include "../common/Net.h"
 #include "../common/Entity.h"
+#include "../common/Voxel.h"
 
 using namespace Magnum;
 
@@ -52,5 +53,6 @@ namespace zs
         std::shared_ptr<ct::NetAgent> curAgent;
         uint64_t curID = 0;
         ct::EntityContainer curEntities;
+        ct::voxel::Container curVoxels;
     };
 }

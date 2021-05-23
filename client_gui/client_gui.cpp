@@ -4,7 +4,6 @@
 #include "../client_core/Login.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
-#include "../common/Voxel.h"
 #include "../common/Math.h"
 #include "../common/UUID.h"
 
@@ -112,6 +111,24 @@ namespace zs
                         e.Destroy();
                         break;
                     }
+                }
+            });
+
+        agent->Listen("voxels",
+            [agent, this](std::string&& rawVoxels)
+            {
+                zs::StringReader in(std::move(rawVoxels));
+                while (true)
+                {
+                    auto rawX = zs::Read<int>(in);
+                    if (std::holds_alternative<zs::Error>(rawX))
+                        break;
+                    auto x = std::get<0>(rawX);
+                    auto y = std::get<0>(zs::Read<int>(in));
+                    auto z = std::get<0>(zs::Read<int>(in));
+                    auto newVoxel = std::get<0>(zs::Read<ct::voxel::Voxel>(in));
+                    auto nowVoxel = curVoxels.Get(x, y, z);
+                    *nowVoxel = newVoxel;
                 }
             });
 
