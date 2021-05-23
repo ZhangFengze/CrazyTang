@@ -172,13 +172,18 @@ namespace zs
 
     void App::Draw()
     {
-        _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-            .setDiffuseColor(_color)
-            .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
-            .setTransformationMatrix(_transformation)
-            .setNormalMatrix(_transformation.normalMatrix())
-            .setProjectionMatrix(_projection)
-            .draw(_mesh);
+        curEntities.ForEach([&](auto e)
+            {
+                auto pos = e.Get<Position>()->data;
+                auto transform = Matrix4::translation(Vector3{ pos.x(),pos.y(),pos.z() });
+                _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                    .setDiffuseColor(_color)
+                    .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
+                    .setTransformationMatrix(transform)
+                    .setNormalMatrix(transform.normalMatrix())
+                    .setProjectionMatrix(_projection)
+                    .draw(_mesh);
+            });
     }
 
     void App::TickImGui()
