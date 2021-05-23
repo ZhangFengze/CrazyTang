@@ -9,6 +9,7 @@
 #include "../common/UUID.h"
 
 using namespace ct;
+using namespace Math::Literals;
 using asio::ip::tcp;
 
 namespace
@@ -141,9 +142,8 @@ namespace zs
     }
 
     App::App(const Vector2i& windowSize)
+        :windowSize_(windowSize)
     {
-        using namespace Math::Literals;
-
         Trade::MeshData cube = Primitives::cubeSolid();
 
         GL::Buffer vertices;
@@ -160,13 +160,6 @@ namespace zs
             .addVertexBuffer(std::move(vertices), 0, Shaders::PhongGL::Position{},
                 Shaders::PhongGL::Normal{})
             .setIndexBuffer(std::move(indices), 0, compressed.second);
-
-        _transformation =
-            Matrix4::rotationX(30.0_degf) * Matrix4::rotationY(40.0_degf);
-        _projection =
-            Matrix4::perspectiveProjection(
-                35.0_degf, Vector2{windowSize}.aspectRatio(), 0.01f, 100.0f) *
-            Matrix4::translation(Vector3::zAxis(-10.0f));
         _color = Color3::fromHsv({ 35.0_degf, 1.0f, 1.0f });
     }
 
@@ -200,6 +193,21 @@ namespace zs
         {
             if (ImGui::Button("login"))
                 co_spawn(io, Login(io), asio::detached);
+        }
+
+        ImGui::DragFloat3("box", boxPos.data(), 0.01f);
+        _transformation = Matrix4::translation(boxPos);
+
+        ImGui::DragFloat("camera yaw", &cameraYaw, 0.01f);
+        ImGui::DragFloat3("camera", cameraPos.data(), 0.01f);
+        {
+            auto camera =
+                Matrix4::translation(cameraPos) *
+                Matrix4::rotation(Rad{ cameraYaw }, Vector3::yAxis());
+            camera = camera.inverted();
+            _projection =
+                Matrix4::perspectiveProjection(35.0_degf, windowSize_.aspectRatio(), 0.01f, 100.0f)
+                * camera;
         }
 
         curEntities.ForEach([](auto e)

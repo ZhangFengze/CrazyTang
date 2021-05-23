@@ -40,6 +40,11 @@ namespace zs
         Matrix4 _transformation, _projection;
         Color3 _color;
 
+        Vector2 windowSize_;
+        Vector3 boxPos{ 0,0,0 };
+        Vector3 cameraPos{ 0,0,0 };
+        float cameraYaw = 0.f;
+
     private:
         asio::io_context io;
 
