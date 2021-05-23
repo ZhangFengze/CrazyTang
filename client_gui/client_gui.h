@@ -1,6 +1,10 @@
 #pragma once
 namespace zs
 {
-    void client_gui_init();
-    void client_gui_tick();
+    class App
+    {
+    public:
+        App();
+        void Tick();
+    };
 }

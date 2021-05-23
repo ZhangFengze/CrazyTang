@@ -147,7 +147,7 @@ int main(int, char**)
     // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    zs::client_gui_init();
+    zs::App app;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -164,7 +164,7 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        zs::client_gui_tick();
+        app.Tick();
 
         // Rendering
         ImGui::Render();

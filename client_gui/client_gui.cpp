@@ -1,3 +1,4 @@
+#include "client_gui.h"
 #include <memory>
 #include "imgui.h"
 #include "ZSerializer.hpp"
@@ -148,11 +149,11 @@ namespace
 
 namespace zs
 {
-    void client_gui_init()
+    App::App()
     {
     }
 
-    void client_gui_tick()
+    void App::Tick()
     {
         io.run_for(std::chrono::milliseconds{ 1 });
 
