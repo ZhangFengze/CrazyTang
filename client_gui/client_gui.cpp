@@ -182,7 +182,12 @@ namespace zs
     void App::Tick()
     {
         io.run_for(std::chrono::milliseconds{ 1 });
+        Draw();
+        TickImGui();
+    }
 
+    void App::Draw()
+    {
         _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(_color)
             .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
@@ -190,7 +195,10 @@ namespace zs
             .setNormalMatrix(_transformation.normalMatrix())
             .setProjectionMatrix(_projection)
             .draw(_mesh);
+    }
 
+    void App::TickImGui()
+    {
         ImGui::Begin("CrazyTang");
 
         if (curAgent)

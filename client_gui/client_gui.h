@@ -22,6 +22,10 @@ namespace zs
         void Tick();
 
     private:
+        void Draw();
+        void TickImGui();
+
+    private:
         GL::Mesh _mesh;
         Shaders::PhongGL _shader;
 
