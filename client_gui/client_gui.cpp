@@ -149,34 +149,47 @@ namespace
 
 namespace zs
 {
-    App::App()
+    App::App(const Vector2i& windowSize)
     {
         using namespace Math::Literals;
 
-        struct TriangleVertex {
-            Vector2 position;
-            Color3 color;
-        };
-        const TriangleVertex data[]{
-            {{-0.5f, -0.5f}, 0xff0000_rgbf},    /* Left vertex, red color */
-            {{ 0.5f, -0.5f}, 0x00ff00_rgbf},    /* Right vertex, green color */
-            {{ 0.0f,  0.5f}, 0x0000ff_rgbf}     /* Top vertex, blue color */
-        };
+        Trade::MeshData cube = Primitives::cubeSolid();
 
-        GL::Buffer buffer;
-        buffer.setData(data);
+        GL::Buffer vertices;
+        vertices.setData(MeshTools::interleave(cube.positions3DAsArray(),
+            cube.normalsAsArray()));
 
-        _mesh.setCount(3)
-            .addVertexBuffer(std::move(buffer), 0,
-                Shaders::VertexColorGL2D::Position{},
-                Shaders::VertexColorGL2D::Color3{});
+        std::pair<Containers::Array<char>, MeshIndexType> compressed =
+            MeshTools::compressIndices(cube.indicesAsArray());
+        GL::Buffer indices;
+        indices.setData(compressed.first);
+
+        _mesh.setPrimitive(cube.primitive())
+            .setCount(cube.indexCount())
+            .addVertexBuffer(std::move(vertices), 0, Shaders::PhongGL::Position{},
+                Shaders::PhongGL::Normal{})
+            .setIndexBuffer(std::move(indices), 0, compressed.second);
+
+        _transformation =
+            Matrix4::rotationX(30.0_degf) * Matrix4::rotationY(40.0_degf);
+        _projection =
+            Matrix4::perspectiveProjection(
+                35.0_degf, Vector2{windowSize}.aspectRatio(), 0.01f, 100.0f) *
+            Matrix4::translation(Vector3::zAxis(-10.0f));
+        _color = Color3::fromHsv({ 35.0_degf, 1.0f, 1.0f });
     }
 
     void App::Tick()
     {
         io.run_for(std::chrono::milliseconds{ 1 });
 
-        _shader.draw(_mesh);
+        _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+            .setDiffuseColor(_color)
+            .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
+            .setTransformationMatrix(_transformation)
+            .setNormalMatrix(_transformation.normalMatrix())
+            .setProjectionMatrix(_projection)
+            .draw(_mesh);
 
         ImGui::Begin("CrazyTang");
 

@@ -68,7 +68,7 @@ class ImGuiExample: public Platform::Application {
         bool _showAnotherWindow = false;
         Color4 _clearColor = 0x72909aff_rgbaf;
         Float _floatValue = 0.0f;
-        zs::App _app;
+        zs::App _app{windowSize()};
 };
 
 ImGuiExample::ImGuiExample(const Arguments& arguments): Platform::Application{arguments,

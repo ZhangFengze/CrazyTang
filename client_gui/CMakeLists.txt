@@ -16,8 +16,14 @@ add_subdirectory(../submodules/magnum-integration EXCLUDE_FROM_ALL magnum-integr
 
 find_package(GLFW REQUIRED)
 find_package(Corrade REQUIRED Main)
-find_package(Magnum REQUIRED GL Shaders)
-find_package(Magnum REQUIRED GlfwApplication)
+find_package(Magnum REQUIRED
+    GL
+    Shaders
+    MeshTools
+    Primitives
+    Shaders
+    GlfwApplication
+)
 find_package(MagnumIntegration REQUIRED ImGui)
 
 aux_source_directory(. source)
@@ -40,6 +46,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Magnum::Application
     Magnum::GL
     Magnum::Magnum
+    Magnum::MeshTools
+    Magnum::Primitives
     Magnum::Shaders
     MagnumIntegration::ImGui)
 
