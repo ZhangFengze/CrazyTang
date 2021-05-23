@@ -88,7 +88,7 @@ ImGuiExample::ImGuiExample(const Arguments& arguments): Platform::Application{ar
 }
 
 void ImGuiExample::drawEvent() {
-    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
+    GL::defaultFramebuffer.clear(GL::FramebufferClear::Color | GL::FramebufferClear::Depth);
 
     _imgui.newFrame();
 
