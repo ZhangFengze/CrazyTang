@@ -249,7 +249,7 @@ namespace zs
         {
             auto camera =
                 Matrix4::translation(cameraPos) *
-                Matrix4::rotation(Rad{ cameraYaw }, Vector3::yAxis())*
+                Matrix4::rotation(Rad{ cameraYaw }, Vector3::yAxis()) *
                 Matrix4::rotation(Rad{ cameraPitch }, Vector3::xAxis());
             camera = camera.inverted();
             _projection =
