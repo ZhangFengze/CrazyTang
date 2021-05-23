@@ -201,6 +201,29 @@ namespace zs
                     .setProjectionMatrix(_projection)
                     .draw(_mesh);
             });
+
+        for (size_t x = 0;x < curVoxels.x;++x)
+        {
+            for (size_t y = 0;y < curVoxels.y;++y)
+            {
+                for (size_t z = 0;z < curVoxels.z;++z)
+                {
+                    auto type = curVoxels.Get(x, y, z)->type;
+                    Vector3 pos{ float(x),float(y),float(z) };
+                    auto transform = Matrix4::translation(pos);
+                    if (type == ct::voxel::Type::Block)
+                    {
+                        _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                            .setDiffuseColor(_color)
+                            .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
+                            .setTransformationMatrix(transform)
+                            .setNormalMatrix(transform.normalMatrix())
+                            .setProjectionMatrix(_projection)
+                            .draw(_mesh);
+                    }
+                }
+            }
+        }
     }
 
     void App::TickImGui()
