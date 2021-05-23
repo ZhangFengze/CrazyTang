@@ -1,10 +1,7 @@
 #include "client_gui.h"
-#include <memory>
 #include "imgui.h"
 #include "ZSerializer.hpp"
 #include "../client_core/Login.h"
-#include "../common/Net.h"
-#include "../common/Entity.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
 #include "../common/Voxel.h"
@@ -16,12 +13,6 @@ using asio::ip::tcp;
 
 namespace
 {
-    asio::io_context io;
-
-    std::shared_ptr<ct::NetAgent> curAgent;
-    uint64_t curID = 0;
-    ct::EntityContainer curEntities;
-
     std::vector<std::string> logs;
     void Log(const std::string& str)
     {
@@ -89,8 +80,11 @@ namespace
         }
         return true;
     }
+}
 
-    asio::awaitable<void> Login(asio::io_context& io)
+namespace zs
+{
+    asio::awaitable<void> App::Login(asio::io_context& io)
     {
         asio::ip::tcp::socket s{ io };
         co_await s.async_connect(ServerEndpoint(), asio::use_awaitable);
@@ -105,7 +99,7 @@ namespace
             });
 
         agent->Listen("entities",
-            [agent](std::string&& rawWorld)
+            [agent, this](std::string&& rawWorld)
             {
                 zs::StringReader worldArchive{ std::move(rawWorld) };
                 curEntities = ct::EntityContainer{};
@@ -145,10 +139,7 @@ namespace
         curAgent = agent;
         curID = *id;
     }
-} // namespace
 
-namespace zs
-{
     App::App(const Vector2i& windowSize)
     {
         using namespace Math::Literals;

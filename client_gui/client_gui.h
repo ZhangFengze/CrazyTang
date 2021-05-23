@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/GL/Mesh.h>
@@ -11,6 +13,10 @@
 #include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/PhongGL.h>
 #include <Magnum/Trade/MeshData.h>
+
+#include "../common/Net.h"
+#include "../common/Entity.h"
+
 using namespace Magnum;
 
 namespace zs
@@ -25,11 +31,20 @@ namespace zs
         void Draw();
         void TickImGui();
 
+        asio::awaitable<void> Login(asio::io_context& io);
+
     private:
         GL::Mesh _mesh;
         Shaders::PhongGL _shader;
 
         Matrix4 _transformation, _projection;
         Color3 _color;
+
+    private:
+        asio::io_context io;
+
+        std::shared_ptr<ct::NetAgent> curAgent;
+        uint64_t curID = 0;
+        ct::EntityContainer curEntities;
     };
 }
