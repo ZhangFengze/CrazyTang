@@ -2,6 +2,19 @@ cmake_minimum_required(VERSION 3.19)
 
 project(client_gui)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../submodules/magnum/modules" ${CMAKE_MODULE_PATH})
+
+SET(BUILD_STATIC ON CACHE BOOL "")
+add_subdirectory(../submodules/corrade EXCLUDE_FROM_ALL corrade)
+SET(WITH_WGLCONTEXT ON CACHE BOOL "")
+add_subdirectory(../submodules/magnum EXCLUDE_FROM_ALL magnum)
+add_subdirectory(../submodules/GLFW EXCLUDE_FROM_ALL glfw)
+
+find_package(GLFW REQUIRED)
+find_package(Corrade REQUIRED Main)
+find_package(Magnum REQUIRED GL Shaders)
+find_package(Magnum REQUIRED WglContext)
+
 aux_source_directory(. source)
 aux_source_directory(../common source)
 
@@ -27,7 +40,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/imgui/backends
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/imgui/examples/libs/gl3w")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/imgui/examples/libs/glfw/include")
 
-target_link_directories(${PROJECT_NAME} PUBLIC "../submodules/imgui/examples/libs/glfw/lib-vc2010-64")
-target_link_libraries(${PROJECT_NAME} PUBLIC "glfw3" "opengl32" "gdi32" "shell32")
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    GLFW::GLFW
+    Corrade::Main
+    Magnum::GL
+    Magnum::GLContext
+    Magnum::Magnum
+    Magnum::Shaders)
 
 install(TARGETS ${PROJECT_NAME})
