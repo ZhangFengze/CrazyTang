@@ -44,6 +44,7 @@ namespace zs
         Vector3 boxPos{ 0,0,0 };
         Vector3 cameraPos{ 0,0,0 };
         float cameraYaw = 0.f;
+        float cameraPitch = 0.f;
 
     private:
         asio::io_context io;
