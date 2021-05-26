@@ -27,6 +27,7 @@ namespace zs
     public:
         App(const Vector2i& windowSize);
         void Tick();
+        void OnMouseMove(float dx, float dy);
 
     private:
         void Draw();

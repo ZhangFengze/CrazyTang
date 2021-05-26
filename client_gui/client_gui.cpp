@@ -187,6 +187,12 @@ namespace zs
         TickImGui();
     }
 
+    void App::OnMouseMove(float dx, float dy)
+    {
+        cameraYaw-=dx*0.005f;
+        cameraPitch-=dy*0.005f;
+    }
+
     void App::Draw()
     {
         curEntities.ForEach([&](auto e)

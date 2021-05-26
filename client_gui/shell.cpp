@@ -148,6 +148,7 @@ void ImGuiExample::mouseReleaseEvent(MouseEvent& event) {
 
 void ImGuiExample::mouseMoveEvent(MouseMoveEvent& event) {
     if(_imgui.handleMouseMoveEvent(event)) return;
+    _app.OnMouseMove(event.relativePosition().x(), event.relativePosition().y());
 }
 
 void ImGuiExample::mouseScrollEvent(MouseScrollEvent& event) {
