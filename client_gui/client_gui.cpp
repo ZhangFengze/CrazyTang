@@ -158,8 +158,8 @@ namespace zs
         curID = *id;
     }
 
-    App::App(const Vector2i& windowSize)
-        :windowSize_(windowSize)
+    App::App(const Vector2i& windowSize, GLFWwindow* window)
+        :windowSize_(windowSize), window_(window)
     {
         Trade::MeshData cube = Primitives::cubeSolid();
 
@@ -183,6 +183,7 @@ namespace zs
     void App::Tick()
     {
         io.run_for(std::chrono::milliseconds{ 1 });
+        TickInput();
         Draw();
         TickImGui();
     }
@@ -289,5 +290,33 @@ namespace zs
         for (auto beg = logs.rbegin();beg != logs.rend();++beg)
             ImGui::Text(beg->c_str());
         ImGui::End();
+    }
+
+    void App::TickInput()
+    {
+        float speed=0.1f;
+
+        float forward = 0.f;
+        float left = 0.f;
+        float up=0.f;
+        if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS)
+            forward += 1.f;
+        if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS)
+            forward -= 1.f;
+        if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS)
+            left += 1.f;
+        if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS)
+            left -= 1.f;
+        if (glfwGetKey(window_, GLFW_KEY_Q) == GLFW_PRESS)
+            up -= 1.f;
+        if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS)
+            up += 1.f;
+
+        auto q = Quaternion::rotation(Rad(cameraYaw), Vector3::yAxis()) *
+            Quaternion::rotation(Rad(cameraPitch), Vector3::xAxis());
+
+        cameraPos += speed * forward * q.transformVector(-Vector3::zAxis());
+        cameraPos += speed * left * q.transformVector(-Vector3::xAxis());
+        cameraPos += speed * up * q.transformVector(Vector3::yAxis());
     }
 }

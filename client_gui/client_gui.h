@@ -8,11 +8,13 @@
 #include <Magnum/GL/Renderer.h>
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix4.h>
+#include <Magnum/Math/Quaternion.h>
 #include <Magnum/MeshTools/Interleave.h>
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/PhongGL.h>
 #include <Magnum/Trade/MeshData.h>
+#include <Magnum/Platform/GlfwApplication.h>
 
 #include "../common/Net.h"
 #include "../common/Entity.h"
@@ -25,13 +27,14 @@ namespace zs
     class App
     {
     public:
-        App(const Vector2i& windowSize);
+        App(const Vector2i& windowSize, GLFWwindow* window);
         void Tick();
         void OnMouseMove(float dx, float dy);
 
     private:
         void Draw();
         void TickImGui();
+        void TickInput();
 
         asio::awaitable<void> Login(asio::io_context& io);
 
@@ -43,6 +46,7 @@ namespace zs
         Color3 _color;
 
         Vector2 windowSize_;
+        GLFWwindow* window_;
         Vector3 boxPos{ 0,0,0 };
         Vector3 cameraPos{ 0,0,30 };
         float cameraYaw = 0.f;
