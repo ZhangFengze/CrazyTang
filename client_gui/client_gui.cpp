@@ -260,7 +260,7 @@ namespace zs
                 Matrix4::rotation(Rad{ cameraPitch }, Vector3::xAxis());
             camera = camera.inverted();
             _projection =
-                Matrix4::perspectiveProjection(35.0_degf, windowSize_.aspectRatio(), 0.01f, 100.0f)
+                Matrix4::perspectiveProjection(35.0_degf, windowSize_.aspectRatio(), 0.01f, 1000.0f)
                 * camera;
         }
 
