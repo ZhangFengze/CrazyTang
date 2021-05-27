@@ -294,11 +294,11 @@ namespace zs
 
     void App::TickInput()
     {
-        float speed=0.1f;
+        float speed = 0.1f;
 
         float forward = 0.f;
         float left = 0.f;
-        float up=0.f;
+        float up = 0.f;
         if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS)
             forward += 1.f;
         if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS)
