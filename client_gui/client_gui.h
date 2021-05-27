@@ -44,7 +44,7 @@ namespace zs
 
         Vector2 windowSize_;
         Vector3 boxPos{ 0,0,0 };
-        Vector3 cameraPos{ 0,0,0 };
+        Vector3 cameraPos{ 0,0,30 };
         float cameraYaw = 0.f;
         float cameraPitch = 0.f;
 
