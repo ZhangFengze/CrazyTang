@@ -190,8 +190,8 @@ namespace zs
 
     void App::OnMouseMove(float dx, float dy)
     {
-        cameraYaw-=dx*0.005f;
-        cameraPitch-=dy*0.005f;
+        cameraYaw -= dx * 0.002f;
+        cameraPitch -= dy * 0.002f;
     }
 
     void App::Draw()
