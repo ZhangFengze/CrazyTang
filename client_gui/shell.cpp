@@ -86,7 +86,7 @@ ImGuiExample::ImGuiExample(const Arguments& arguments): Platform::Application{ar
     GL::Renderer::setBlendFunction(GL::Renderer::BlendFunction::SourceAlpha,
         GL::Renderer::BlendFunction::OneMinusSourceAlpha);
 
-    setCursor(Cursor::HiddenLocked);
+    setCursor(Cursor::Arrow);
 }
 
 void ImGuiExample::drawEvent() {
