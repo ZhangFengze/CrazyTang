@@ -85,6 +85,8 @@ ImGuiExample::ImGuiExample(const Arguments& arguments): Platform::Application{ar
         GL::Renderer::BlendEquation::Add);
     GL::Renderer::setBlendFunction(GL::Renderer::BlendFunction::SourceAlpha,
         GL::Renderer::BlendFunction::OneMinusSourceAlpha);
+
+    setCursor(Cursor::HiddenLocked);
 }
 
 void ImGuiExample::drawEvent() {
@@ -101,7 +103,7 @@ void ImGuiExample::drawEvent() {
     _app.Tick();
 
     /* Update application cursor */
-    _imgui.updateApplicationCursor(*this);
+    // _imgui.updateApplicationCursor(*this);
 
     /* Set appropriate states. If you only draw ImGui, it is sufficient to
        just enable blending and scissor test in the constructor. */
@@ -132,6 +134,17 @@ void ImGuiExample::viewportEvent(ViewportEvent& event) {
 
 void ImGuiExample::keyPressEvent(KeyEvent& event) {
     if(_imgui.handleKeyPressEvent(event)) return;
+    if(event.key()==KeyEvent::Key::Esc)
+    {
+        if(cursor()!=Cursor::Arrow)
+        {
+            setCursor(Cursor::Arrow);
+        }
+        else
+        {
+            setCursor(Cursor::HiddenLocked);
+        }
+    }
 }
 
 void ImGuiExample::keyReleaseEvent(KeyEvent& event) {
@@ -148,7 +161,8 @@ void ImGuiExample::mouseReleaseEvent(MouseEvent& event) {
 
 void ImGuiExample::mouseMoveEvent(MouseMoveEvent& event) {
     if(_imgui.handleMouseMoveEvent(event)) return;
-    _app.OnMouseMove(event.relativePosition().x(), event.relativePosition().y());
+    if(cursor()==Cursor::HiddenLocked)
+        _app.OnMouseMove(event.relativePosition().x(), event.relativePosition().y());
 }
 
 void ImGuiExample::mouseScrollEvent(MouseScrollEvent& event) {
