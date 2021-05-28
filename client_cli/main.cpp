@@ -61,6 +61,12 @@ asio::awaitable<void> client(asio::io_context& io)
         agent->Send("set velocity", out.String());
     }
 
+    {
+        zs::StringWriter out;
+        zs::Write(out,std::string("a"));
+        agent->Send("set name", out.String());
+    }
+
     co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
         {
             co_await agent->ReadRoutine();
