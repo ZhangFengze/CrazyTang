@@ -41,7 +41,7 @@ namespace ct
 			throw asio::error::make_error_code(asio::error::eof);
 		co_return Packet{ buffer.data(), length };
 	}
-	
+
 	class NetAgent
 	{
 	public:
