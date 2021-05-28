@@ -19,6 +19,7 @@
 #include "../common/Net.h"
 #include "../common/Entity.h"
 #include "../common/Voxel.h"
+#include "../common/fps.h"
 
 using namespace Magnum;
 
@@ -59,5 +60,6 @@ namespace zs
         uint64_t curID = 0;
         ct::EntityContainer curEntities;
         ct::voxel::Container curVoxels;
+        ct::FPS fps_;
     };
 }

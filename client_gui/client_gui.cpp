@@ -188,6 +188,7 @@ namespace zs
         TickInput();
         Draw();
         TickImGui();
+        fps_.fire();
     }
 
     void App::OnMouseMove(float dx, float dy)
@@ -241,6 +242,7 @@ namespace zs
     void App::TickImGui()
     {
         ImGui::Begin("CrazyTang");
+        ImGui::Text("fps: %f",fps_.get());
 
         if (curAgent)
         {
