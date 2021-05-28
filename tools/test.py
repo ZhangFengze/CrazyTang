@@ -15,6 +15,7 @@ install_dir = get_root_path().joinpath(f"build/test/{args.config}")
 
 if args.clean:
     rmdir(build_dir)
+    exit()
 
 cmake(source_dir, build_dir, args.ninja)
 build(build_dir, args.config)
