@@ -220,7 +220,8 @@ namespace zs
                 {
                     auto type = curVoxels.Get(x, y, z)->type;
                     Vector3 pos{ float(x),float(y),float(z) };
-                    auto transform = Matrix4::translation(pos);
+                    auto transform = Matrix4::translation(pos) *
+                        Matrix4::scaling(Vector3{ 0.1f,0.1f,0.1f });
                     auto color = palette_[(x+y+z) % palette_.size()];
                     if (type == ct::voxel::Type::Block)
                     {
