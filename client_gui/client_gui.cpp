@@ -40,7 +40,7 @@ namespace
     }
 
     template<typename In>
-    bool ReadEntity(In& in, ct::EntityHandle e)
+    bool ReadEntity(In& in, EntityHandle e)
     {
         auto uuid = zs::Read<UUID>(in);
         if (std::holds_alternative<zs::Error>(uuid))
@@ -82,7 +82,7 @@ namespace
     }
 }
 
-namespace zs
+namespace ct 
 {
     asio::awaitable<void> App::Login(asio::io_context& io)
     {
@@ -102,7 +102,7 @@ namespace zs
             [agent, this](std::string&& rawWorld)
             {
                 zs::StringReader worldArchive{ std::move(rawWorld) };
-                curEntities = ct::EntityContainer{};
+                curEntities = EntityContainer{};
                 while (true)
                 {
                     auto e = curEntities.Create();
@@ -126,7 +126,7 @@ namespace zs
                     auto x = std::get<0>(rawX);
                     auto y = std::get<0>(zs::Read<int>(in));
                     auto z = std::get<0>(zs::Read<int>(in));
-                    auto newVoxel = std::get<0>(zs::Read<ct::voxel::Voxel>(in));
+                    auto newVoxel = std::get<0>(zs::Read<voxel::Voxel>(in));
                     auto nowVoxel = curVoxels.Get(x, y, z);
                     *nowVoxel = newVoxel;
                 }
@@ -224,7 +224,7 @@ namespace zs
                     auto transform = Matrix4::translation(pos) *
                         Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
                     auto color = palette_[(x+y+z) % palette_.size()];
-                    if (type == ct::voxel::Type::Block)
+                    if (type == voxel::Type::Block)
                     {
                         _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
                             .setDiffuseColor(color)

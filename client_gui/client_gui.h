@@ -23,7 +23,7 @@
 
 using namespace Magnum;
 
-namespace zs
+namespace ct
 {
     class App
     {
@@ -58,8 +58,8 @@ namespace zs
 
         std::shared_ptr<ct::NetAgent> curAgent;
         uint64_t curID = 0;
-        ct::EntityContainer curEntities;
-        ct::voxel::Container curVoxels;
-        ct::FPS fps_;
+        EntityContainer curEntities;
+        voxel::Container curVoxels;
+        FPS fps_;
     };
 }
