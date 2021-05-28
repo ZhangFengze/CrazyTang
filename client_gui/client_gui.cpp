@@ -4,6 +4,7 @@
 #include "../client_core/Login.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
+#include "../common/Name.h"
 #include "../common/Math.h"
 #include "../common/UUID.h"
 
@@ -72,6 +73,12 @@ namespace
                 if (!e.Has<Velocity>())
                     e.Add<Velocity>();
                 *e.Get<Velocity>() = std::get<0>(zs::Read<Velocity>(components));
+            }
+            else if (tag == "name")
+            {
+                if (!e.Has<xy::Name>())
+                    e.Add<xy::Name>();
+                *e.Get<xy::Name>() = std::get<0>(zs::Read<xy::Name>(components));
             }
             else
             {
@@ -142,6 +149,12 @@ namespace zs
             zs::StringWriter out;
             zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
             agent->Send("set velocity", out.String());
+        }
+
+        {
+            zs::StringWriter out;
+            zs::Write(out, std::string("a"));
+            agent->Send("set name", out.String());
         }
 
         co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
@@ -272,6 +285,11 @@ namespace zs
                     {
                         auto vel = e.Get<Velocity>()->data;
                         ImGui::Text("vel:%06f %06f %06f", vel.x(), vel.y(), vel.z());
+                    }
+                    if (e.Has<xy::Name>())
+                    {
+                        auto vel = e.Get<xy::Name>()->data;
+                        ImGui::Text("name:%s", vel);
                     }
                     ImGui::TreePop();
                 }
