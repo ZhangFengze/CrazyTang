@@ -13,6 +13,7 @@
 #include <ZSerializer.hpp>
 #include <thread>
 #include <chrono>
+#include <iostream>
 
 using namespace std::placeholders;
 using namespace ct;
@@ -83,9 +84,21 @@ namespace ct
 			}, asio::detached);
 	}
 
+	asio::awaitable<void> Server::LogFps()
+	{
+		asio::system_timer timer(co_await asio::this_coro::executor);
+		while (true)
+		{
+			timer.expires_after(std::chrono::seconds{ 1 });
+			co_await timer.async_wait(asio::use_awaitable);
+			std::cout << std::chrono::system_clock::now() << " fps: " << fps_.get() << std::endl;
+		}
+	}
+
 	void Server::Run()
 	{
 		asio::co_spawn(io_, Listen(), asio::detached);
+		asio::co_spawn(io_, LogFps(), asio::detached);
 
 		voxel::GenerateVoxels(voxels_);
 
@@ -108,6 +121,7 @@ namespace ct
 
 			voxel_watcher::Process(entities_, voxels_, interval.count() / 1000.f);
 
+			fps_.fire();
 			shouldTick += interval;
 			io_.run_until(shouldTick);
 		}
