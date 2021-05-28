@@ -177,7 +177,9 @@ namespace zs
             .addVertexBuffer(std::move(vertices), 0, Shaders::PhongGL::Position{},
                 Shaders::PhongGL::Normal{})
             .setIndexBuffer(std::move(indices), 0, compressed.second);
-        _color = Color3::fromHsv({ 35.0_degf, 1.0f, 1.0f });
+
+        for (int i = 0, count = 24;i < count;++i)
+            palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));
     }
 
     void App::Tick()
@@ -200,9 +202,10 @@ namespace zs
             {
                 auto pos = e.Get<Position>()->data;
                 auto transform = Matrix4::translation(Vector3{ pos.x(),pos.y(),pos.z() });
+                auto color = palette_[0];
                 _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                    .setDiffuseColor(_color)
-                    .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
+                    .setDiffuseColor(color)
+                    .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
                     .setProjectionMatrix(_projection)
@@ -218,11 +221,12 @@ namespace zs
                     auto type = curVoxels.Get(x, y, z)->type;
                     Vector3 pos{ float(x),float(y),float(z) };
                     auto transform = Matrix4::translation(pos);
+                    auto color = palette_[(x+y+z) % palette_.size()];
                     if (type == ct::voxel::Type::Block)
                     {
                         _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                            .setDiffuseColor(_color)
-                            .setAmbientColor(Color3::fromHsv({ _color.hue(), 1.0f, 0.3f }))
+                            .setDiffuseColor(color)
+                            .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                             .setTransformationMatrix(transform)
                             .setNormalMatrix(transform.normalMatrix())
                             .setProjectionMatrix(_projection)
