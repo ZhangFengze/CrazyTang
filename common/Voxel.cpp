@@ -31,7 +31,7 @@ namespace ct
         static float accumulated = 0.f;
         void Process(Container& container, float step)
         {
-            accumulated += step;
+            accumulated += step*20.f;
             for (size_t x = 0;x < container.x;++x)
             {
                 for (size_t y = 0;y < container.y;++y)
