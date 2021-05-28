@@ -2,6 +2,11 @@
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
 
+namespace ct
+{
+    float Rand(float min, float max);
+}
+
 namespace zs
 {
     template<>
