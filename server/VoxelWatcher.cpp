@@ -75,5 +75,36 @@ namespace ct
                         agent->Send("voxels", message);
                 });
         }
+
+        void Sync(EntityHandle& e, voxel::Container& voxels)
+        {
+            auto connection = e.Get<ConnectionInfo>();
+            if (!connection)
+                return;
+            auto agent = connection->agent.lock();
+            assert(agent);
+
+            zs::StringWriter out;
+            int count = 0;
+            int voxelPerMessage = 100;
+            voxel::ForEach(voxels, [&](int x, int y, int z, voxel::Voxel* voxel)
+                {
+                    if (!voxel)
+                        return;
+                    if (count >= voxelPerMessage)
+                    {
+                        agent->Send("voxels", out.String());
+                        out = zs::StringWriter{};
+                        count = 0;
+                    }
+                    zs::Write(out, x);
+                    zs::Write(out, y);
+                    zs::Write(out, z);
+                    zs::Write(out, *voxel);
+                    ++count;
+                });
+            if (count != 0)
+                agent->Send("voxels", out.String());
+        }
     }
 }

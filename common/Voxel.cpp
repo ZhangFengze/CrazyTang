@@ -40,6 +40,7 @@ namespace ct
 
         void GenerateVoxels(Container& container)
         {
+            Process(container, 0.f);
         }
 
         static float accumulated = 0.f;

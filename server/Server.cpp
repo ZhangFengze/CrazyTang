@@ -115,7 +115,7 @@ namespace ct
 		{
 			io_.poll();
 			move_system::Process(entities_, interval.count() / 1000.f);
-			voxel::Process(voxels_, interval.count() / 1000.f);
+			// voxel::Process(voxels_, interval.count() / 1000.f);
 
 			zs::StringWriter worldOut;
 			entities_.ForEach([&](EntityHandle e) {zs::Write(worldOut, e);});
@@ -126,7 +126,7 @@ namespace ct
 				connection.agent->Send("entities", world);
 			}
 
-			voxel_watcher::Process(entities_, voxels_, interval.count() / 1000.f);
+			// voxel_watcher::Process(entities_, voxels_, interval.count() / 1000.f);
 
 			fps_.fire();
 			shouldTick += interval;
@@ -195,5 +195,7 @@ namespace ct
 				e.Destroy();
 			connections_.erase(connectionID);
 			});
+
+		voxel_watcher::Sync(e, voxels_);
 	}
 } // namespace ct
