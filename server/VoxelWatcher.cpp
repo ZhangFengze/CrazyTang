@@ -70,7 +70,7 @@ namespace ct
                         return;
                     auto agent = connection->agent.lock();
                     assert(agent);
-                    auto messages = ArchiveVoxels(voxels, *pos, 50, 100);
+                    auto messages = ArchiveVoxels(voxels, *pos, 10, 100);
                     for (const auto& message : messages)
                         agent->Send("voxels", message);
                 });
