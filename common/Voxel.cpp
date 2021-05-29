@@ -39,13 +39,13 @@ namespace ct
         {
             accumulated += step * 20.f;
             ForEach(container, [](int x, int y, int z, Voxel* voxel)
-            {
-                float altitude = std::sin(accumulated + x + z) * 8.f + 8.f;
-                if (y < altitude)
-                    voxel->type = Type::Block;
-                else
-                    voxel->type = Type::Empty;
-            });
+                {
+                    float altitude = std::sin(accumulated + x + z) * 8.f + 8.f;
+                    if (y < altitude)
+                        voxel->type = Type::Block;
+                    else
+                        voxel->type = Type::Empty;
+                });
         }
 
         std::tuple<int, int, int> DecodeIndex(const Position& pos)
