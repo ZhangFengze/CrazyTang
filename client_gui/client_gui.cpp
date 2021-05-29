@@ -230,22 +230,21 @@ namespace ct
             {
                 if(!voxel)
                     return;
+                if (voxel->type != voxel::Type::Block)
+                    return;
                 auto type = voxel->type;
                 Vector3 pos{ float(x),float(y),float(z) };
                 auto transform = Matrix4::translation(pos) *
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
                 auto color = palette_[(x + y + z) % palette_.size()];
-                if (type == voxel::Type::Block)
-                {
-                    _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                        .setDiffuseColor(color)
-                        .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
-                        .setTransformationMatrix(transform)
-                        .setNormalMatrix(transform.normalMatrix())
-                        .setProjectionMatrix(_projection)
-                        .draw(_mesh);
-                }
-            });
+                _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                    .setDiffuseColor(color)
+                    .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
+                    .setTransformationMatrix(transform)
+                    .setNormalMatrix(transform.normalMatrix())
+                    .setProjectionMatrix(_projection)
+					.draw(_mesh);
+			});
     }
 
     void App::TickImGui()
