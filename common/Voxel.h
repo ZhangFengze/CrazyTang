@@ -37,11 +37,11 @@ namespace ct
         template<typename Func>
         void ForEach(Container& container, Func func)
         {
-            for (size_t x = 0;x < container.x;++x)
+            for (size_t z = 0;z < container.z;++z)
             {
                 for (size_t y = 0;y < container.y;++y)
                 {
-                    for (size_t z = 0;z < container.z;++z)
+                    for (size_t x = 0;x < container.x;++x)
                     {
                         func(x, y, z, container.GetNoCheck(x, y, z));
                     }
