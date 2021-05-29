@@ -302,8 +302,8 @@ namespace ct
                     }
                     if (e.Has<xy::Name>())
                     {
-                        auto vel = e.Get<xy::Name>()->data;
-                        ImGui::Text("name:%s", vel.c_str());
+                        auto name = e.Get<xy::Name>()->data;
+                        ImGui::Text("name:%s", name.c_str());
                     }
                     ImGui::TreePop();
                 }

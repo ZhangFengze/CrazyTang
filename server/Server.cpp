@@ -184,10 +184,10 @@ namespace ct
 		agent->Listen("set name",
 			[this, agent, e](std::string&& data) mutable {
 				zs::StringReader in{ std::move(data) };
-				auto vel = zs::Read<std::string>(in);
-				if (std::holds_alternative<zs::Error>(vel))
+				auto name = zs::Read<std::string>(in);
+				if (std::holds_alternative<zs::Error>(name))
 					return;
-				e.Get<xy::Name>()->data = std::get<0>(vel);
+				e.Get<xy::Name>()->data = std::get<0>(name);
 			});
 
 		agent->OnError([e, connectionID, this]() mutable {
