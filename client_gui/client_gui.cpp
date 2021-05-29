@@ -89,7 +89,7 @@ namespace
     }
 }
 
-namespace ct 
+namespace ct
 {
     asio::awaitable<void> App::Login(asio::io_context& io)
     {
@@ -228,7 +228,7 @@ namespace ct
 
         voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
             {
-                if(!voxel)
+                if (!voxel)
                     return;
                 if (voxel->type != voxel::Type::Block)
                     return;
@@ -243,14 +243,14 @@ namespace ct
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
                     .setProjectionMatrix(_projection)
-					.draw(_mesh);
-			});
+                    .draw(_mesh);
+            });
     }
 
     void App::TickImGui()
     {
         ImGui::Begin("CrazyTang");
-        ImGui::Text("fps: %f",fps_.get());
+        ImGui::Text("fps: %f", fps_.get());
 
         if (curAgent)
         {
