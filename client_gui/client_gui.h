@@ -61,5 +61,6 @@ namespace ct
         EntityContainer curEntities;
         voxel::Container curVoxels;
         FPS fps_;
+        int drawVoxels_ = 0;
     };
 }

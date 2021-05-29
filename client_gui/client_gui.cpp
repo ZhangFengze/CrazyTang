@@ -226,6 +226,7 @@ namespace ct
                     .draw(_mesh);
             });
 
+        drawVoxels_ = 0;
         voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
             {
                 if (!voxel)
@@ -244,6 +245,8 @@ namespace ct
                     .setNormalMatrix(transform.normalMatrix())
                     .setProjectionMatrix(_projection)
                     .draw(_mesh);
+
+                ++drawVoxels_;
             });
     }
 
@@ -251,6 +254,7 @@ namespace ct
     {
         ImGui::Begin("CrazyTang");
         ImGui::Text("fps: %f", fps_.get());
+        ImGui::Text("voxel: %d/%llu", drawVoxels_, curVoxels.x * curVoxels.y * curVoxels.z);
 
         if (curAgent)
         {
