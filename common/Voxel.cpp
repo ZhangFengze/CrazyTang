@@ -29,20 +29,6 @@ namespace ct
             return &voxels[index];
         }
 
-        void ForEach(Container& container, std::function<void(int, int, int, Voxel*)> func)
-        {
-            for (size_t x = 0;x < container.x;++x)
-            {
-                for (size_t y = 0;y < container.y;++y)
-                {
-                    for (size_t z = 0;z < container.z;++z)
-                    {
-                        func(x, y, z, container.GetNoCheck(x, y, z));
-                    }
-                }
-            }
-        }
-
         void GenerateVoxels(Container& container)
         {
             Process(container, 0.f);

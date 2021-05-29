@@ -34,7 +34,21 @@ namespace ct
             Voxel* GetNoCheck(int _x, int _y, int _z);
         };
 
-        void ForEach(Container&, std::function<void(int,int,int,Voxel*)>);
+        template<typename Func>
+        void ForEach(Container& container, Func func)
+        {
+            for (size_t x = 0;x < container.x;++x)
+            {
+                for (size_t y = 0;y < container.y;++y)
+                {
+                    for (size_t z = 0;z < container.z;++z)
+                    {
+                        func(x, y, z, container.GetNoCheck(x, y, z));
+                    }
+                }
+            }
+        }
+
         void GenerateVoxels(Container&);
         void Process(Container&, float step);
         std::tuple<int, int, int> DecodeIndex(const Position&);
