@@ -6,6 +6,7 @@
 #include "../common/MoveSystem.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"
+#include "../common/Name.h"
 #include "../common/Voxel.h"
 #include "../common/Math.h"
 #include "../common/UUID.h"
@@ -46,6 +47,12 @@ namespace zs
 			{
 				zs::Write(components, "velocity");
 				zs::Write(components, *velocity);
+			}
+
+			if (auto name = e.Get<xy::Name>())
+			{
+				zs::Write(components, "name");
+				zs::Write(components, *name);
 			}
 
 			zs::Write(out, components.String());
@@ -149,6 +156,9 @@ namespace ct
 		velocity->data.y() = 0;
 		velocity->data.z() = 0;
 
+		auto name = e.Add<xy::Name>();
+		name->data = "zjx";
+
 		auto info = e.Add<ConnectionInfo>();
 		info->connectionID = connectionID;
 		info->agent = agent;
@@ -169,6 +179,15 @@ namespace ct
 				if (std::holds_alternative<zs::Error>(vel))
 					return;
 				e.Get<Velocity>()->data = std::get<0>(vel);
+			});
+
+		agent->Listen("set name",
+			[this, agent, e](std::string&& data) mutable {
+				zs::StringReader in{ std::move(data) };
+				auto vel = zs::Read<std::string>(in);
+				if (std::holds_alternative<zs::Error>(vel))
+					return;
+				e.Get<xy::Name>()->data = std::get<0>(vel);
 			});
 
 		agent->OnError([e, connectionID, this]() mutable {
