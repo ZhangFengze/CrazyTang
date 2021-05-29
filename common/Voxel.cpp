@@ -24,6 +24,20 @@ namespace ct
             return &voxels[index];
         }
 
+        void ForEach(Container& container, std::function<void(int, int, int, Voxel*)> func)
+        {
+            for (size_t x = 0;x < container.x;++x)
+            {
+                for (size_t y = 0;y < container.y;++y)
+                {
+                    for (size_t z = 0;z < container.z;++z)
+                    {
+                        func(x, y, z, container.Get(x, y, z));
+                    }
+                }
+            }
+        }
+
         void GenerateVoxels(Container& container)
         {
         }
@@ -31,21 +45,15 @@ namespace ct
         static float accumulated = 0.f;
         void Process(Container& container, float step)
         {
-            accumulated += step*20.f;
-            for (size_t x = 0;x < container.x;++x)
+            accumulated += step * 20.f;
+            ForEach(container, [](int x, int y, int z, Voxel* voxel)
             {
-                for (size_t y = 0;y < container.y;++y)
-                {
-                    for (size_t z = 0;z < container.z;++z)
-                    {
-                        float altitude = std::sin(accumulated + x + z) * 8.f + 8.f;
-                        if (y < altitude)
-                            container.Get(x, y, z)->type = Type::Block;
-                        else
-                            container.Get(x, y, z)->type = Type::Empty;
-                    }
-                }
-            }
+                float altitude = std::sin(accumulated + x + z) * 8.f + 8.f;
+                if (y < altitude)
+                    voxel->type = Type::Block;
+                else
+                    voxel->type = Type::Empty;
+            });
         }
 
         std::tuple<int, int, int> DecodeIndex(const Position& pos)

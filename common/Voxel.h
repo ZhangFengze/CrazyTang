@@ -3,6 +3,7 @@
 #include <ZSerializer.hpp>
 #include <Eigen/Eigen>
 #include <tuple>
+#include <functional>
 
 namespace ct
 {
@@ -32,6 +33,7 @@ namespace ct
             Voxel* Get(int _x, int _y, int _z);
         };
 
+        void ForEach(Container&, std::function<void(int,int,int,Voxel*)>);
         void GenerateVoxels(Container&);
         void Process(Container&, float step);
         std::tuple<int, int, int> DecodeIndex(const Position&);
