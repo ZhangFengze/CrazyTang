@@ -42,6 +42,14 @@ namespace ct
 		co_return Packet{ buffer.data(), length };
 	}
 
+	struct CallOnDestroy
+	{
+		CallOnDestroy(std::function<void()> f)
+			:func(f) {}
+		~CallOnDestroy() { func(); }
+		std::function<void()> func;
+	};
+
 	class NetAgent
 	{
 	public:
@@ -67,8 +75,15 @@ namespace ct
 			out_.emplace_back(Packet{ out.String() });
 		}
 
+		void NotifyError()
+		{
+			if (errorHandler_)
+				errorHandler_();
+		}
+
 		asio::awaitable<void> ReadRoutine()
 		{
+			auto _ = CallOnDestroy([this] {NotifyError();});
 			while (socket_.is_open())
 			{
 				auto packet = co_await AsyncReadPacket(socket_);
@@ -91,6 +106,7 @@ namespace ct
 
 		asio::awaitable<void> WriteRoutine()
 		{
+			auto _ = CallOnDestroy([this] {NotifyError();});
 			while (socket_.is_open())
 			{
 				// TODO optimize
@@ -111,7 +127,7 @@ namespace ct
 	private:
 		asio::ip::tcp::socket socket_;
 		std::unordered_map<std::string, std::function<void(std::string&&)>> listeners_;
-		std::function<void()> errorHandler_;// TODO
+		std::function<void()> errorHandler_;
 		std::list<Packet> out_;
 	};
 }
