@@ -303,7 +303,7 @@ namespace ct
                     if (e.Has<xy::Name>())
                     {
                         auto vel = e.Get<xy::Name>()->data;
-                        ImGui::Text("name:%s", vel);
+                        ImGui::Text("name:%s", vel.c_str());
                     }
                     ImGui::TreePop();
                 }

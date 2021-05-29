@@ -11,6 +11,11 @@ namespace xy
 namespace zs
 {
     template<>
-    struct Trait<xy::Name> : public WriteBitwise<xy::Name>, public ReadBitwise<xy::Name>
-    {};
+    struct Trait<xy::Name> : public WriteMembers<xy::Name>, public ReadMembers<xy::Name>
+    {
+        static constexpr auto members = std::make_tuple
+        (
+            &xy::Name::data
+        );
+    };
 }
