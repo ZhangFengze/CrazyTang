@@ -226,30 +226,26 @@ namespace ct
                     .draw(_mesh);
             });
 
-        for (size_t x = 0;x < curVoxels.x;++x)
-        {
-            for (size_t y = 0;y < curVoxels.y;++y)
+        voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
             {
-                for (size_t z = 0;z < curVoxels.z;++z)
+                if(!voxel)
+                    return;
+                auto type = voxel->type;
+                Vector3 pos{ float(x),float(y),float(z) };
+                auto transform = Matrix4::translation(pos) *
+                    Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
+                auto color = palette_[(x + y + z) % palette_.size()];
+                if (type == voxel::Type::Block)
                 {
-                    auto type = curVoxels.Get(x, y, z)->type;
-                    Vector3 pos{ float(x),float(y),float(z) };
-                    auto transform = Matrix4::translation(pos) *
-                        Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
-                    auto color = palette_[(x+y+z) % palette_.size()];
-                    if (type == voxel::Type::Block)
-                    {
-                        _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                            .setDiffuseColor(color)
-                            .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
-                            .setTransformationMatrix(transform)
-                            .setNormalMatrix(transform.normalMatrix())
-                            .setProjectionMatrix(_projection)
-                            .draw(_mesh);
-                    }
+                    _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                        .setDiffuseColor(color)
+                        .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
+                        .setTransformationMatrix(transform)
+                        .setNormalMatrix(transform.normalMatrix())
+                        .setProjectionMatrix(_projection)
+                        .draw(_mesh);
                 }
-            }
-        }
+            });
     }
 
     void App::TickImGui()
