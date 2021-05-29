@@ -31,6 +31,7 @@ namespace ct
             std::vector<Voxel> voxels{ x * y * z };
 
             Voxel* Get(int _x, int _y, int _z);
+            Voxel* GetNoCheck(int _x, int _y, int _z);
         };
 
         void ForEach(Container&, std::function<void(int,int,int,Voxel*)>);

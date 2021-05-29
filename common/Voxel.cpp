@@ -20,6 +20,11 @@ namespace ct
                 return nullptr;
             if (!InRange(_z, 0, z))
                 return nullptr;
+            return GetNoCheck(_x, _y, _z);
+        }
+
+        Voxel* Container::GetNoCheck(int _x, int _y, int _z)
+        {
             size_t index = _x + _y * x + _z * x * y;
             return &voxels[index];
         }
@@ -32,7 +37,7 @@ namespace ct
                 {
                     for (size_t z = 0;z < container.z;++z)
                     {
-                        func(x, y, z, container.Get(x, y, z));
+                        func(x, y, z, container.GetNoCheck(x, y, z));
                     }
                 }
             }
