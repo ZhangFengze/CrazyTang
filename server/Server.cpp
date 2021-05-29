@@ -164,7 +164,7 @@ namespace ct
 		info->agent = agent;
 
 		agent->Listen("set position",
-			[this, agent, e](std::string&& data) mutable {
+			[this, e](std::string&& data) mutable {
 				zs::StringReader in{ std::move(data) };
 				auto pos = zs::Read<Eigen::Vector3f>(in);
 				if (std::holds_alternative<zs::Error>(pos))
@@ -173,7 +173,7 @@ namespace ct
 			});
 
 		agent->Listen("set velocity",
-			[this, agent, e](std::string&& data) mutable {
+			[this, e](std::string&& data) mutable {
 				zs::StringReader in{ std::move(data) };
 				auto vel = zs::Read<Eigen::Vector3f>(in);
 				if (std::holds_alternative<zs::Error>(vel))
@@ -182,7 +182,7 @@ namespace ct
 			});
 
 		agent->Listen("set name",
-			[this, agent, e](std::string&& data) mutable {
+			[this, e](std::string&& data) mutable {
 				zs::StringReader in{ std::move(data) };
 				auto name = zs::Read<std::string>(in);
 				if (std::holds_alternative<zs::Error>(name))
