@@ -187,8 +187,8 @@ namespace ct
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window),
-        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation|
-        Shaders::PhongGL::Flag::VertexColor)
+        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation |
+            Shaders::PhongGL::Flag::VertexColor)
     {
         instancedMesh_ = MeshTools::compile(Primitives::cubeSolid());
         instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
@@ -241,7 +241,7 @@ namespace ct
                 auto transform = Matrix4::translation(pos) *
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
                 auto color = palette_[(x + y + z) % palette_.size()];
-                instances[index++] = { transform, transform.normalMatrix(), color};
+                instances[index++] = { transform, transform.normalMatrix(), color };
             });
         instancedBuffer_.setData(
             Containers::ArrayView{ instances.data(), index },
@@ -252,7 +252,7 @@ namespace ct
         auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
         instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(0xffffff_rgbf)
-            .setAmbientColor(Color3::fromHsv(Deg(0.f),0.f,0.3f))
+            .setAmbientColor(Color3::fromHsv(Deg(0.f), 0.f, 0.3f))
             .setProjectionMatrix(projection_)
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
