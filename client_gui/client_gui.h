@@ -42,10 +42,10 @@ namespace ct
         asio::awaitable<void> Login(asio::io_context& io);
 
     private:
-        GL::Mesh _mesh;
+        GL::Mesh mesh_;
         GL::Mesh instancedMesh_;
-        Shaders::PhongGL _shader;
-        Shaders::PhongGL _instancedShader;
+        Shaders::PhongGL shader_;
+        Shaders::PhongGL instancedShader_;
         GL::Buffer instancedBuffer_;
 
         Matrix4 _transformation, _projection;

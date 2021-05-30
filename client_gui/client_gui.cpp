@@ -173,9 +173,9 @@ namespace ct
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window),
-        _instancedShader(Shaders::PhongGL::Flag::InstancedTransformation)
+        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation)
     {
-        _mesh = MeshTools::compile(Primitives::cubeSolid());
+        mesh_ = MeshTools::compile(Primitives::cubeSolid());
 
         instancedMesh_ = MeshTools::compile(Primitives::cubeSolid());
         instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
@@ -210,13 +210,13 @@ namespace ct
                 auto pos = e.Get<Position>()->data;
                 auto transform = Matrix4::translation(Vector3{ pos.x(),pos.y(),pos.z() });
                 auto color = palette_[0];
-                _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                shader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
                     .setDiffuseColor(color)
                     .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
                     .setProjectionMatrix(_projection)
-                    .draw(_mesh);
+                    .draw(mesh_);
             });
 
         drawVoxels_ = 0;
@@ -231,13 +231,13 @@ namespace ct
                 auto transform = Matrix4::translation(pos) *
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
                 auto color = palette_[(x + y + z) % palette_.size()];
-                _shader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                shader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
                     .setDiffuseColor(color)
                     .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
                     .setProjectionMatrix(_projection)
-                    .draw(_mesh);
+                    .draw(mesh_);
 
                 ++drawVoxels_;
             });
@@ -273,13 +273,13 @@ namespace ct
 
         auto color = palette_[0];
         auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
-        _instancedShader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+        instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(color)
             .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
             .setProjectionMatrix(_projection)
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
-        _instancedShader.draw(instancedMesh_);
+        instancedShader_.draw(instancedMesh_);
     }
 
     void App::TickImGui()
