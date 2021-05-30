@@ -298,9 +298,6 @@ namespace ct
                 co_spawn(io, Login(io), asio::detached);
         }
 
-        ImGui::DragFloat3("box", boxPos.data(), 0.01f);
-        _transformation = Matrix4::translation(boxPos);
-
         ImGui::DragFloat("camera yaw", &cameraYaw, 0.01f);
         ImGui::DragFloat("camera pitch", &cameraPitch, 0.01f);
         ImGui::DragFloat3("camera", cameraPos.data(), 0.01f);
