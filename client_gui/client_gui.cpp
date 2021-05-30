@@ -172,24 +172,16 @@ namespace ct
     }
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
-        :windowSize_(windowSize), window_(window)
+        :windowSize_(windowSize), window_(window),
+        _instancedShader(Shaders::PhongGL::Flag::InstancedTransformation)
     {
-        Trade::MeshData cube = Primitives::cubeSolid();
+        _mesh = MeshTools::compile(Primitives::cubeSolid());
 
-        GL::Buffer vertices;
-        vertices.setData(MeshTools::interleave(cube.positions3DAsArray(),
-            cube.normalsAsArray()));
-
-        std::pair<Containers::Array<char>, MeshIndexType> compressed =
-            MeshTools::compressIndices(cube.indicesAsArray());
-        GL::Buffer indices;
-        indices.setData(compressed.first);
-
-        _mesh.setPrimitive(cube.primitive())
-            .setCount(cube.indexCount())
-            .addVertexBuffer(std::move(vertices), 0, Shaders::PhongGL::Position{},
-                Shaders::PhongGL::Normal{})
-            .setIndexBuffer(std::move(indices), 0, compressed.second);
+        instancedMesh_ = MeshTools::compile(Primitives::cubeSolid());
+        instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
+                1, 0,
+                Shaders::PhongGL::TransformationMatrix{},
+                Shaders::PhongGL::NormalMatrix{});
 
         for (int i = 0, count = 24;i < count;++i)
             palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));
@@ -199,7 +191,8 @@ namespace ct
     {
         io.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
-        Draw();
+        // Draw();
+        DrawInstanced();
         TickImGui();
         fps_.fire();
     }
@@ -248,6 +241,43 @@ namespace ct
 
                 ++drawVoxels_;
             });
+    }
+
+    void App::DrawInstanced()
+    {
+        struct Instance
+        {
+            Matrix4 transformation;
+            Matrix3x3 normal;
+        };
+        std::array<Instance, voxel::Container::x* voxel::Container::y* voxel::Container::z> instances;
+        size_t index = 0;
+
+        drawVoxels_ = 0;
+        voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
+            {
+                if (!voxel)
+                    return;
+                if (voxel->type != voxel::Type::Block)
+                    return;
+                Vector3 pos = { float(x),float(y),float(z) };
+                auto transform = Matrix4::translation(pos) *
+                    Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
+                instances[index++] = { transform, transform.normalMatrix() };
+                ++drawVoxels_;
+            });
+        instancedBuffer_.setData(instances);
+        instancedMesh_.setInstanceCount(index);
+
+        auto color = palette_[0];
+        auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
+        _instancedShader.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+            .setDiffuseColor(color)
+            .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
+            .setProjectionMatrix(_projection)
+            .setTransformationMatrix(transform)
+            .setNormalMatrix(transform.normalMatrix());
+        _instancedShader.draw(instancedMesh_);
     }
 
     void App::TickImGui()

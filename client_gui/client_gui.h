@@ -10,11 +10,13 @@
 #include <Magnum/Math/Matrix4.h>
 #include <Magnum/Math/Quaternion.h>
 #include <Magnum/MeshTools/Interleave.h>
+#include <Magnum/MeshTools/Compile.h>
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/PhongGL.h>
 #include <Magnum/Trade/MeshData.h>
 #include <Magnum/Platform/GlfwApplication.h>
+#include <Corrade/Containers/ArrayViewStl.h>
 
 #include "../common/Net.h"
 #include "../common/Entity.h"
@@ -34,6 +36,7 @@ namespace ct
 
     private:
         void Draw();
+        void DrawInstanced();
         void TickImGui();
         void TickInput();
 
@@ -41,7 +44,10 @@ namespace ct
 
     private:
         GL::Mesh _mesh;
+        GL::Mesh instancedMesh_;
         Shaders::PhongGL _shader;
+        Shaders::PhongGL _instancedShader;
+        GL::Buffer instancedBuffer_;
 
         Matrix4 _transformation, _projection;
         std::vector<Color3> palette_;
