@@ -48,22 +48,22 @@ namespace ct
         Shaders::PhongGL instancedShader_;
         GL::Buffer instancedBuffer_;
 
-        Matrix4 _projection;
+        Matrix4 projection_;
         std::vector<Color3> palette_;
 
         Vector2 windowSize_;
         GLFWwindow* window_;
-        Vector3 cameraPos{ 0,0,30 };
-        float cameraYaw = 0.f;
-        float cameraPitch = 0.f;
+        Vector3 cameraPos_{ 0,0,30 };
+        float cameraYaw_ = 0.f;
+        float cameraPitch_ = 0.f;
 
     private:
-        asio::io_context io;
+        asio::io_context io_;
 
-        std::shared_ptr<ct::NetAgent> curAgent;
-        uint64_t curID = 0;
-        EntityContainer curEntities;
-        voxel::Container curVoxels;
+        std::shared_ptr<ct::NetAgent> curAgent_;
+        uint64_t curID_ = 0;
+        EntityContainer curEntities_;
+        voxel::Container curVoxels_;
         FPS fps_;
         int drawVoxels_ = 0;
     };

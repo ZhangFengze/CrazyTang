@@ -109,10 +109,10 @@ namespace ct
             [agent, this](std::string&& rawWorld)
             {
                 zs::StringReader worldArchive{ std::move(rawWorld) };
-                curEntities = EntityContainer{};
+                curEntities_ = EntityContainer{};
                 while (true)
                 {
-                    auto e = curEntities.Create();
+                    auto e = curEntities_.Create();
                     if (!ReadEntity(worldArchive, e))
                     {
                         e.Destroy();
@@ -134,7 +134,7 @@ namespace ct
                     auto y = std::get<0>(zs::Read<int>(in));
                     auto z = std::get<0>(zs::Read<int>(in));
                     auto newVoxel = std::get<0>(zs::Read<voxel::Voxel>(in));
-                    auto nowVoxel = curVoxels.Get(x, y, z);
+                    auto nowVoxel = curVoxels_.Get(x, y, z);
                     *nowVoxel = newVoxel;
                 }
             });
@@ -167,8 +167,8 @@ namespace ct
                 co_await agent->WriteRoutine();
             }, asio::detached);
 
-        curAgent = agent;
-        curID = *id;
+        curAgent_ = agent;
+        curID_ = *id;
     }
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
@@ -189,7 +189,7 @@ namespace ct
 
     void App::Tick()
     {
-        io.run_for(std::chrono::milliseconds{ 1 });
+        io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
         // Draw();
         DrawInstanced();
@@ -199,13 +199,13 @@ namespace ct
 
     void App::OnMouseMove(float dx, float dy)
     {
-        cameraYaw -= dx * 0.002f;
-        cameraPitch -= dy * 0.002f;
+        cameraYaw_ -= dx * 0.002f;
+        cameraPitch_ -= dy * 0.002f;
     }
 
     void App::Draw()
     {
-        curEntities.ForEach([&](auto e)
+        curEntities_.ForEach([&](auto e)
             {
                 auto pos = e.Get<Position>()->data;
                 auto transform = Matrix4::translation(Vector3{ pos.x(),pos.y(),pos.z() });
@@ -215,12 +215,12 @@ namespace ct
                     .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
-                    .setProjectionMatrix(_projection)
+                    .setProjectionMatrix(projection_)
                     .draw(mesh_);
             });
 
         drawVoxels_ = 0;
-        voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
+        voxel::ForEach(curVoxels_, [&](int x, int y, int z, voxel::Voxel* voxel)
             {
                 if (!voxel)
                     return;
@@ -236,7 +236,7 @@ namespace ct
                     .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
                     .setTransformationMatrix(transform)
                     .setNormalMatrix(transform.normalMatrix())
-                    .setProjectionMatrix(_projection)
+                    .setProjectionMatrix(projection_)
                     .draw(mesh_);
 
                 ++drawVoxels_;
@@ -254,7 +254,7 @@ namespace ct
         size_t index = 0;
 
         drawVoxels_ = 0;
-        voxel::ForEach(curVoxels, [&](int x, int y, int z, voxel::Voxel* voxel)
+        voxel::ForEach(curVoxels_, [&](int x, int y, int z, voxel::Voxel* voxel)
             {
                 if (!voxel)
                     return;
@@ -276,7 +276,7 @@ namespace ct
         instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(color)
             .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
-            .setProjectionMatrix(_projection)
+            .setProjectionMatrix(projection_)
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
         instancedShader_.draw(instancedMesh_);
@@ -286,33 +286,33 @@ namespace ct
     {
         ImGui::Begin("CrazyTang");
         ImGui::Text("fps: %f", fps_.get());
-        ImGui::Text("voxel: %d/%llu", drawVoxels_, curVoxels.x * curVoxels.y * curVoxels.z);
+        ImGui::Text("voxel: %d/%llu", drawVoxels_, curVoxels_.x * curVoxels_.y * curVoxels_.z);
 
-        if (curAgent)
+        if (curAgent_)
         {
-            ImGui::Text("id: %llu", curID);
+            ImGui::Text("id: %llu", curID_);
         }
         else
         {
             if (ImGui::Button("login"))
-                co_spawn(io, Login(io), asio::detached);
+                co_spawn(io_, Login(io_), asio::detached);
         }
 
-        ImGui::DragFloat("camera yaw", &cameraYaw, 0.01f);
-        ImGui::DragFloat("camera pitch", &cameraPitch, 0.01f);
-        ImGui::DragFloat3("camera", cameraPos.data(), 0.01f);
+        ImGui::DragFloat("camera yaw", &cameraYaw_, 0.01f);
+        ImGui::DragFloat("camera pitch", &cameraPitch_, 0.01f);
+        ImGui::DragFloat3("camera", cameraPos_.data(), 0.01f);
         {
             auto camera =
-                Matrix4::translation(cameraPos) *
-                Matrix4::rotation(Rad{ cameraYaw }, Vector3::yAxis()) *
-                Matrix4::rotation(Rad{ cameraPitch }, Vector3::xAxis());
+                Matrix4::translation(cameraPos_) *
+                Matrix4::rotation(Rad{ cameraYaw_ }, Vector3::yAxis()) *
+                Matrix4::rotation(Rad{ cameraPitch_ }, Vector3::xAxis());
             camera = camera.inverted();
-            _projection =
+            projection_ =
                 Matrix4::perspectiveProjection(35.0_degf, windowSize_.aspectRatio(), 0.01f, 1000.0f)
                 * camera;
         }
 
-        curEntities.ForEach([](auto e)
+        curEntities_.ForEach([](auto e)
             {
                 auto id = e.Get<ConnectionID>()->id;
                 auto name = "entity " + std::to_string(id);
@@ -365,11 +365,11 @@ namespace ct
         if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS)
             up += 1.f;
 
-        auto q = Quaternion::rotation(Rad(cameraYaw), Vector3::yAxis()) *
-            Quaternion::rotation(Rad(cameraPitch), Vector3::xAxis());
+        auto q = Quaternion::rotation(Rad(cameraYaw_), Vector3::yAxis()) *
+            Quaternion::rotation(Rad(cameraPitch_), Vector3::xAxis());
 
-        cameraPos += speed * forward * q.transformVector(-Vector3::zAxis());
-        cameraPos += speed * left * q.transformVector(-Vector3::xAxis());
-        cameraPos += speed * up * q.transformVector(Vector3::yAxis());
+        cameraPos_ += speed * forward * q.transformVector(-Vector3::zAxis());
+        cameraPos_ += speed * left * q.transformVector(-Vector3::xAxis());
+        cameraPos_ += speed * up * q.transformVector(Vector3::yAxis());
     }
 }
