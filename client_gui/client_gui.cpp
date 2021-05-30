@@ -1,5 +1,10 @@
 #include "client_gui.h"
 
+#include <algorithm>
+#include <execution>
+#include <array>
+#include <atomic>
+
 #include "imgui.h"
 
 #include <Magnum/Math/Color.h>
@@ -220,11 +225,14 @@ namespace ct
             Color4 color;
         };
         std::array<Instance, voxel::Container::x* voxel::Container::y* voxel::Container::z> instances;
-        size_t index = 0;
+        std::atomic_size_t index = 0;
 
-        drawVoxels_ = 0;
-        voxel::ForEach(curVoxels_, [&](int x, int y, int z, voxel::Voxel* voxel)
+        std::for_each(std::execution::par_unseq,
+            std::cbegin(voxel::Container::indices), std::cend(voxel::Container::indices),
+            [&](auto voxelIndex)
             {
+                auto [x, y, z] = ToTuple(voxelIndex);
+                auto voxel = curVoxels_.Get(x, y, z);
                 if (!voxel)
                     return;
                 if (voxel->type != voxel::Type::Block)
@@ -234,7 +242,6 @@ namespace ct
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
                 auto color = palette_[(x + y + z) % palette_.size()];
                 instances[index++] = { transform, transform.normalMatrix(), color};
-                ++drawVoxels_;
             });
         instancedBuffer_.setData(
             Containers::ArrayView{ instances.data(), index },
@@ -250,6 +257,8 @@ namespace ct
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
         instancedShader_.draw(instancedMesh_);
+
+        drawVoxels_ = index;
     }
 
     void App::TickImGui()
