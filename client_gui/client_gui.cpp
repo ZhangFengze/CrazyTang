@@ -1,6 +1,15 @@
 #include "client_gui.h"
+
 #include "imgui.h"
+
+#include <Magnum/Math/Color.h>
+#include <Magnum/Math/Quaternion.h>
+#include <Magnum/Primitives/Cube.h>
+#include <Magnum/MeshTools/Compile.h>
+#include <Magnum/Trade/MeshData.h>
+
 #include "ZSerializer.hpp"
+
 #include "../client_core/Login.h"
 #include "../common/Position.h"
 #include "../common/Velocity.h"

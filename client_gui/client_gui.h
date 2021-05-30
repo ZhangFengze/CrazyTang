@@ -4,13 +4,8 @@
 
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/Mesh.h>
-#include <Magnum/Math/Color.h>
 #include <Magnum/Math/Matrix4.h>
-#include <Magnum/Math/Quaternion.h>
-#include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/PhongGL.h>
-#include <Magnum/MeshTools/Compile.h>
-#include <Magnum/Trade/MeshData.h>
 #include <Magnum/Platform/GlfwApplication.h>
 
 #include "../common/Net.h"
