@@ -35,6 +35,7 @@ namespace ct
 
     private:
         void Draw();
+        void DrawInstanced();
         void TickImGui();
         void TickInput();
 
@@ -42,7 +43,10 @@ namespace ct
 
     private:
         GL::Mesh _mesh;
+        GL::Mesh instancedMesh_;
         Shaders::PhongGL _shader;
+        Shaders::PhongGL _instancedShader;
+        GL::Buffer instancedBuffer_;
 
         Matrix4 _transformation, _projection;
         std::vector<Color3> palette_;
