@@ -224,7 +224,7 @@ namespace ct
             Matrix3x3 normal;
             Color4 color;
         };
-        std::array<Instance, voxel::Container::x* voxel::Container::y* voxel::Container::z> instances;
+        std::array<Instance, voxel::Container::size> instances;
         std::atomic_size_t index = 0;
 
         std::for_each(std::execution::par_unseq,
