@@ -185,8 +185,6 @@ namespace ct
         instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation|
         Shaders::PhongGL::Flag::VertexColor)
     {
-        mesh_ = MeshTools::compile(Primitives::cubeSolid());
-
         instancedMesh_ = MeshTools::compile(Primitives::cubeSolid());
         instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
             1, 0,
@@ -202,7 +200,6 @@ namespace ct
     {
         io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
-        // Draw();
         DrawInstanced();
         TickImGui();
         fps_.fire();
@@ -212,46 +209,6 @@ namespace ct
     {
         cameraYaw_ -= dx * 0.002f;
         cameraPitch_ -= dy * 0.002f;
-    }
-
-    void App::Draw()
-    {
-        curEntities_.ForEach([&](auto e)
-            {
-                auto pos = e.Get<Position>()->data;
-                auto transform = Matrix4::translation(Vector3{ pos.x(),pos.y(),pos.z() });
-                auto color = palette_[0];
-                shader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                    .setDiffuseColor(color)
-                    .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
-                    .setTransformationMatrix(transform)
-                    .setNormalMatrix(transform.normalMatrix())
-                    .setProjectionMatrix(projection_)
-                    .draw(mesh_);
-            });
-
-        drawVoxels_ = 0;
-        voxel::ForEach(curVoxels_, [&](int x, int y, int z, voxel::Voxel* voxel)
-            {
-                if (!voxel)
-                    return;
-                if (voxel->type != voxel::Type::Block)
-                    return;
-                auto type = voxel->type;
-                Vector3 pos{ float(x),float(y),float(z) };
-                auto transform = Matrix4::translation(pos) *
-                    Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
-                auto color = palette_[(x + y + z) % palette_.size()];
-                shader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-                    .setDiffuseColor(color)
-                    .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
-                    .setTransformationMatrix(transform)
-                    .setNormalMatrix(transform.normalMatrix())
-                    .setProjectionMatrix(projection_)
-                    .draw(mesh_);
-
-                ++drawVoxels_;
-            });
     }
 
     void App::DrawInstanced()
