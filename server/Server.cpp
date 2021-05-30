@@ -99,7 +99,9 @@ namespace ct
 		{
 			timer.expires_after(std::chrono::seconds{ 1 });
 			co_await timer.async_wait(asio::use_awaitable);
+#ifdef _WIN32
 			std::cout << std::format("{} fps: {}\n", std::chrono::system_clock::now(), fps_.get());
+#endif
 		}
 	}
 
