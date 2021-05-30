@@ -182,7 +182,8 @@ namespace ct
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window),
-        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation)
+        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation|
+        Shaders::PhongGL::Flag::VertexColor)
     {
         mesh_ = MeshTools::compile(Primitives::cubeSolid());
 
@@ -190,7 +191,8 @@ namespace ct
         instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
             1, 0,
             Shaders::PhongGL::TransformationMatrix{},
-            Shaders::PhongGL::NormalMatrix{});
+            Shaders::PhongGL::NormalMatrix{},
+            Shaders::PhongGL::Color4{});
 
         for (int i = 0, count = 24;i < count;++i)
             palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));
@@ -258,6 +260,7 @@ namespace ct
         {
             Matrix4 transformation;
             Matrix3x3 normal;
+            Color4 color;
         };
         std::array<Instance, voxel::Container::x* voxel::Container::y* voxel::Container::z> instances;
         size_t index = 0;
@@ -272,7 +275,8 @@ namespace ct
                 Vector3 pos = { float(x),float(y),float(z) };
                 auto transform = Matrix4::translation(pos) *
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
-                instances[index++] = { transform, transform.normalMatrix() };
+                auto color = palette_[(x + y + z) % palette_.size()];
+                instances[index++] = { transform, transform.normalMatrix(), color};
                 ++drawVoxels_;
             });
         instancedBuffer_.setData(
@@ -283,8 +287,8 @@ namespace ct
         auto color = palette_[0];
         auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
         instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
-            .setDiffuseColor(color)
-            .setAmbientColor(Color3::fromHsv({ color.hue(), 1.0f, 0.3f }))
+            .setDiffuseColor(0xffffff_rgbf)
+            .setAmbientColor(Color3::fromHsv(Deg(0.f),0.f,0.3f))
             .setProjectionMatrix(projection_)
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
