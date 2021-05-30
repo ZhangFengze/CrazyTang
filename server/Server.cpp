@@ -12,6 +12,7 @@
 #include "../common/UUID.h"
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
+#include <format>
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -98,7 +99,7 @@ namespace ct
 		{
 			timer.expires_after(std::chrono::seconds{ 1 });
 			co_await timer.async_wait(asio::use_awaitable);
-			std::cout << std::chrono::system_clock::now() << " fps: " << fps_.get() << std::endl;
+			std::cout << std::format("{} fps: {}\n", std::chrono::system_clock::now(), fps_.get());
 		}
 	}
 
