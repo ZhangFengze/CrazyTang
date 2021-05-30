@@ -28,6 +28,19 @@ namespace ct
             static constexpr size_t x = 128;
             static constexpr size_t y = 16;
             static constexpr size_t z = 128;
+            static constexpr size_t size = x * y * z;
+
+            static inline const auto indices = []
+            {
+                std::array<Eigen::Vector3i, size> indices;
+                size_t index = 0;
+                for (int x = 0;x < voxel::Container::x;++x)
+                    for (int y = 0;y < voxel::Container::y;++y)
+                        for (int z = 0;z < voxel::Container::z;++z)
+                            indices[index++] = { x,y,z };
+                return indices;
+            }();
+
             std::vector<Voxel> voxels{ x * y * z };
 
             Voxel* Get(int _x, int _y, int _z);
