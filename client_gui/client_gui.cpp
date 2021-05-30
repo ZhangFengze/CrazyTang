@@ -174,22 +174,7 @@ namespace ct
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window)
     {
-        Trade::MeshData cube = Primitives::cubeSolid();
-
-        GL::Buffer vertices;
-        vertices.setData(MeshTools::interleave(cube.positions3DAsArray(),
-            cube.normalsAsArray()));
-
-        std::pair<Containers::Array<char>, MeshIndexType> compressed =
-            MeshTools::compressIndices(cube.indicesAsArray());
-        GL::Buffer indices;
-        indices.setData(compressed.first);
-
-        _mesh.setPrimitive(cube.primitive())
-            .setCount(cube.indexCount())
-            .addVertexBuffer(std::move(vertices), 0, Shaders::PhongGL::Position{},
-                Shaders::PhongGL::Normal{})
-            .setIndexBuffer(std::move(indices), 0, compressed.second);
+        _mesh = MeshTools::compile(Primitives::cubeSolid());
 
         for (int i = 0, count = 24;i < count;++i)
             palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));

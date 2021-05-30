@@ -13,6 +13,7 @@
 #include <Magnum/MeshTools/CompressIndices.h>
 #include <Magnum/Primitives/Cube.h>
 #include <Magnum/Shaders/PhongGL.h>
+#include <Magnum/MeshTools/Compile.h>
 #include <Magnum/Trade/MeshData.h>
 #include <Magnum/Platform/GlfwApplication.h>
 
