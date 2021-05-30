@@ -20,10 +20,10 @@ Note that we intentionally take advantages of the latest features of C++ standar
 It is recommended to keep toolchains up-to-date.  
 
 ### **Windows**
-just install the latest `Visual Studio` `CMake` and `Python`.  
+Just install the latest `Visual Studio` `CMake` and `Python`.  
 
 ### **Linux**
-usually we have to build from source.   
+Usually we have to build from source.   
 `https://hub.docker.com/r/rikorose/gcc-cmake` is here to help you
 ```shell
 cd CrazyTang
