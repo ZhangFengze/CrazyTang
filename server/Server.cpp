@@ -12,7 +12,9 @@
 #include "../common/UUID.h"
 #include <Eigen/Eigen>
 #include <ZSerializer.hpp>
+#ifdef _WIN32
 #include <format>
+#endif
 #include <thread>
 #include <chrono>
 #include <iostream>
