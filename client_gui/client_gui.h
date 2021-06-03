@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <asio.hpp>
+
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/Mesh.h>
 #include <Magnum/Math/Matrix4.h>
@@ -30,7 +32,19 @@ namespace ct
         void TickImGui();
         void TickInput();
 
-        asio::awaitable<void> Login(asio::io_context& io);
+        asio::awaitable<void> Login(asio::io_context& io, const asio::ip::tcp::endpoint&);
+
+
+    private:
+        struct Server
+        {
+            std::string name;
+            asio::ip::tcp::endpoint endpoint;
+        };
+        std::vector<Server> servers_;
+
+        asio::awaitable<void> RefreshServerList(asio::io_context& io);
+
 
     private:
         GL::Mesh instancedMesh_;

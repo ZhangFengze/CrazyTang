@@ -49,11 +49,6 @@ namespace
         return { asio::ip::make_address_v4(ip), (unsigned short)port };
     }
 
-    tcp::endpoint ServerEndpoint()
-    {
-        return StringToEndpoint("127.0.0.1:33773");
-    }
-
     template<typename In>
     bool ReadEntity(In& in, EntityHandle e)
     {
@@ -105,10 +100,10 @@ namespace
 
 namespace ct
 {
-    asio::awaitable<void> App::Login(asio::io_context& io)
+    asio::awaitable<void> App::Login(asio::io_context& io, const tcp::endpoint& endpoint)
     {
         asio::ip::tcp::socket s{ io };
-        co_await s.async_connect(ServerEndpoint(), asio::use_awaitable);
+        co_await s.async_connect(endpoint, asio::use_awaitable);
         auto id = co_await ClientLogin(s, std::chrono::seconds{ 3 });
         if (!id)
             co_return;
@@ -185,6 +180,19 @@ namespace ct
         curID_ = *id;
     }
 
+    asio::awaitable<void> App::RefreshServerList(asio::io_context& io)
+    {
+        asio::system_timer t{ io };
+        t.expires_after(std::chrono::seconds{ 2 });
+        co_await t.async_wait(asio::use_awaitable);
+
+        servers_ =
+        {
+            {"local", StringToEndpoint("127.0.0.1:33773")},
+            {"CrazyZ", StringToEndpoint("43.129.246.234:33773")}
+        };
+    }
+
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window),
         instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation |
@@ -199,6 +207,8 @@ namespace ct
 
         for (int i = 0, count = 24;i < count;++i)
             palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));
+
+        co_spawn(io_, RefreshServerList(io_), asio::detached);
     }
 
     void App::Tick()
@@ -273,8 +283,17 @@ namespace ct
         }
         else
         {
-            if (ImGui::Button("login"))
-                co_spawn(io_, Login(io_), asio::detached);
+            ImGui::Separator();
+            ImGui::Text("servers:");
+            ImGui::SameLine();
+            if(ImGui::Button("refresh"))
+                co_spawn(io_, RefreshServerList(io_), asio::detached);
+
+            for (const auto& server : servers_)
+                if (ImGui::Button(server.name.c_str()))
+                    co_spawn(io_, Login(io_, server.endpoint), asio::detached);
+
+            ImGui::Separator();
         }
 
         ImGui::DragFloat("camera yaw", &cameraYaw_, 0.01f);
