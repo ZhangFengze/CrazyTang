@@ -25,3 +25,6 @@
 [submodule "submodules/magnum-integration"]
 	path = submodules/magnum-integration
 	url = git://github.com/mosra/magnum-integration
+[submodule "submodules/json"]
+	path = submodules/json
+	url = https://github.com/nlohmann/json.git
