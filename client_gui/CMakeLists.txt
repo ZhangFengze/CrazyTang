@@ -39,6 +39,7 @@ set(CMAKE_CXX_STACK_SIZE 100000000)
 target_include_directories(${PROJECT_NAME} PUBLIC "../submodules/asio/asio/include")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/eigen")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/ZSerializer")
+target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/json/single_include")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     GLFW::GLFW

@@ -6,6 +6,8 @@
 #include <atomic>
 
 #include "imgui.h"
+#include "cpr/cpr.h"
+#include "nlohmann/json.hpp"
 
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Quaternion.h>
@@ -25,6 +27,7 @@
 using namespace ct;
 using namespace Math::Literals;
 using asio::ip::tcp;
+using json = nlohmann::json;
 
 namespace
 {
@@ -182,15 +185,12 @@ namespace ct
 
     asio::awaitable<void> App::RefreshServerList(asio::io_context& io)
     {
-        asio::system_timer t{ io };
-        t.expires_after(std::chrono::seconds{ 2 });
-        co_await t.async_wait(asio::use_awaitable);
-
-        servers_ =
-        {
-            {"local", StringToEndpoint("127.0.0.1:33773")},
-            {"CrazyZ", StringToEndpoint("43.129.246.234:33773")}
-        };
+        cpr::Response r = cpr::Get(cpr::Url{ "http://ct-1302800279.cos.ap-hongkong.myqcloud.com/server.json" });
+        if (r.status_code != 200)
+            co_return;
+        servers_.clear();
+        for (auto server : json::parse(r.text))
+            servers_.push_back({ server["name"], StringToEndpoint(server["endpoint"]) });
     }
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
