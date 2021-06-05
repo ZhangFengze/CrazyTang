@@ -83,12 +83,13 @@ namespace ct
 			co_return;
 		auto agent = std::make_shared<NetAgent>(std::move(socket));
 		OnLoginSuccess(agent, id);
-		co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+
+		co_spawn(socket.get_executor(), [agent]() -> asio::awaitable<void>
 			{
 				co_await agent->ReadRoutine();
 			}, asio::detached);
 
-		co_spawn(co_await asio::this_coro::executor, [agent]() -> asio::awaitable<void>
+		co_spawn(socket.get_executor(), [agent]() -> asio::awaitable<void>
 			{
 				co_await agent->WriteRoutine();
 			}, asio::detached);
