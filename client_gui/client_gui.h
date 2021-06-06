@@ -46,9 +46,9 @@ namespace ct
         asio::awaitable<void> RefreshServerList(asio::io_context& io);
 
     private:
-        GL::Mesh instancedMesh_;
-        Shaders::PhongGL instancedShader_;
-        GL::Buffer instancedBuffer_;
+        GL::Mesh voxelMesh_;
+        Shaders::PhongGL voxelShader_;
+        GL::Buffer voxelBuffer_;
 
         Matrix4 projection_;
         std::unordered_map<voxel::Type, Color3> palette_;

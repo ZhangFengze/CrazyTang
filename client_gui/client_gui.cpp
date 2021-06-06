@@ -199,11 +199,11 @@ namespace ct
 
     App::App(const Vector2i& windowSize, GLFWwindow* window)
         :windowSize_(windowSize), window_(window),
-        instancedShader_(Shaders::PhongGL::Flag::InstancedTransformation |
+        voxelShader_(Shaders::PhongGL::Flag::InstancedTransformation |
             Shaders::PhongGL::Flag::VertexColor)
     {
-        instancedMesh_ = MeshTools::compile(Primitives::cubeSolid());
-        instancedMesh_.addVertexBufferInstanced(instancedBuffer_,
+        voxelMesh_ = MeshTools::compile(Primitives::cubeSolid());
+        voxelMesh_.addVertexBufferInstanced(voxelBuffer_,
             1, 0,
             Shaders::PhongGL::TransformationMatrix{},
             Shaders::PhongGL::NormalMatrix{},
@@ -256,19 +256,19 @@ namespace ct
                 auto color = palette_[voxel->type];
                 instances[index++] = { transform, transform.normalMatrix(), color };
             });
-        instancedBuffer_.setData(
+        voxelBuffer_.setData(
             Containers::ArrayView{ instances.data(), index },
             GL::BufferUsage::DynamicDraw);
-        instancedMesh_.setInstanceCount(index);
+        voxelMesh_.setInstanceCount(index);
 
         auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
-        instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+        voxelShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(0xffffff_rgbf)
             .setAmbientColor(Color3::fromHsv(Deg(0.f), 0.f, 0.3f))
             .setProjectionMatrix(projection_)
             .setTransformationMatrix(transform)
             .setNormalMatrix(transform.normalMatrix());
-        instancedShader_.draw(instancedMesh_);
+        voxelShader_.draw(voxelMesh_);
 
         drawVoxels_ = index;
     }
