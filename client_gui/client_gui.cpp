@@ -12,6 +12,7 @@
 #include <Magnum/Math/Color.h>
 #include <Magnum/Math/Quaternion.h>
 #include <Magnum/Primitives/Cube.h>
+#include <Magnum/Primitives/Icosphere.h>
 #include <Magnum/MeshTools/Compile.h>
 #include <Magnum/Trade/MeshData.h>
 
@@ -211,6 +212,8 @@ namespace ct
 
         palette_[voxel::Type::Block] = 0xffffff_rgbf;
 
+        playerMesh_ = MeshTools::compile(Primitives::icosphereSolid(2));
+
         co_spawn(io_, RefreshServerList(io_), asio::detached);
     }
 
@@ -219,6 +222,7 @@ namespace ct
         io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
         DrawVoxels();
+        DrawPlayers();
         TickImGui();
         fps_.fire();
     }
@@ -271,6 +275,26 @@ namespace ct
         voxelShader_.draw(voxelMesh_);
 
         drawVoxels_ = index;
+    }
+
+    void App::DrawPlayers()
+    {
+        curEntities_.ForEach([&](auto e)
+            {
+                if (!e.Has<Position>())
+                    return;
+                auto pos = e.Get<Position>()->data;
+                auto transform = Matrix4::translation(Vector3{ pos.x(), pos.y(), pos.z() }) *
+                    Matrix4::scaling(Vector3{ 0.5f,0.5f,0.5f });
+
+                playerShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
+                    .setDiffuseColor(0x0000ff_rgbf)
+                    .setAmbientColor(Color3::fromHsv(Deg(0.f), 0.f, 0.3f))
+                    .setProjectionMatrix(projection_)
+                    .setTransformationMatrix(transform)
+                    .setNormalMatrix(transform.normalMatrix());
+                playerShader_.draw(playerMesh_);
+            });
     }
 
     void App::TickImGui()

@@ -28,6 +28,7 @@ namespace ct
 
     private:
         void DrawVoxels();
+        void DrawPlayers();
         void TickImGui();
         void TickInput();
 
@@ -49,6 +50,10 @@ namespace ct
         GL::Mesh voxelMesh_;
         Shaders::PhongGL voxelShader_;
         GL::Buffer voxelBuffer_;
+
+        GL::Mesh playerMesh_;
+        Shaders::PhongGL playerShader_;
+        GL::Buffer playerBuffer_;
 
         Matrix4 projection_;
         std::unordered_map<voxel::Type, Color3> palette_;
