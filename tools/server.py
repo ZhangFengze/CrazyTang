@@ -6,6 +6,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--clean", help="clean before build", action="store_true")
 parser.add_argument("--config", help="configuration", default="debug")
 parser.add_argument("--ninja", help="build using ninja", action="store_true")
+parser.add_argument("--no-run", help="build only, not run",
+                    action="store_true")
 args = parser.parse_args()
 
 source_dir = get_root_path().joinpath("server")
@@ -19,4 +21,7 @@ if args.clean:
 cmake(source_dir, build_dir, args.ninja)
 build(build_dir, args.config)
 install(build_dir, install_dir, args.config)
+
+if args.no_run:
+    exit()
 execute(str(install_dir.joinpath("bin/server")))
