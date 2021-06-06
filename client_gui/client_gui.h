@@ -34,6 +34,7 @@ namespace ct
 
     private:
         asio::awaitable<void> Login(asio::io_context& io, const asio::ip::tcp::endpoint&);
+        asio::awaitable<void> Sync();
 
     private:
         struct Server

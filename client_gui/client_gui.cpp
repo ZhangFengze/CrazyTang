@@ -153,18 +153,6 @@ namespace ct
 
         {
             zs::StringWriter out;
-            zs::Write(out, Eigen::Vector3f{ 1.f,0,0 });
-            agent->Send("set position", out.String());
-        }
-
-        {
-            zs::StringWriter out;
-            zs::Write(out, Eigen::Vector3f{ 0,1.f,0 });
-            agent->Send("set velocity", out.String());
-        }
-
-        {
-            zs::StringWriter out;
             zs::Write(out, std::string("a"));
             agent->Send("set name", out.String());
         }
@@ -181,6 +169,22 @@ namespace ct
 
         curAgent_ = agent;
         curID_ = *id;
+
+        co_spawn(co_await asio::this_coro::executor, Sync(), asio::detached);
+    }
+
+    asio::awaitable<void> App::Sync()
+    {
+        asio::system_timer t{ io_ };
+        while (curAgent_)
+        {
+            t.expires_after(std::chrono::milliseconds{ 33 });
+            co_await t.async_wait(asio::use_awaitable);
+
+            zs::StringWriter out;
+            zs::Write(out, Eigen::Vector3f(cameraPos_.data()));
+            curAgent_->Send("set position", out.String());
+        }
     }
 
     asio::awaitable<void> App::RefreshServerList(asio::io_context& io)
