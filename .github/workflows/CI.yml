@@ -24,9 +24,9 @@ jobs:
 
     steps:
     - name: Install toolchains
-        run: |
-          sudo apt-get update
-          sudo apt-get install gcc-11
+      run: |
+         sudo apt-get update
+         sudo apt-get install gcc-11
     
     - uses: actions/checkout@v2
       with:
