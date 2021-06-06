@@ -23,6 +23,11 @@ jobs:
     runs-on: ${{matrix.os}}
 
     steps:
+    - name: Install toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-11
+    
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
