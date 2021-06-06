@@ -32,8 +32,8 @@ namespace ct
         void TickImGui();
         void TickInput();
 
+    private:
         asio::awaitable<void> Login(asio::io_context& io, const asio::ip::tcp::endpoint&);
-
 
     private:
         struct Server
@@ -44,7 +44,6 @@ namespace ct
         std::vector<Server> servers_;
 
         asio::awaitable<void> RefreshServerList(asio::io_context& io);
-
 
     private:
         GL::Mesh instancedMesh_;
