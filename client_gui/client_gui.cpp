@@ -284,7 +284,7 @@ namespace ct
             ImGui::Separator();
             ImGui::Text("servers:");
             ImGui::SameLine();
-            if(ImGui::Button("refresh"))
+            if (ImGui::Button("refresh"))
                 co_spawn(io_, RefreshServerList(io_), asio::detached);
 
             for (const auto& server : servers_)
