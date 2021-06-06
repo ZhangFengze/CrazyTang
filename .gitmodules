@@ -28,3 +28,6 @@
 [submodule "submodules/json"]
 	path = submodules/json
 	url = https://github.com/nlohmann/json.git
+[submodule "submodules/FastNoiseLite"]
+	path = submodules/FastNoiseLite
+	url = https://github.com/Auburn/FastNoiseLite.git
