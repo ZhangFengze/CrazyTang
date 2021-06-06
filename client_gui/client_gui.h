@@ -27,7 +27,6 @@ namespace ct
         void OnMouseMove(float dx, float dy);
 
     private:
-        void Draw();
         void DrawInstanced();
         void TickImGui();
         void TickInput();
