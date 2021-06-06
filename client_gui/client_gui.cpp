@@ -205,8 +205,7 @@ namespace ct
             Shaders::PhongGL::NormalMatrix{},
             Shaders::PhongGL::Color4{});
 
-        for (int i = 0, count = 24;i < count;++i)
-            palette_.push_back(Color3::fromHsv({ Deg(i * 360.f / count), 1.0f, 1.0f }));
+        palette_[voxel::Type::Block] = 0xffffff_rgbf;
 
         co_spawn(io_, RefreshServerList(io_), asio::detached);
     }
@@ -250,7 +249,7 @@ namespace ct
                 Vector3 pos = { float(x),float(y),float(z) };
                 auto transform = Matrix4::translation(pos) *
                     Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
-                auto color = palette_[(x + y + z) % palette_.size()];
+                auto color = palette_[voxel->type];
                 instances[index++] = { transform, transform.normalMatrix(), color };
             });
         instancedBuffer_.setData(
@@ -258,7 +257,6 @@ namespace ct
             GL::BufferUsage::DynamicDraw);
         instancedMesh_.setInstanceCount(index);
 
-        auto color = palette_[0];
         auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
         instancedShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(0xffffff_rgbf)

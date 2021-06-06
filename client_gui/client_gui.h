@@ -52,7 +52,7 @@ namespace ct
         GL::Buffer instancedBuffer_;
 
         Matrix4 projection_;
-        std::vector<Color3> palette_;
+        std::unordered_map<voxel::Type, Color3> palette_;
 
         Vector2 windowSize_;
         GLFWwindow* window_;
