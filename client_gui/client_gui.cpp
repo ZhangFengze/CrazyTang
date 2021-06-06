@@ -218,7 +218,7 @@ namespace ct
     {
         io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
-        DrawInstanced();
+        DrawVoxels();
         TickImGui();
         fps_.fire();
     }
@@ -229,7 +229,7 @@ namespace ct
         cameraPitch_ -= dy * 0.002f;
     }
 
-    void App::DrawInstanced()
+    void App::DrawVoxels()
     {
         struct Instance
         {
