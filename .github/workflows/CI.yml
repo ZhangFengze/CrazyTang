@@ -34,7 +34,9 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: python tools/server.py
+      run: |
+        python tools/server.py --config debug --no-run
+        python tools/server.py --config release --no-run
       env:
         CC:   gcc-11
         CXX:  g++-11
