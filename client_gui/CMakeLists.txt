@@ -40,6 +40,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC "../submodules/asio/asio/inclu
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/eigen")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/ZSerializer")
 target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/json/single_include")
+target_include_directories(${PROJECT_NAME} PUBLIC  "../submodules/FastNoiseLite/Cpp")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     GLFW::GLFW

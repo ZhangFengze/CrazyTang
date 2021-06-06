@@ -1,4 +1,5 @@
 #include "Voxel.h"
+#include "FastNoiseLite.h"
 
 namespace
 {
@@ -31,21 +32,19 @@ namespace ct
 
         void GenerateVoxels(Container& container)
         {
-            Process(container, 0.f);
+            FastNoiseLite noise;
+            noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+            noise.SetFrequency(0.02f);
+            voxel::ForEach(container, [&noise](int x, int y, int z, voxel::Voxel* voxel)
+                {
+                    auto v = noise.GetNoise((float)x, (float)z);
+                    v = (v + 1) * 0.5f * voxel::Container::y;
+                    voxel->type = y < v ? voxel::Type::Block : voxel::Type::Empty;
+                });
         }
 
-        static float accumulated = 0.f;
         void Process(Container& container, float step)
         {
-            accumulated += step * 20.f;
-            ForEach(container, [](int x, int y, int z, Voxel* voxel)
-                {
-                    float altitude = std::sin(accumulated + x + z) * 8.f + 8.f;
-                    if (y < altitude)
-                        voxel->type = Type::Block;
-                    else
-                        voxel->type = Type::Empty;
-                });
         }
 
         std::tuple<int, int, int> DecodeIndex(const Position& pos)
