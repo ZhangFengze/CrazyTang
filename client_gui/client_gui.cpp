@@ -248,7 +248,7 @@ namespace ct
                     return;
                 Vector3 pos = { float(x),float(y),float(z) };
                 auto transform = Matrix4::translation(pos) *
-                    Matrix4::scaling(Vector3{ 0.05f,0.05f,0.05f });
+                    Matrix4::scaling(Vector3{ 0.5f,0.5f,0.5f });
                 auto color = palette_[voxel->type];
                 instances[index++] = { transform, transform.normalMatrix(), color };
             });
