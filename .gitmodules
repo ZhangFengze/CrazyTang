@@ -31,3 +31,6 @@
 [submodule "submodules/FastNoiseLite"]
 	path = submodules/FastNoiseLite
 	url = https://github.com/Auburn/FastNoiseLite.git
+[submodule "submodules/PhysX"]
+	path = submodules/PhysX
+	url = https://github.com/NVIDIAGameWorks/PhysX.git
