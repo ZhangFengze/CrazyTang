@@ -26,14 +26,19 @@ def rmdir(dir):
     shutil.rmtree(dir, ignore_errors=True)
 
 
-def cmake(source_dir, build_dir, ninja):
-    execute(f"cmake -S {source_dir} -B {build_dir} {'-G Ninja' if ninja else ''}")
+def prefix(install_dir):
+    return f"-DCMAKE_INSTALL_PREFIX={install_dir}" if install_dir else ""
+
+
+def cmake(source_dir, build_dir, ninja, install_dir=None):
+    execute(
+        f"cmake {prefix(install_dir)} -S {source_dir} -B {build_dir} {' -G Ninja' if ninja else ''}")
 
 
 def build(build_dir, config):
     execute(f"cmake --build {build_dir} --config {config} -j {os.cpu_count()}")
 
 
-def install(build_dir, install_dir, config):
+def install(build_dir, config):
     execute(
-        f"cmake --install {build_dir} --prefix {install_dir} --config {config}")
+        f"cmake --install {build_dir} --config {config}")

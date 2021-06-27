@@ -16,7 +16,7 @@ if args.clean:
     rmdir(build_dir)
     exit()
 
-cmake(source_dir, build_dir, args.ninja)
+cmake(source_dir, build_dir, args.ninja, install_dir)
 build(build_dir, args.config)
-install(build_dir, install_dir, args.config)
+install(build_dir, args.config)
 execute(str(install_dir.joinpath("bin/client_gui.exe")))

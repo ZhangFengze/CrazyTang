@@ -17,9 +17,9 @@ if args.clean:
     rmdir(build_dir)
     exit()
 
-cmake(source_dir, build_dir, args.ninja)
+cmake(source_dir, build_dir, args.ninja, install_dir)
 build(build_dir, args.config)
-install(build_dir, install_dir, args.config)
+install(build_dir, args.config)
 
 with os.scandir(install_dir.joinpath("bin")) as it:
     for entry in it:
