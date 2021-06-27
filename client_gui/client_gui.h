@@ -4,6 +4,9 @@
 
 #include <asio.hpp>
 
+#include <PxConfig.h>
+#include <PxPhysicsAPI.h>
+
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/Mesh.h>
 #include <Magnum/Math/Matrix4.h>

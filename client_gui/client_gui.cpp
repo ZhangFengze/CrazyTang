@@ -30,6 +30,50 @@ using namespace Math::Literals;
 using asio::ip::tcp;
 using json = nlohmann::json;
 
+#define PX_RELEASE(x)	if(x)	{ x->release(); x = NULL;	}
+namespace
+{
+    using namespace physx;
+
+    PxDefaultAllocator		gAllocator;
+    PxDefaultErrorCallback	gErrorCallback;
+
+    PxFoundation* gFoundation = NULL;
+    PxPhysics* gPhysics = NULL;
+
+    PxDefaultCpuDispatcher* gDispatcher = NULL;
+    PxScene* gScene = NULL;
+
+    PxMaterial* gMaterial = NULL;
+
+    void initPhysics()
+    {
+        gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
+        gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true);
+        gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+
+        PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
+        sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+        gDispatcher = PxDefaultCpuDispatcherCreate(2);
+        sceneDesc.cpuDispatcher = gDispatcher;
+        sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+        gScene = gPhysics->createScene(sceneDesc);
+    }
+
+    void stepPhysics()
+    {
+        gScene->simulate(1.0f / 60.0f);
+        gScene->fetchResults(true);
+    }
+
+    void cleanupPhysics(bool /*interactive*/)
+    {
+        PX_RELEASE(gScene);
+        PX_RELEASE(gDispatcher);
+        PX_RELEASE(gPhysics);
+        PX_RELEASE(gFoundation);
+    }
+}
 namespace
 {
     std::vector<std::string> logs;
@@ -215,12 +259,15 @@ namespace ct
         playerMesh_ = MeshTools::compile(Primitives::icosphereSolid(2));
 
         co_spawn(io_, RefreshServerList(io_), asio::detached);
+
+        initPhysics();
     }
 
     void App::Tick()
     {
         io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
+        stepPhysics();
         DrawVoxels();
         DrawPlayers();
         TickImGui();
