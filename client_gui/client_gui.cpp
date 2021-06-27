@@ -265,13 +265,10 @@ namespace ct
             GL::BufferUsage::DynamicDraw);
         voxelMesh_.setInstanceCount(index);
 
-        auto transform = Matrix4::translation(Vector3{ 3.f,3.f,3.f });
         voxelShader_.setLightPositions({ {1.4f, 1.0f, 0.75f, 0.0f} })
             .setDiffuseColor(0xffffff_rgbf)
             .setAmbientColor(Color3::fromHsv(Deg(0.f), 0.f, 0.3f))
-            .setProjectionMatrix(projection_)
-            .setTransformationMatrix(transform)
-            .setNormalMatrix(transform.normalMatrix());
+            .setProjectionMatrix(projection_);
         voxelShader_.draw(voxelMesh_);
 
         drawVoxels_ = index;
