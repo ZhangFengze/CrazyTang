@@ -87,7 +87,7 @@ namespace ct
             zs::StringWriter out;
             int count = 0;
             int voxelPerMessage = 100;
-            voxel::ForEach(voxels, [&](int x, int y, int z, voxel::Voxel* voxel)
+            voxels.ForEach([&](int x, int y, int z, voxel::Voxel* voxel)
                 {
                     if (!voxel)
                         return;
