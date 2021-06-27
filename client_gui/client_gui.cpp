@@ -46,6 +46,16 @@ namespace
 
     PxMaterial* gMaterial = NULL;
 
+    PxRigidStatic* CreateBoxStatic(const PxTransform& t, const PxVec3& halfExtents)
+    {
+        PxShape* shape = gPhysics->createShape(PxBoxGeometry(halfExtents), *gMaterial);
+        auto body = gPhysics->createRigidStatic(t);
+        body->attachShape(*shape);
+        gScene->addActor(*body);
+        shape->release();
+        return body;
+    }
+
     void initPhysics()
     {
         gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
@@ -267,6 +277,7 @@ namespace ct
     {
         io_.run_for(std::chrono::milliseconds{ 1 });
         TickInput();
+        TickVoxelsView();
         stepPhysics();
         DrawVoxels();
         DrawPlayers();
@@ -439,5 +450,30 @@ namespace ct
         cameraPos_ += speed * forward * q.transformVector(-Vector3::zAxis());
         cameraPos_ += speed * left * q.transformVector(-Vector3::xAxis());
         cameraPos_ += speed * up * q.transformVector(Vector3::yAxis());
+    }
+
+    void App::TickVoxelsView()
+    {
+        for (auto index : voxel::Container::indices)
+        {
+            auto data = curVoxels_.GetNoCheck(index.x(), index.y(), index.z());
+            auto view = curVoxelsView_.GetNoCheck(index.x(), index.y(), index.z());
+            if (data->type == voxel::Type::Block)
+            {
+                if (!view->rigid)
+                {
+                    view->rigid = CreateBoxStatic(PxTransform{ PxVec3(index.x(),index.y(),index.z()) },
+                        PxVec3{ 0.5f,0.5f,0.5f });
+                }
+            }
+            else
+            {
+                if (view->rigid)
+                {
+                    view->rigid->release();
+                    view->rigid = nullptr;
+                }
+            }
+        }
     }
 }

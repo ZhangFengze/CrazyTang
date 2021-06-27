@@ -18,6 +18,8 @@
 #include "../common/Voxel.h"
 #include "../common/fps.h"
 
+#include "VoxelView.h"
+
 using namespace Magnum;
 
 namespace ct
@@ -34,6 +36,7 @@ namespace ct
         void DrawPlayers();
         void TickImGui();
         void TickInput();
+        void TickVoxelsView();
 
     private:
         asio::awaitable<void> Login(asio::io_context& io, const asio::ip::tcp::endpoint&);
@@ -74,6 +77,7 @@ namespace ct
         uint64_t curID_ = 0;
         EntityContainer curEntities_;
         voxel::Container curVoxels_;
+        voxel_view::Container curVoxelsView_;
         FPS fps_;
         int drawVoxels_ = 0;
     };
