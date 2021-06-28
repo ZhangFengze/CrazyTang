@@ -90,3 +90,11 @@ diff包含：
 客户端得到DOM后，再反推回去客户端的entities view？
 DOM的增删实体，对应entity增删
 DOM的更新，施加到entity的数据上？
+
+
+
+服务器model  ->   客户端model    ->  客户端view model
+大概这三层
+服务器model专注服务器逻辑。挑选之后，筛出客户端model，同步给客户端
+客户端model的各种修改，告知客户端view model
+客户端view model做客户端逻辑
